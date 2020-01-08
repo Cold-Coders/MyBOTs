@@ -10,4 +10,5 @@
 ```bash
 pip install Appium-Python-Client
 ```
-- Addition Tools \Android\Sdk\tools\bin\uiautomatorviewer
+- Addition Tool \Android\Sdk\tools\bin\uiautomatorviewer
+
