@@ -1,7 +1,7 @@
 # COC-BOT
 
-## 功能
-- [x] 自动捐兵
+## Function
+- [x] Auto-donation
 
 ## Installation
 
