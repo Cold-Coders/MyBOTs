@@ -1,0 +1,49 @@
+{
+    "720x1280":{
+        "Donation": {
+            "open": [20, 317],
+            "close":[524, 312],
+            "crop": 506,
+            "colorCoor":[28, 61],
+            "blue":[21, 107, 165],
+            "grey":[112, 108, 80],
+            "button" : "target/donate.png",
+            "n_troop":[75,145],
+            "n_mag":[195,240],
+            "text": [60,330],
+            "d_rec":[542, 65 ,1177, 501] ,
+            "troop":{
+            	"雷龙": "target/LeiLong.png",
+            	"气球": "target/qiqiu.png" ,
+            	"狂暴": "target/Kuangbao.png",
+            	"冰冻": "target/bingdong.png" ,
+
+            	"亡灵": "target/亡灵.png",
+            	"冰人": "target/冰人.png" ,
+            	"哥布林": "target/哥布林.png" ,
+            	"地震": "target/地震.png",
+            	"天使": "target/天使.png" ,
+            	"女巫": "target/女巫.png" ,
+            	"武神": "target/女武神.png" ,
+            	"巨人": "target/巨人.png",
+            	"弓箭手": "target/弓箭手.png" ,
+            	"急速": "target/急速.png" ,
+            	"旷工": "target/旷工.png" ,
+            	"毒药": "target/毒药.png",
+            	"治疗": "target/治疗.png" ,
+            	"法师": "target/法师.png" ,
+            	"炸弹人": "target/炸弹人.png",
+            	"熔岩猎犬": "target/熔岩猎犬.png" ,
+            	"皮卡": "target/皮卡.png" ,
+            	"石头人": "target/石头人.png" ,
+            	"蓝胖": "target/蓝胖.png",
+            	"野猪": "target/野猪.png" ,
+            	"野蛮人": "target/野蛮人.png" ,
+            	"雷电": "target/雷电.png" ,
+            	"飞龙宝宝": "target/飞龙宝宝.png" ,
+            	"龙": "target/龙.png"
+            }
+        }
+    }
+
+}
