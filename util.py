@@ -8,8 +8,14 @@ def r_color(c1,c2,diff = 8):
     elif len(c1) == 3 and len(c2) == 3:
       return abs(c1[0] - c2[0]) <= diff and abs(c1[1] - c2[1])  <= diff and abs(c1[1] - c2[1]) <= diff
 
-def ss(t = 0.1):
-	time.sleep(t)
+def ss(*args):
+	if len(args) == 1 and args[0] > 0:
+		#print("delay",args[0])
+		time.sleep(args[0])
+	else:
+		time.sleep(0.1)
+	
+	
 
 def load_configure(file: str,resolution:str):
     f=open(file,encoding='utf-8')

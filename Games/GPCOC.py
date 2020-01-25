@@ -3,11 +3,13 @@ import uiautomator2 as u2
 from util import *
 from cv import CV
 from Constant import *
+import threading
+
 #from appium import webdriver
 
 class GP_COC:
     def __init__(self, device = "",ver = 1,mode = 'a'):
-        self._DEBUG = True
+        self._DEBUG = False
         self.d = u2.connect(device)
         self._mode = mode # a - 辅助模式 f - 全模式 gp-果盘只进入游戏
 
@@ -15,6 +17,12 @@ class GP_COC:
              'com.tencent.tmgp.supercell.clashofclans']
         self._app = V[ver]
         
+        #-----------------------
+        self.COUNT  = dict()
+        self.COUNT['EnterGame'] = 0
+        self.COUNT['collect'] = 0
+        #------------------------
+
         self.coordinate = []
         self.dWidth, self.dHeight = self.d.window_size() 
         resol = str(self.dWidth) + "x" + str(self.dHeight)
@@ -24,7 +32,7 @@ class GP_COC:
 
 
     def dectect_app(self):
-        pid = self.d.app_wait(self._app) # 等待应用运行, return pid(int)
+        pid = self.d.app_wait(self._app, front=True) # 等待应用运行, return pid(int)
 
         if self._DEBUG:
             if not pid:
@@ -40,21 +48,28 @@ class GP_COC:
         self.d.app_stop(self._app) 
 
     def GPEG(self):
-        COUNT  = dict()
-
-        EXISTS = lambda a,b: self.d(text=a, className=b).exists()
-        CLICK = lambda a,b: self.d(text=a, className=b).click()
-        try:
-            #是否运行游戏 并 存在Textview的文字为进入游戏
-            if self.dectect_app() and EXISTS("进入游戏",TEXTVIEW):
-                CLICK("进入游戏",TEXTVIEW)
-                COUNT[EnterGame] += 1 
-                prt("点击进入游戏次数",COUNT[EnterGame])
-            #睡眠100秒
-            ss(100)
-        except(Exception):
-            #睡眠5分钟当有其他操作
-            ss(60*5)
+        while True:            
+            EXISTS = lambda a,b: self.d(text=a, className=b).exists()
+            CLICK = lambda a,b: self.d(text=a, className=b).click()
+            try:
+                #是否运行游戏 并 存在Textview的文字为进入游戏
+                if self.dectect_app() and EXISTS("进入游戏",TEXTVIEW):
+                    CLICK("进入游戏",TEXTVIEW)
+                    self.COUNT['EnterGame'] += 1 
+                    prt("点击进入游戏 次数",COUNT['EnterGame'])
+                    ss(1)
+                    self._tap(r = True)
+                #睡眠100秒
+                ss(100)
+            except(Exception):
+                #睡眠5分钟当有其他操作
+                ss(60*5)
+        '''
+        # 常用写法，注册匿名监控
+        self.d.watcher.when("进入游戏").click()
+        # 开始后台监控
+        self.d.watcher.start(2.0) # 默认监控间隔2.0s
+        '''
 
     def _srcv(self):
         return self.d.screenshot(format="opencv")
@@ -72,23 +87,31 @@ class GP_COC:
     def donate3(self, Text):
         D_List = self.config["Donation"]["List"]
         T_Img = self.coord['Donation']['troop']
-
         CHOP = lambda: CV.Crop(self._srcv(),self.coord['Donation']['d_rec'])
         w = self.coord['Donation']['d_rec'][0]
         h = self.coord['Donation']['d_rec'][1]
 
-        def CLICK(a,b,c):
-            msg("找到",a,"点击",b,",",c) 
-            self._tap(b,c)
-            ss(0.5)
+        
 
-        if '随' in Text:
-            for do in D_List:
-                target = T_Img[do]
-                #print(target)
-                x,y = CV.Match(CHOP(),target)
-                if not (x==-1 or y == -1):
-                    CLICK(target,x+w,y+h)
+        def CLICK(a,b,c):
+            target = T_Img[a]
+            x,y = CV.Match(CHOP(),target)
+            if not (x==-1 or y == -1):
+                msg("找到",target,"点击",b,",",c) 
+                self._tap(x+b,y+c)
+                ss(1)
+
+        Words = ['随','谢谢']
+        for EW in Words:
+            if EW in Text :
+                ss(1)
+                #检测可捐数值
+                #几种捐赠的方案 35 - 气球和雷龙 30 - 雷龙
+                for do in D_List:
+                    CLICK(do,w,h)
+                    #print(target)
+                break
+        
 
         #提取所需捐赠兵种
         To_D = list()
@@ -99,11 +122,7 @@ class GP_COC:
         #依次点击要捐赠的兵种
         for do in To_D:
             if do in T_Img:
-                target = T_Img[do]
-                #print(target)
-                x,y = CV.Match(CHOP(),target)
-                if not (x==-1 or y == -1):
-                    CLICK(target,x+w,y+h)
+                CLICK(do,w,h)
                     
 
     def donate2(self):
@@ -129,6 +148,7 @@ class GP_COC:
 
             print("执行",i,":",Text)
             self._tap(p_b[i][0],p_b[i][1])
+            ss(1)
 
             #捐兵步骤
             self.donate3(Text)
@@ -155,41 +175,89 @@ class GP_COC:
         cg = self.coord['Donation']['grey']
         #print(c,cc,type(c),type(cc))
         #主界面操作
-        if r_color(c,cb):
+        if r_color(c,cb, diff = 12):
             #打开聊天框
             x,y = self.coord['Donation']['open']
             self._tap(x,y)
             self.donate2()
-        elif r_color(c,cg):#颜色判断是否在聊天界面
+            ss(1)
+        elif r_color(c,cg, diff = 12):#颜色判断是否在聊天界面
             self.donate2()
+            ss(1)
         else:
             msg(c,cb,type(c),type(cb),"未知错误")
             self._tap(555,555,r = True)
 
-    def run(self):
-        if self._DEBUG:
-            self.donate()
-            #CV.Save(self.d)
-            #self.donate3("随意")
-            #return
+    def collect(self):
+        ss(1)
+        target = self.coord['Collection']
+        #print(target)
+    
+        #找到金币 金水 黑水 
+        for tar in target:
+            x,y = CV.Match(self._srcv(),tar,d= True,criteria = 0.92)
+            if not (x==-1 or y == -1):
+                self._tap(x,y)
+                self.COUNT['collect'] += 1
+                ss(1)
+        msg("收集资源 次数:",self.COUNT['collect'])
+        ss(1)
+        
+    def reset_gamescreen(self):
+        ss()
+        self.d.swipe(280, 120, 1000, 560)
+        ss(2)
+        try:
+            threading.Thread(target= self.Room_in_1 ).start()
+            threading.Thread(target= self.Room_in_2 ).start()
+        except:
+            print ("Error: 线程无法启动线程")
+        ss()
+        msg("调整游戏视角")
+
+    def Room_in_1(self):
+        self.d.touch.down(200, 356) # 模拟按下
+        time.sleep(1) # down 和 move 之间的延迟，自己控制
+        self.d.touch.move(400, 356) # 模拟移动
+        self.d.touch.up(400, 356) # 模拟抬起
+
+    def Room_in_2(self):
+        self.d.touch.down(1000, 408) # 模拟按下
+        time.sleep(1) # down 和 move 之间的延迟，自己控制
+        self.d.touch.move(800, 408) # 模拟移动
+        self.d.touch.up(800, 408) # 模拟抬起
+
+    def AddTroops(self):
+        pass
+
+    def OutForSleep(self,s = 10):
+        HOME = lambda: self.d.press("home")
+
+        HOME()
+        msg("返回主界面等待" + str(s) + "分钟后启动游戏")
+        ss(60*s)
+        self.LaunchCOC()
+
+    def _subrun(self):
         while True:
+            self.reset_gamescreen()
 
-            if 'com.supercell.clashofclans.guopan' == self._app:
-                    self.GPEG()
+            if self._mode == 'gp':
+                continue
 
-            if self._mode == 'a':
-                #收资源
-                
+            elif self._mode == 'a':
+                #资源收集
+                self.collect()
                 #捐兵
                 self.donate()
-
                 #造兵
-            elif self._mode = 'gp':
-                continue
+                self.AddTroops()
+
+                self.OutForSleep()
 
             elif self._mode == 'f':
                 #资源收集
-                
+                self.collect()
                 #造兵检测
                 
                 #捐兵检测
@@ -204,6 +272,31 @@ class GP_COC:
                 #夜世界升级检测
                 
                 #夜世界出兵
+
+    def run(self):
+        if self._DEBUG:
+            self.donate()
+            CV.Save(self.d)
+            #self.donate3("随意")
+            return
+
+        if self._app == 'com.supercell.clashofclans.guopan':
+            try:
+                #threading.Thread(target= self.GPEG ).start()
+                pass
+            except:
+                print ("Error: 线程无法启动线程")
+
+        try:
+            #threading.Thread(target= self._subrun ).start()
+            pass
+        except:
+            print ("Error: 线程无法启动线程")
+
+        self._subrun()
+        
+                
+                
 
     
 

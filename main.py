@@ -15,6 +15,6 @@ if __name__ == "__main__":
 	if DEBUG:
 		HTMLTestRunner(combine_reports=True, report_name="test_report", add_timestamp=False).run(discover)
 	else:
-		#app = GP_COC(device = "emulator-5554",ver = 0,mode = "gp")
-		app = GP_COC(device = "emulator-5556")
+		app = GP_COC(device = "emulator-5554",ver = 0, mode='f')
+		#app = GP_COC(device = "emulator-5556",mode = 'f')
 		app.run()

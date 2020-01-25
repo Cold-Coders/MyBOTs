@@ -99,16 +99,14 @@ class CV:
                 print("未找到",target,"criteria:",val,"< (",criteria,")")
             return (-1,-1)
 
+        if method in [cv2.TM_SQDIFF, cv2.TM_SQDIFF_NORMED]:
+            top_left = min_loc
+        else:
+            top_left = max_loc
+
         if d:
             print(target,"criteria:",val,"(",criteria,")")
-
-            if method in [cv2.TM_SQDIFF, cv2.TM_SQDIFF_NORMED]:
-                top_left = min_loc
-            else:
-                top_left = max_loc
-
             bottom_right = (top_left[0] + w, top_left[1] + h)
-
             cv2.rectangle(img_rgb,top_left, bottom_right, 255, 2)
             cv2.imwrite('res.png',img_rgb)
         #plt.subplot(121),plt.imshow(res,cmap = 'gray')
