@@ -1,20 +1,29 @@
-import os
-import time
+import os, time, json, unittest
 from HtmlTestRunner import HTMLTestRunner
-import unittest
-from Games.GPCOC import GP_COC
-import json
+from COC.Bot import COC_BOT
+from COC.Donation import *
+from COC.Harvest import *
+from COC.Lrank import *
+from COC.Ngtworld import *
+from COC.Scenario import *
+from COC.Upgrade import *
+from COC.GUI import *
 
-
-DEBUG = False
-
-test_dir = './Games'
+test_dir = './COC'
 discover = unittest.defaultTestLoader.discover(start_dir=test_dir, pattern="*.py")
 
+
 if __name__ == "__main__":
-	if DEBUG:
-		HTMLTestRunner(combine_reports=True, report_name="test_report", add_timestamp=False).run(discover)
-	else:
-		app = GP_COC(device = "emulator-5554",ver = 0, mode='f')
-		#app = GP_COC(device = "emulator-5556",mode = 'f')
-		app.run()
+	TEST = lambda : HTMLTestRunner(combine_reports=True, report_name="test_report", add_timestamp=False).run(discover)
+
+	'''
+	mode
+	'''
+	device = "emulator-5554"
+	config = {
+	'donation': Donation(),
+	'Lrank': Lrank()
+	}
+	bot = COC_BOT(device = device, config = config)
+	bot.run()
+

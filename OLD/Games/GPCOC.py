@@ -238,62 +238,51 @@ class GP_COC:
         ss(60*s)
         self.LaunchCOC()
 
-    def _subrun(self):
-        while True:
-            self.reset_gamescreen()
-
-            if self._mode == 'gp':
-                continue
-
-            elif self._mode == 'a':
-                #资源收集
-                self.collect()
-                #捐兵
-                self.donate()
-                #造兵
-                self.AddTroops()
-
-                self.OutForSleep()
-
-            elif self._mode == 'f':
-                #资源收集
-                self.collect()
-                #造兵检测
-                
-                #捐兵检测
-                self.donate()
-
-                #出兵检测
-                
-                #升级检测
-                
-                #夜世界
-                
-                #夜世界升级检测
-                
-                #夜世界出兵
-
     def run(self):
         if self._DEBUG:
             self.donate()
             CV.Save(self.d)
             #self.donate3("随意")
             return
-
-        if self._app == 'com.supercell.clashofclans.guopan':
+        while True:
             try:
-                #threading.Thread(target= self.GPEG ).start()
-                pass
+                if self._app == 'com.supercell.clashofclans.guopan':
+                    self.GPEG()
+                #self.reset_gamescreen()
+
+                if self._mode == 'gp':
+                    continue
+
+                elif self._mode == 'a':
+                    #资源收集
+                    self.collect()
+                    #捐兵
+                    self.donate()
+                    #造兵
+                    self.AddTroops()
+
+                    self.OutForSleep()
+
+                elif self._mode == 'f':
+                    #资源收集
+                    self.collect()
+                    #造兵检测
+                    
+                    #捐兵检测
+                    self.donate()
+
+                    #出兵检测
+                    
+                    #升级检测
+                    
+                    #夜世界
+                    
+                    #夜世界升级检测
+                    
+                    #夜世界出兵
             except:
                 print ("Error: 线程无法启动线程")
 
-        try:
-            #threading.Thread(target= self._subrun ).start()
-            pass
-        except:
-            print ("Error: 线程无法启动线程")
-
-        self._subrun()
         
                 
                 
