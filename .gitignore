@@ -130,3 +130,4 @@ dmypy.json
 *.html
 *.png
 Orc.py
+.DS_Store
