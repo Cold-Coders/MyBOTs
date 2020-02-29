@@ -1,10 +1,11 @@
 #!/usr/bin/python3
 import tkinter # note that module name has changed from Tkinter in Python 2 to tkinter in Python 3
-import json,os 
+import json,os,appscript
 from tkinter import *
 from tkinter import messagebox
 from util import *
 from COC.GUI_util import *
+
 
 class GUI:
 
@@ -176,8 +177,15 @@ class GUI:
 
 	def SelectDevices(self):
 		devices = self.util.find_emulator()
+		global Win
+		
 		if len(devices) == 1:
-			pass
+			pid = devices[0][2]
+			if Win: 
+				pass
+			else:#Mac Os
+				appscript.app(pid=pid).activate()
+			
 
 		elif len(devices) > 0:
 			def Sel_device(d):

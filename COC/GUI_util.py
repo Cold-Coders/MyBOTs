@@ -1,12 +1,28 @@
 #!/usr/bin/python3
 import tkinter
-import win32gui
 import psutil
 import os
 import signal
 import sys
 
 
+
+def get_platform():
+    platforms = {
+        'linux1' : 'Linux',
+        'linux2' : 'Linux',
+        'darwin' : 'OS X',
+        'win32' : 'Windows'
+    }
+    if sys.platform not in platforms:
+        return sys.platform
+    
+    return platforms[sys.platform]
+
+global Win
+Win = True if get_platform() == 'Windows' else False
+if Win:
+	import win32gui
 
 class Pre_GUI:
 	
@@ -25,7 +41,9 @@ class Pre_GUI:
 	def find_emulator():
 		devices = list()
 
-		Emulator = {'dnplayer.exe':'雷电模拟器'}
+		Emulator = {'dnplayer.exe':'雷电模拟器',
+					'NemuPlayer':'MacOs网易MuMu'
+					}
 		# show processes info
 		pids = psutil.pids()
 
@@ -33,10 +51,14 @@ class Pre_GUI:
 		    p = psutil.Process(pid)
 		    # get process name according to pid
 		    process_name = p.name()
-		    handle  = p.num_handles()
 		    if process_name in Emulator.keys():
-		    	print("Process name is: %s, pid is: %s, num of handles : %s" %(process_name, pid, handle))
-		    	devices.append((Emulator[process_name],process_name,pid,handle))
+		    	if Win:
+		    		handle  = p.num_handles()
+		    		print("Process name is: %s, pid is: %s, num of handles : %s" %(process_name, pid, handle))
+		    		devices.append((Emulator[process_name],process_name,pid,handle))
+		    	else:
+		    		print("Process name is: %s, pid is: %s" %(process_name, pid))
+		    		devices.append((Emulator[process_name],process_name,pid))
 
 		#out=os.system('netstat -aon|findstr "25"')#25端口号
 		#print(out)#输出进程
@@ -44,18 +66,6 @@ class Pre_GUI:
 		
 		return devices
 
-
-def get_platform():
-    platforms = {
-        'linux1' : 'Linux',
-        'linux2' : 'Linux',
-        'darwin' : 'OS X',
-        'win32' : 'Windows'
-    }
-    if sys.platform not in platforms:
-        return sys.platform
-    
-    return platforms[sys.platform]
     
 def Selection_Windows(title,L:list,width = '300'):
 	def close():
