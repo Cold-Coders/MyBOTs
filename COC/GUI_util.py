@@ -4,18 +4,9 @@ import win32gui
 import psutil
 import os
 import signal
+import sys
 
-def Selection_Windows(title,L:list,width = '300'):
-	def close():
-			window.destroy()
-			exit()
 
-	window = tkinter.Tk()
-	window.title(title)
-	window.geometry(width + "x" + str(len(L)*30))
-	window.resizable(width = False, height = False)
-	window.protocol("WM_DELETE_WINDOW", close)
-	return window
 
 class Pre_GUI:
 	
@@ -52,3 +43,28 @@ class Pre_GUI:
 		#out=os.system('tasklist|findstr "3316"')#3316进是程
 		
 		return devices
+
+
+def get_platform():
+    platforms = {
+        'linux1' : 'Linux',
+        'linux2' : 'Linux',
+        'darwin' : 'OS X',
+        'win32' : 'Windows'
+    }
+    if sys.platform not in platforms:
+        return sys.platform
+    
+    return platforms[sys.platform]
+    
+def Selection_Windows(title,L:list,width = '300'):
+	def close():
+			window.destroy()
+			exit()
+
+	window = tkinter.Tk()
+	window.title(title)
+	window.geometry(width + "x" + str(len(L)*30))
+	window.resizable(width = False, height = False)
+	window.protocol("WM_DELETE_WINDOW", close)
+	return window
