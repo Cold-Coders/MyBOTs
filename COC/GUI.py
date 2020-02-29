@@ -1,10 +1,12 @@
 #!/usr/bin/python3
 import tkinter # note that module name has changed from Tkinter in Python 2 to tkinter in Python 3
 import json,os
+from subprocess import call
 from tkinter import *
 from tkinter import messagebox
 from util import *
 from COC.GUI_util import *
+from COC.Bot import COC_BOT
 
 global Win
 if not Win:
@@ -39,13 +41,21 @@ class GUI:
 
 		self.SelectDevices()
 
+		#check the version of Uiautomator2
+		call('pip install -U uiautomator2')
+
+		#----------------------Connect-----------------------------------------
+		
+		#self.d is the Devices that we want to connect
+		print("device:",self.d)
+		bot = COC_BOT(device = self.d)
+
 		#-------------------Basic Windows--------------------------------------
 		self.window = tkinter.Tk()
 		self.window.title("My CoC Bots")
 		self.window.resizable(width = False, height = False)
 		self.window.geometry("600x600")
-		
-		
+
 		#-------------------Set widgets up----------------------------------
 		self.SetUpMenu()
 		self.func_button()
@@ -179,25 +189,38 @@ class GUI:
 		self.window.mainloop()
 
 	def SelectDevices(self):
-		devices = self.util.find_emulator()
 
-		if len(devices) == 1:
+		def Sel_device(d):
+				self.window.destroy()
+				if type(d) is list:
+					self.d = d[3]
+					self.em = d[2]
+				else:
+					self.d = d
+
+		devices = self.util.find_emulator()
+		#found a real Android device
+		if len(devices) > 0 and type(devices[0]) is str:
+			self.window = Selection_Windows(self.lang['s_dev'],devices)
+			for d in devices: 
+				btn = Button(self.window, text = d,anchor = W,width = 90,
+					command = lambda d=d:Sel_device(d)).pack()
+			self.window.mainloop()
+
+		#only one emulator
+		elif len(devices) == 1:
 			pid = devices[0][2]
 			if Win: 
 				pass
-			else:#Mac Os
+			else:#Mac OS
 				appscript.app(pid=pid).activate()
 			
-
-		elif len(devices) > 0:
-			def Sel_device(d):
-				self.window.destroy()
-				self.d = d
-
+		elif len(devices) > 1:
 			self.window = Selection_Windows(self.lang['s_dev'],devices)
 			count = 1
 			for d in devices: 
-				c = "{} {} pid:{} handle:{}".format(d[0] + str(count),d[1],d[2],d[3])
+				c = "{} {} pid/handle:{}".format(d[0] + str(count),d[1],d[2])
+				d.append("emulator-" + str(5554 + (count-1)*2))
 				btn = Button(self.window, text = c,anchor = W,width = 90,
 					command = lambda d=d:Sel_device(d)).pack()
 				count += 1

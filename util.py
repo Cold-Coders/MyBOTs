@@ -74,6 +74,10 @@ def prt(*args,title = "Debug",end = " "):
 		if type(args[i]) is dict:
 			print_d(args[i])
 
+		elif type(args[i]) is list:
+			for element in args[i]:
+				print(element,end = end)
+				
 		#变量前为False就是跳过不显示
 		elif type(args[i]) is bool:
 			if not args[i]:
