@@ -39,17 +39,29 @@ class GUI:
 		
 		self.util = Pre_GUI()
 
+		self.em = None
+		self.d = None
+
 		self.SelectDevices()
 
 		#check the version of Uiautomator2
-		call('pip install -U uiautomator2')
+		try:
+			call('pip install -U uiautomator2')
+			call('pip3 install -U uiautomator2')
+		except Exception as e:
+			pass
+		
 
 		#----------------------Connect-----------------------------------------
-		
+			
 		#self.d is the Devices that we want to connect
 		print("device:",self.d)
-		bot = COC_BOT(device = self.d)
+		if self.d != None:
+			bot = COC_BOT(device = self.d)
 
+		if not Win and self.em != None: #Mac OS activate emulator
+			appscript.app(pid=pid).activate()
+			
 		#-------------------Basic Windows--------------------------------------
 		self.window = tkinter.Tk()
 		self.window.title("My CoC Bots")
@@ -199,6 +211,9 @@ class GUI:
 					self.d = d
 
 		devices = self.util.find_emulator()
+
+		print(devices)
+
 		#found a real Android device
 		if len(devices) > 0 and type(devices[0]) is str:
 			self.window = Selection_Windows(self.lang['s_dev'],devices)
@@ -209,11 +224,8 @@ class GUI:
 
 		#only one emulator
 		elif len(devices) == 1:
-			pid = devices[0][2]
-			if Win: 
-				pass
-			else:#Mac OS
-				appscript.app(pid=pid).activate()
+			Sel_device(devices[0])
+
 			
 		elif len(devices) > 1:
 			self.window = Selection_Windows(self.lang['s_dev'],devices)

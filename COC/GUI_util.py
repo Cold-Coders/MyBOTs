@@ -45,8 +45,8 @@ class Pre_GUI:
 		#--------------------search real phone------------------------------------
 		devices_adb = subprocess.check_output('adb devices', shell=True)
 		devices_adb = devices_adb.decode("utf-8")
-		devices_adb2 = devices_adb.replace("List of devices attached","")
-		devices_adb = devices_adb2.strip().split()
+		devices_adb = devices_adb.replace("List of devices attached","")
+		devices_adb = devices_adb.strip().split()
 
 		devices2 = []
 		for i in range(0,len(devices_adb),2):
@@ -55,7 +55,8 @@ class Pre_GUI:
 
 		prt(devices2,end = '\n')
 		#--------------------search Emulator--------------------------------------
-		if "emulator" not in devices_adb2:
+		for d in devices_adb:
+			if "emulator" not in d:
 				return devices2
 
 		Emulator = {'dnplayer.exe':'雷电模拟器',
