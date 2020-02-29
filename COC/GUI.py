@@ -6,6 +6,9 @@ from tkinter import messagebox
 from util import *
 from COC.GUI_util import *
 
+global Win
+if not Win:
+	import appscript
 
 class GUI:
 
@@ -177,8 +180,7 @@ class GUI:
 
 	def SelectDevices(self):
 		devices = self.util.find_emulator()
-		global Win
-		
+
 		if len(devices) == 1:
 			pid = devices[0][2]
 			if Win: 
