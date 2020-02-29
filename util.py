@@ -1,12 +1,12 @@
 import time,json,os,sys,re
 
 def r_color(c1,c2,diff = 8):
-    if type(c1) is tuple and type(c2) is tuple :
-      return abs(c1[0] - c2[0]) <= diff and abs(c1[1] - c2[1])  <= diff and abs(c1[1] - c2[1]) <= diff
-    elif type(c1) is int and type(c2) is int:
-      return abs(c1 - c2) <= diff
-    elif len(c1) == 3 and len(c2) == 3:
-      return abs(c1[0] - c2[0]) <= diff and abs(c1[1] - c2[1])  <= diff and abs(c1[1] - c2[1]) <= diff
+	if type(c1) is tuple and type(c2) is tuple :
+	  return abs(c1[0] - c2[0]) <= diff and abs(c1[1] - c2[1])  <= diff and abs(c1[1] - c2[1]) <= diff
+	elif type(c1) is int and type(c2) is int:
+	  return abs(c1 - c2) <= diff
+	elif len(c1) == 3 and len(c2) == 3:
+	  return abs(c1[0] - c2[0]) <= diff and abs(c1[1] - c2[1])  <= diff and abs(c1[1] - c2[1]) <= diff
 
 def ss(*args,precent = 1):
 	if len(args) == 1 and args[0] > 0:
@@ -35,13 +35,17 @@ def ss(*args,precent = 1):
 	
 	
 
-def load_configure(file: str,resolution:str):
-    f=open(file,encoding='utf-8')
-    content=f.read()
-    res=json.loads(content)
-    prt(res[resolution])
-    return(res[resolution])
-    
+def load_configure(file: str,specific = ''):
+	f=open(file,encoding='utf-8')
+	content=f.read()
+	res=json.loads(content)
+
+	if not specific == '': 
+		prt(res[specific])
+		return(res[specific])
+	else:
+		return res
+	
 def msg(*message):
 	s = ""
 	for m in message:
@@ -49,17 +53,17 @@ def msg(*message):
 	print("[%s]"%time.asctime(),s)
 
 def get_file_content(filePath):
-    with open(filePath, 'rb') as fp:
-        return fp.read()
+	with open(filePath, 'rb') as fp:
+		return fp.read()
 
 # print dict 
 def print_d(res,tab = ''):
-    for key in res.keys():
-    	if type(res[key]) is dict:
-    		print(key,":")
-    		print_d(res[key],'\t')
-    	else:
-        	print(tab,key,":",res[key])
+	for key in res.keys():
+		if type(res[key]) is dict:
+			print(key,":")
+			print_d(res[key],'\t')
+		else:
+			print(tab,key,":",res[key])
 
 def prt(*args,title = "Debug",end = " "):
 	print("\n"+ title + ">"*45 )
