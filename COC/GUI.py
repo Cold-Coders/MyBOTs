@@ -96,26 +96,26 @@ class GUI:
 				CheckVar5 = IntVar()
 				CheckVar6 = IntVar()
 				donate = Checkbutton(self.window, text = "自动捐兵",variable = CheckVar1, onvalue = 1,
-									 offvalue = 0, height = 2, width = 6)
+									 offvalue = 0, height = 2, width = 10)
 				donate.place(x = 325,y = 0)
 				auto_lose = Checkbutton(self.window, text = "自动掉杯",variable = CheckVar2, onvalue = 1,
-									 offvalue = 0, height = 2, width = 6)
+									 offvalue = 0, height = 2, width = 10)
 				auto_lose.place(x = 325,y = 30)
 				auto_attack = Checkbutton(self.window, text = "自动打鱼",variable = CheckVar3, onvalue = 1,
-									 offvalue = 0, height = 2, width = 6)
+									 offvalue = 0, height = 2, width = 10)
 				auto_attack.place(x = 325,y = 60)
 				extra_func1 = Checkbutton(self.window, text = "更多功能1",variable = CheckVar4, onvalue = 1,
-									 offvalue = 0, height = 2, width = 7)
+									 offvalue = 0, height = 2, width = 10)
 				extra_func1.place(x = 325,y = 90)
 				extra_func2 = Checkbutton(self.window, text = "更多功能2",variable = CheckVar5, onvalue = 1,
-									 offvalue = 0, height = 2, width = 7)
+									 offvalue = 0, height = 2, width = 10)
 				extra_func2.place(x = 325,y = 120)
 				extra_func3 = Checkbutton(self.window, text = "更多功能3",variable = CheckVar6, onvalue = 1,
-									 offvalue = 0, height = 2, width = 7)
+									 offvalue = 0, height = 2, width = 10)
 				extra_func3.place(x = 325,y = 150)
 
 	def logs_area(self):
-			   w = Label(self.window, height = 50, width =42,fg = "white", bg = "black",
+			   w = Label(self.window, height = 50, width =33,fg = "white", bg = "black",
 			   	anchor = "nw",text = self.lang['log']+":" )
 			   w.place(x = 0,y = 0)
 			   
