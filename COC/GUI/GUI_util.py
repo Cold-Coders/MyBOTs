@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-import tkinter
+import tkinter as tk
 import psutil
 import os
 import signal
@@ -26,8 +26,44 @@ if Win:
 	import win32gui
 
 
-class Pre_GUI:
-	
+class GUI_Tools:
+
+	@staticmethod
+	def set_close(root):
+		def close():
+			root.destroy()
+			exit()
+		root.protocol("WM_DELETE_WINDOW", close)
+
+	@staticmethod
+	def clr(root):
+		for widget in root.winfo_children():
+			widget.destroy()
+
+	@staticmethod
+	def selection(window:tk.Frame, title , L ,width = '300'):
+		
+		if type(width) is int:
+			width = str(width)
+
+		GUI_Tools.clr(window)
+		window.title(title)
+		window.geometry(width + "x" + str(len(L)*30))
+		window.resizable(width = False, height = False)
+		GUI_Tools.set_close(window)
+
+		btns = list()
+		if type(L) is dict:
+			L = L.keys()
+
+		for e in L:
+			btn = tk.Button(window, text = e ,anchor = "ne" ,width = 90)
+			btns.append(btn)
+			btn.pack()
+
+		return btns
+
+
 	@staticmethod
 	def get_window_info():  # 获取阴阳师窗口信息
 		wdname = u'雷电模拟器'
@@ -38,63 +74,24 @@ class Pre_GUI:
 			return None
 		else:
 			return win32gui.GetWindowRect(handle)
-	
+
 	@staticmethod
-	def find_emulator():
-		devices = list()
-		#--------------------search real phone------------------------------------
+	def devices(r = False):
+		if r:
+			os.system('adb kill-server && adb start-server')
 		devices_adb = subprocess.check_output('adb devices', shell=True)
 		devices_adb = devices_adb.decode("utf-8")
 		devices_adb = devices_adb.replace("List of devices attached","")
 		devices_adb = devices_adb.strip().split()
 
-		devices2 = []
-		for i in range(0,len(devices_adb),2):
-			if devices_adb[i + 1] != "offline":
-				devices2.append(devices_adb[i])
-
-		prt(devices2,end = '\n')
-		#--------------------search Emulator--------------------------------------
-		for d in devices_adb:
-			if "emulator" not in d:
-				return devices2
-
-		Emulator = {'dnplayer.exe':'雷电模拟器',
-					'NemuPlayer':'MacOs网易MuMu'
-					}
-		# show processes info
-		pids = psutil.pids()
-
-		for pid in pids:
-			try:
-				p = psutil.Process(pid)# get process name according to pid
-				process_name = p.name()
-				if process_name in Emulator.keys():
-					if Win:
-						handle  = p.num_handles()
-						print("Process name is: %s, pid is: %s, num of handles : %s" %(process_name, pid, handle))
-						devices.append([Emulator[process_name],process_name,handle])
-					else:
-						print("Process name is: %s, pid is: %s" %(process_name, pid))
-						devices.append([Emulator[process_name],process_name,pid])
-
-			except Exception as e:
-				pass
 		#port=os.system('netstat -aon|findstr "555"')#25端口号
-		#print(out)#输出进程
 		#out=os.system('tasklist|findstr "3316"')#3316进是程
 		
+		devices = list()
+		for i in range(0,len(devices_adb),2):
+			if devices_adb[i + 1] != "offline":
+				devices.append( devices_adb[i] )
+
 		return devices
-
 	
-def Selection_Windows(title,L:list,width = '300'):
-	def close():
-			window.destroy()
-			exit()
-
-	window = tkinter.Tk()
-	window.title(title)
-	window.geometry(width + "x" + str(len(L)*30))
-	window.resizable(width = False, height = False)
-	window.protocol("WM_DELETE_WINDOW", close)
-	return window
+	

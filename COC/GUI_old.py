@@ -1,20 +1,29 @@
 #!/usr/bin/python3
-import tkinter # note that module name has changed from Tkinter in Python 2 to tkinter in Python 3
-import json,os
+import tkinter as tk # note that module name has changed from Tkinter in Python 2 to tkinter in Python 3
+import json,os,time
+import threading
+import logging
+import tkinter.scrolledtext as ScrolledText
+
 from subprocess import call
 from tkinter import *
 from tkinter import messagebox
 from util import *
-from COC.GUI_util import *
+
+from COC.GUI.GUI_util import *
+from COC.GUI.GUI_logs import *
+
 from COC.Bot import COC_BOT
 
 global Win
 if not Win:
 	import appscript
 
-class GUI:
+class GUI(tk.Frame):
 
 	def __init__(self):
+		self.window = None
+
 		#------------------Loading config------------------------------
 		try:
 			self.config = load_configure("COC/config/config.json")
@@ -37,8 +46,6 @@ class GUI:
 
 		#-------------------Selecting Emulator---------------------------------
 		
-		self.util = Pre_GUI()
-
 		self.em = None
 		self.d = None
 
@@ -63,11 +70,11 @@ class GUI:
 			appscript.app(pid=pid).activate()
 			
 		#-------------------Basic Windows--------------------------------------
-		self.window = tkinter.Tk()
+		self.window = tk.Tk()
 		self.window.title("My CoC Bots")
 		self.window.resizable(width = False, height = False)
 		self.window.geometry("600x600")
-
+		self.window.option_add('*tearOff', 'FALSE')
 		#-------------------Set widgets up----------------------------------
 		self.SetUpMenu()
 		self.func_button()
@@ -138,8 +145,30 @@ class GUI:
 
 	def logs_area(self):
 			   w = Label(self.window, height = 50, width =33,fg = "white", bg = "black",
-			   	anchor = "nw",text = self.lang['log']+":" )
+				anchor = "nw",text = self.lang['log']+":" )
 			   w.place(x = 0,y = 0)
+
+			   self.grid(column=0, row=0, sticky='ew')
+			   self.grid_columnconfigure(0, weight=1, uniform='a')
+			   self.grid_columnconfigure(1, weight=1, uniform='a')
+			   self.grid_columnconfigure(2, weight=1, uniform='a')
+			   self.grid_columnconfigure(3, weight=1, uniform='a')
+			   # Add text widget to display logging info
+			   st = ScrolledText.ScrolledText(self, state='disabled')
+			   st.configure(font='TkFixedFont')
+			   st.grid(column=0, row=1, sticky='w', columnspan=4)
+
+			   # Create textLogger
+			   text_handler = TextHandler(st)
+
+			   # Logging configuration
+			   logging.basicConfig(filename='test.log',
+					level=logging.INFO, 
+					format='%(asctime)s - %(levelname)s - %(message)s')        
+
+			   # Add the handler to logger
+			   logger = logging.getLogger()        
+			   logger.addHandler(text_handler)
 			   
 			   
 
@@ -179,7 +208,10 @@ class GUI:
 				json.dump(self.config, outfile, ensure_ascii=False, indent=4, sort_keys=True)
 
 	def start(self):
+		t1 = threading.Thread(target=worker, args=[])
+		t1.start()
 		self.window.mainloop()
+		t1.join()
 
 
 	def select_language(self): 
@@ -203,10 +235,12 @@ class GUI:
 	def SelectDevices(self):
 
 		def Sel_device(d):
-				self.window.destroy()
+				if self.window != None:
+					self.window.destroy()
+
 				if type(d) is list:
-					self.d = d[3]
-					self.em = d[2]
+					self.d = d[2]
+					self.em = d[1]
 				else:
 					self.d = d
 

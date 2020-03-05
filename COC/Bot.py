@@ -2,7 +2,7 @@ import uiautomator2 as u2
 import threading
 from util import *
 from Constant import *
-from COC.Others import *
+from COC.Func.Others import *
 
 
 

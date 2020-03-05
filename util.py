@@ -66,7 +66,7 @@ def print_d(res,tab = ''):
 			print(tab,key,":",res[key])
 
 def prt(*args,title = "Debug",end = " "):
-	print("\n"+ title + ">"*45 )
+	print("\n"+ title + ">"*65 )
 	skip = False
 	for i in range(len(args)):
 		#print(type(args[i]))
@@ -90,6 +90,6 @@ def prt(*args,title = "Debug",end = " "):
 			print(args[i],end = end)
 
 		print()
-	print("<"*50)
+	print("<"*(len(title) + 65))
 	print()
 
