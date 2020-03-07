@@ -80,8 +80,8 @@ class GUI_Tools:
 		restart = 'adb kill-server && adb start-server'
 		get_devices = 'adb devices'
 		if Win:
-			restart = restart.replace("adb","adb/adb.exe")
-			get_devices = get_devices.replace("adb","adb/adb.exe")
+			restart = restart.replace("adb","adb\\adb")
+			get_devices = get_devices.replace("adb","adb\\adb")
 		if r:
 			os.system(restart)
 		devices_adb = subprocess.check_output(get_devices, shell=True)
