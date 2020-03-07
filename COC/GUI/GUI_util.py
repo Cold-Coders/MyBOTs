@@ -77,9 +77,14 @@ class GUI_Tools:
 
 	@staticmethod
 	def devices(r = False):
+		restart = 'adb kill-server && adb start-server'
+		get_devices = 'adb devices'
+		if Win:
+			restart = restart.replace("adb","adb/adb.exe")
+			get_devices = get_devices.replace("adb","adb/adb.exe")
 		if r:
-			os.system('adb kill-server && adb start-server')
-		devices_adb = subprocess.check_output('adb devices', shell=True)
+			os.system(restart)
+		devices_adb = subprocess.check_output(get_devices, shell=True)
 		devices_adb = devices_adb.decode("utf-8")
 		devices_adb = devices_adb.replace("List of devices attached","")
 		devices_adb = devices_adb.strip().split()
