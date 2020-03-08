@@ -198,7 +198,7 @@ class COC_GUI(tk.Frame):
 		button3.configure(width = 8, activebackground = "red", relief = FLAT)
 		button3_window = canva.create_window(35, 140, anchor=NW, window=button3)
 
-		# one = tkinter.PhotoImage(file = r'lab.webp')
+		# one = tkinter.PhotoImage(file = r'\Users\User\Documents\Github\COC-BOT\lab.wepb')
 		# canva.create_image(200,200, image = one)
 
 	def information_show(self):
