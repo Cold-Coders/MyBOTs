@@ -2,6 +2,8 @@
 import tkinter as tk # note that module name has changed from Tkinter in Python 2 to tkinter in Python 3
 import json,os,time,threading,logging
 import tkinter.scrolledtext as ScrolledText
+import tkinter.font
+
 
 from subprocess import call
 from tkinter import *
@@ -35,24 +37,28 @@ class COC_GUI(tk.Frame):
 		self.window = tk.Tk()
 		tk.Frame.__init__(self, self.window, *args, **kwargs)
 		self.build_gui()
+		self.test_area()
+		self.information_show()
 
 
 	def build_gui(self):                    
 		# Build GUI
 		self.window.title("My CoC Bots")
 		self.window.resizable(width = False, height = False)
-		self.window.geometry("900x600") #wxh
+		self.window.geometry("800x800") #wxh
 		self.window.option_add('*tearOff', 'FALSE')
 		self.grid(column=0, row=0, sticky='ew')
-		self.grid_columnconfigure(0, weight=1, uniform='a')
-		self.grid_columnconfigure(1, weight=1, uniform='a')
-		self.grid_columnconfigure(2, weight=1, uniform='a')
-		self.grid_columnconfigure(3, weight=1, uniform='a')
+		# self.grid_columnconfigure(0, weight=1, uniform='a')
+		# self.grid_columnconfigure(1, weight=1, uniform='a')
+		# self.grid_columnconfigure(2, weight=1, uniform='a')
+		# self.grid_columnconfigure(3, weight=1, uniform='a')
+		
+		
 
 		# Add text widget to display logging info
-		st = ScrolledText.ScrolledText(self, state='disabled')
+		st = ScrolledText.ScrolledText(self, state='disabled',width = 50, height = 25,bg = "black", fg = "white")
 		st.configure(font='TkFixedFont')
-		st.grid(column=0, row=1, sticky='w', columnspan=4)
+		st.grid(column=0, row=0, sticky='w')
 
 		# Create textLogger
 		text_handler = TextHandler(st)
@@ -65,6 +71,7 @@ class COC_GUI(tk.Frame):
 		# Add the handler to logger
 		logger = logging.getLogger()        
 		logger.addHandler(text_handler)
+		self.set_buttons()
 	
 	def start(self):
 		t1 = threading.Thread(target=worker, args=[])
@@ -148,4 +155,59 @@ class COC_GUI(tk.Frame):
 	def save_config(self):
 		with open('COC/config/config.json', 'w',encoding='utf-8') as outfile:
 				json.dump(self.config, outfile, ensure_ascii=False, indent=4, sort_keys=True)
+
+	def set_buttons(self):
+		CheckVar1 = IntVar()
+		CheckVar2 = IntVar()
+		CheckVar3 = IntVar()
+		CheckVar4 = IntVar()
+		CheckVar5 = IntVar()
+		CheckVar6 = IntVar()
+		donate = Checkbutton( text = "自动捐兵",variable = CheckVar1, onvalue = 1,
+							 offvalue = 0, height = 1, width = 10)
+		donate.place(x = 500, y = 30)
+		auto_lose = Checkbutton( text = "自动掉杯",variable = CheckVar2, onvalue = 1,
+							 offvalue = 0, height = 1, width = 10)
+		auto_lose.place(x = 500, y = 60)
+		auto_attack = Checkbutton( text = "自动打鱼",variable = CheckVar3, onvalue = 1,
+							 offvalue = 0, height = 1, width = 10)
+		auto_attack.place(x = 500, y = 90)
+		extra_func1 = Checkbutton( text = "更多功能1",variable = CheckVar4, onvalue = 1,
+							 offvalue = 0, height = 1, width = 10)
+		extra_func1.place(x = 500, y = 120)
+		extra_func2 = Checkbutton( text = "更多功能2",variable = CheckVar5, onvalue = 1,
+							 offvalue = 0, height = 1, width = 10)
+		extra_func2.place(x = 500, y = 150)
+		extra_func3 = Checkbutton(text = "更多功能3",variable = CheckVar6, onvalue = 1,
+							 offvalue = 0, height = 1, width = 10)
+		extra_func3.place(x = 500, y = 180)
 	
+	def test_area(self):
+		canva = Canvas(self.window,width=400,height=400,bg = "cyan")
+		canva.place(x = 0,y = 400)
+		canva.create_text(75,30,text = "测试区", fill="darkblue",font="Times 20 italic bold")
+		button1 = Button(self.window, text = "缩放", anchor = W, highlightcolor = "red")
+		button1.configure(width = 5, activebackground = "red", relief = FLAT)
+		button1_window = canva.create_window(35, 60, anchor=NW, window=button1)
+			   
+		button2 = Button(self.window, text = "收集资源", anchor = W)
+		button2.configure(width = 8, activebackground = "red", relief = FLAT)
+		button2_window = canva.create_window(35, 100, anchor=NW, window=button2)
+
+		button3 = Button(self.window, text = "捐兵测试", anchor = W)
+		button3.configure(width = 8, activebackground = "red", relief = FLAT)
+		button3_window = canva.create_window(35, 140, anchor=NW, window=button3)
+
+		# one = tkinter.PhotoImage(file = r'lab.webp')
+		# canva.create_image(200,200, image = one)
+
+	def information_show(self):
+		canva = Canvas(self.window,width=400,height=400,bg = "white")
+		canva.place(x = 400,y = 400)
+		canva.create_text(150,15,text = "游戏状态")
+		canva.create_text(50,50,text = "金钱：",fill = "brown")
+		canva.create_text(50,70,text = "红水：", fill = "red")
+		canva.create_text(50,90,text = "黑水：")
+		canva.create_text(73,140,text = "累计掠夺金币：", fill = "brown")
+		canva.create_text(73,160,text = "累计掠夺红水：", fill = "red")
+		canva.create_text(73,180,text = "累计掠夺黑水：")
