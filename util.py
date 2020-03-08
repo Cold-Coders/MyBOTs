@@ -66,7 +66,7 @@ def print_d(res,tab = ''):
 			print(tab,key,":",res[key])
 
 def prt(*args,title = "Debug",end = " "):
-	print("\n"+ title + ">"*45 )
+	print("\n"+ title + ">"*65 )
 	skip = False
 	for i in range(len(args)):
 		#print(type(args[i]))
@@ -74,6 +74,10 @@ def prt(*args,title = "Debug",end = " "):
 		if type(args[i]) is dict:
 			print_d(args[i])
 
+		elif type(args[i]) is list:
+			for element in args[i]:
+				print(element,end = end)
+				
 		#变量前为False就是跳过不显示
 		elif type(args[i]) is bool:
 			if not args[i]:
@@ -86,6 +90,6 @@ def prt(*args,title = "Debug",end = " "):
 			print(args[i],end = end)
 
 		print()
-	print("<"*50)
+	print("<"*(len(title) + 65))
 	print()
 

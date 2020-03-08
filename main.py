@@ -1,12 +1,12 @@
 import os, time, json, unittest
 from HtmlTestRunner import HTMLTestRunner
 from COC.Bot import COC_BOT
-from COC.Donation import *
-from COC.Harvest import *
-from COC.Lrank import *
-from COC.Ngtworld import *
-from COC.Scenario import *
-from COC.Upgrade import *
+from COC.Func.Donation import *
+from COC.Func.Harvest import *
+from COC.Func.Lrank import *
+from COC.Func.Ngtworld import *
+from COC.Func.Scenario import *
+from COC.Func.Upgrade import *
 
 '''
 test_dir = './COC'
