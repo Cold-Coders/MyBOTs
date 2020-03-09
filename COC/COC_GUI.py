@@ -206,8 +206,8 @@ class COC_GUI(tk.Frame):
 		# image = open('COC\gui_image\icon.jpg')
 		# img = PIL.Image.open(image)
 		# canva.create_image(200,200, image = img)
-		self.img2 = tk.PhotoImage(file= "COC/gui_image/elixir.png")
-		canva.create_image(300,300,image=self.img2,anchor =NW)
+		self.img1 = tk.PhotoImage(file= "COC/gui_image/elixir.png")
+		canva.create_image(10,10,image=self.img1,anchor =NW)
 
 	def information_show(self):
 		canva = Canvas(self.window,width=400,height=400,bg = "white")
@@ -219,6 +219,6 @@ class COC_GUI(tk.Frame):
 		canva.create_text(73,140,text = "累计掠夺金币：", fill = "brown")
 		canva.create_text(73,160,text = "累计掠夺红水：", fill = "red")
 		canva.create_text(73,180,text = "累计掠夺黑水：")		
-		self.img = tk.PhotoImage(file= "COC/gui_image/elixir.png")
-		canva.create_image(20,20,image=self.img,anchor =NW)
+		self.img2 = tk.PhotoImage(file= "COC/gui_image/elixir.png")
+		canva.create_image(20,20,image=self.img2,anchor =NW)
 
