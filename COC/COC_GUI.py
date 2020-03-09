@@ -28,41 +28,118 @@ if not Win:
 class COC_GUI(tk.Frame):
 	# This class defines the graphical user interface 
 	def __init__(self, *args, **kwargs):
+		''' Variables
+		self.config - type(dict) configure of Bot 				
+			.config['lang'] - language of GUI
+		self.lang   - type(dict) configure of language
+		self.em 	- type(int) Emulator's pid
+		self.d 		- type(str) Device's name before connect
+					- type(obj) Device's automator engine after connected
+		self.func   - type(List) Functionality of the bots 
+		self.lang['func_name'] - type(List) name of Function #在语言配置里增加减少修改
+					0 - 自动捐赠
+					1 - 自动降杯
+					2 - 自动打鱼
+
+		self.lang['test_name'] - type(List) name of Function #在语言配置里
+		self.test_button	   - type(List) button of test function
+					0 - 缩放
+					1 - 收集资源
+					2 - 捐兵测试
+		self.lang['info_name'] - type(List) name of Information board
+					0 - "金钱"
+					1 - "红水"
+					2 - "黑水"
+					3 - "累计掠夺金币"
+					4 - "累计掠夺红水"
+					5 - "累计掠夺黑水"
+		'''
+
 		#------------------Loading config------------------------------
 		self.loading_config()	
 		self.loading_languages()
 		self.selecting_emulator()
 		self.connect_device()  
 		#-------------------Basic Windows--------------------------------------
-
-		
 		self.window = tk.Tk()
 		tk.Frame.__init__(self, self.window, *args, **kwargs)
-		self.build_gui()
-		self.test_area()
-		self.information_show()
-
-
-	def build_gui(self):                    
-		# Build GUI
 		self.window.title("My CoC Bots")
 		self.window.resizable(width = False, height = False) 
 		self.window.geometry("800x800") #wxh
 		self.window.option_add('*tearOff', 'FALSE')
 		self.grid(column=0, row=0, sticky='ew')
-		# self.grid_columnconfigure(0, weight=1, uniform='a')
-		# self.grid_columnconfigure(1, weight=1, uniform='a')
-		# self.grid_columnconfigure(2, weight=1, uniform='a')
-		# self.grid_columnconfigure(3, weight=1, uniform='a')
-		text = tk.Text(self.window, height = 3, width = 29 ,fg = "white", bg = "black", font="Times 20 italic bold")
+
+		self.loging_board()
+		self.set_function()
+		self.test_area()
+		self.information_show()
+	
+	def start(self):
+		t1 = threading.Thread(target=worker, args=[])
+		t1.daemon = True
+		t1.start()
+		self.window.mainloop()
+
+
+	def set_function(self):
+		self.func = list()
+
+		for i in range(len(self.lang['func_name'])):
+			self.func.append(BooleanVar())
+			donate = Checkbutton( text = self.lang['func_name'][i],variable = self.func[i],
+			 					offvalue = 0, height = 1, width = 10)
+			donate.place(x = 500, y = 430 + i*30)
+
+	
+	def test_area(self):
+		canvas = Canvas(self.window,width=400,height=400,bg = "cyan")
+		canvas.place(x = 0,y = 400)
+		canvas.create_text(75,30,text = self.lang['log'], fill="darkblue",font="Times 20 italic bold")
+		
+		#------------------------background-----------------------------------------------
+		self.img1 = tk.PhotoImage(file= "COC/res/elixir.png")
+		bg = canvas.create_image(10,10,image=self.img1,anchor =NW)
+
+		#------------------------test button saved in text_button-------------------------
+		self.test_button = list()
+
+		for i in range(len(self.lang['test_name'])):
+			btn = Button(self.window, text = self.lang['test_name'][i],
+						anchor = "center" , highlightcolor = "red")
+			btn.configure(width = 14, activebackground = "red", relief = FLAT)
+			canvas.create_window(35, 60 + i*40, anchor= NW , window=btn)
+			self.test_button.append(btn)
+		
+		canvas.tag_lower(bg)
+
+	def information_show(self):
+		canva = Canvas(self.window,width=400,height=400,bg = "white")
+		canva.place(x = 400,y = 0)
+		#------------------------background-----------------------------------------------
+		self.img2 = tk.PhotoImage(file= "COC/res/elixir.png")
+		canva.create_image(20,20,image=self.img2,anchor =NW)
+
+		#------------------------Information Board-------------------------
+		canva.create_text(150,15,text = "游戏状态")
+		fill_color = [
+					  "brown",
+					  "red",
+					  "black"
+					 ]
+		for i in range(len(self.lang['info_name'])):
+			canva.create_text(50,50 + 20*i,text = self.lang['info_name'][i],fill = fill_color[i%len(fill_color)])
+		
+
+	def loging_board(self):                    
+		# Build GUI
+		text = tk.Text(self.window, height = 1, width = 29 ,fg = "white", bg = "black", font="Times 20 italic bold")
 		text.insert(INSERT,"Log")
 		text.place(x = 0,y = 0)
 		
-
 		# Add text widget to display logging info
-		st = ScrolledText.ScrolledText(self.window, state='disabled', width = 50, height = 22, bg = "black", fg = "white")
+		st = ScrolledText.ScrolledText(self.window, state='disabled', width = 55, height = 35, bg = "black", fg = "white")
 		st.configure(font='TkFixedFont')
-		st.place(x = 0, y = 48)
+		st.place(x = 0, y = 35)
 
 		# Create textLogger
 		text_handler = TextHandler(st)
@@ -75,14 +152,7 @@ class COC_GUI(tk.Frame):
 		# Add the handler to logger
 		logger = logging.getLogger()        
 		logger.addHandler(text_handler)
-		self.set_buttons()
-
-	
-	def start(self):
-		t1 = threading.Thread(target=worker, args=[])
-		t1.daemon = True
-		t1.start()
-		self.window.mainloop()
+		
 
 
 	#uiautomator connect to a device
@@ -108,10 +178,6 @@ class COC_GUI(tk.Frame):
 		#choose from all devices
 		Emulator(devices,self).start()
 		
-
-
-
-
 	# selecting a language
 	def select_language(self):
 		langs = {
@@ -160,65 +226,3 @@ class COC_GUI(tk.Frame):
 	def save_config(self):
 		with open('COC/config/config.json', 'w',encoding='utf-8') as outfile:
 				json.dump(self.config, outfile, ensure_ascii=False, indent=4, sort_keys=True)
-
-	def set_buttons(self):
-		CheckVar1 = IntVar()
-		CheckVar2 = IntVar()
-		CheckVar3 = IntVar()
-		CheckVar4 = IntVar()
-		CheckVar5 = IntVar()
-		CheckVar6 = IntVar()
-		donate = Checkbutton( text = "自动捐兵",variable = CheckVar1, onvalue = 1,
-							 offvalue = 0, height = 1, width = 10)
-		donate.place(x = 500, y = 430)
-		auto_lose = Checkbutton( text = "自动掉杯",variable = CheckVar2, onvalue = 1,
-							 offvalue = 0, height = 1, width = 10)
-		auto_lose.place(x = 500, y = 460)
-		auto_attack = Checkbutton( text = "自动打鱼",variable = CheckVar3, onvalue = 1,
-							 offvalue = 0, height = 1, width = 10)
-		auto_attack.place(x = 500, y = 490)
-		extra_func1 = Checkbutton( text = "更多功能1",variable = CheckVar4, onvalue = 1,
-							 offvalue = 0, height = 1, width = 10)
-		extra_func1.place(x = 500, y = 520)
-		extra_func2 = Checkbutton( text = "更多功能2",variable = CheckVar5, onvalue = 1,
-							 offvalue = 0, height = 1, width = 10)
-		extra_func2.place(x = 500, y = 550)
-		extra_func3 = Checkbutton(text = "更多功能3",variable = CheckVar6, onvalue = 1,
-							 offvalue = 0, height = 1, width = 10)
-		extra_func3.place(x = 500, y = 580)
-	
-	def test_area(self):
-		canva = Canvas(self.window,width=400,height=400,bg = "cyan")
-		canva.place(x = 0,y = 400)
-		canva.create_text(75,30,text = "测试区", fill="darkblue",font="Times 20 italic bold")
-		button1 = Button(self.window, text = "缩放", anchor = W, highlightcolor = "red")
-		button1.configure(width = 5, activebackground = "red", relief = FLAT)
-		button1_window = canva.create_window(35, 60, anchor=NW, window=button1)
-			   
-		button2 = Button(self.window, text = "收集资源", anchor = W)
-		button2.configure(width = 8, activebackground = "red", relief = FLAT)
-		button2_window = canva.create_window(35, 100, anchor=NW, window=button2)
-
-		button3 = Button(self.window, text = "捐兵测试", anchor = W)
-		button3.configure(width = 8, activebackground = "red", relief = FLAT)
-		button3_window = canva.create_window(35, 140, anchor=NW, window=button3)
-
-		# image = open('COC\gui_image\icon.jpg')
-		# img = PIL.Image.open(image)
-		# canva.create_image(200,200, image = img)
-		self.img1 = tk.PhotoImage(file= "COC/gui_image/elixir.png")
-		canva.create_image(10,10,image=self.img1,anchor =NW)
-
-	def information_show(self):
-		canva = Canvas(self.window,width=400,height=400,bg = "white")
-		canva.place(x = 400,y = 0)
-		canva.create_text(150,15,text = "游戏状态")
-		canva.create_text(50,50,text = "金钱：",fill = "brown")
-		canva.create_text(50,70,text = "红水：", fill = "red")
-		canva.create_text(50,90,text = "黑水：")
-		canva.create_text(73,140,text = "累计掠夺金币：", fill = "brown")
-		canva.create_text(73,160,text = "累计掠夺红水：", fill = "red")
-		canva.create_text(73,180,text = "累计掠夺黑水：")		
-		self.img2 = tk.PhotoImage(file= "COC/gui_image/elixir.png")
-		canva.create_image(20,20,image=self.img2,anchor =NW)
-
