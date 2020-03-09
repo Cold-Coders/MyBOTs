@@ -1,5 +1,6 @@
 {
 	"log" : "Log",
+	"Test_Area":"Test Area",
 	"s_dev":"Select A Device",
 	"func_name":["Auto Donate",
 				"Lower Rank",

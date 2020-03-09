@@ -94,7 +94,7 @@ class COC_GUI(tk.Frame):
 	def test_area(self):
 		canvas = Canvas(self.window,width=400,height=400,bg = "cyan")
 		canvas.place(x = 0,y = 400)
-		canvas.create_text(75,30,text = self.lang['log'], fill="darkblue",font="Times 20 italic bold")
+		canvas.create_text(75,30,text = self.lang['Test_Area'], fill="darkblue",font="Times 20 italic bold")
 		
 		#------------------------background-----------------------------------------------
 		self.img1 = tk.PhotoImage(file= "COC/res/elixir.png")
@@ -133,7 +133,7 @@ class COC_GUI(tk.Frame):
 	def loging_board(self):                    
 		# Build GUI
 		text = tk.Text(self.window, height = 1, width = 29 ,fg = "white", bg = "black", font="Times 20 italic bold")
-		text.insert(INSERT,"Log")
+		text.insert(INSERT,self.lang['log'])
 		text.place(x = 0,y = 0)
 		
 		# Add text widget to display logging info
