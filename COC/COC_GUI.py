@@ -73,6 +73,13 @@ class COC_GUI(tk.Frame):
 		self.set_function()
 		self.test_area()
 		self.information_show()
+		self.place_image("COC/res/dragon.png",550,300)
+
+	def place_image(self,image,x,y):
+		self.img = tk.PhotoImage(file=image)
+		self.panel = tk.Label(self.window, image = self.img)
+		self.panel.place(x = x, y = y)
+
 	
 	def start(self):
 		t1 = threading.Thread(target=worker, args=[])
@@ -88,17 +95,17 @@ class COC_GUI(tk.Frame):
 			self.func.append(BooleanVar())
 			donate = Checkbutton( text = self.lang['func_name'][i],variable = self.func[i],
 			 					offvalue = 0, height = 1, width = 10)
-			donate.place(x = 500, y = 430 + i*30)
+			donate.place(x = 450, y = 330 + i*30)
 
 	
 	def test_area(self):
-		canvas = Canvas(self.window,width=400,height=400,bg = "cyan")
-		canvas.place(x = 0,y = 400)
+		canvas = Canvas(self.window,width=400,height=300,bg = "white")
+		canvas.place(x = 404,y = 500)
 		canvas.create_text(75,30,text = self.lang['Test_Area'], fill="darkblue",font="Times 20 italic bold")
 		
 		#------------------------background-----------------------------------------------
-		self.img1 = tk.PhotoImage(file= "COC/res/elixir.png")
-		bg = canvas.create_image(10,10,image=self.img1,anchor =NW)
+		self.img1 = tk.PhotoImage(file= "COC/res/COC_logo.png")
+		bg = canvas.create_image(230,220,image=self.img1,anchor =NW)
 
 		#------------------------test button saved in text_button-------------------------
 		self.test_button = list()
@@ -113,8 +120,8 @@ class COC_GUI(tk.Frame):
 		canvas.tag_lower(bg)
 
 	def information_show(self):
-		canva = Canvas(self.window,width=400,height=400,bg = "white")
-		canva.place(x = 400,y = 0)
+		canva = Canvas(self.window,width=400,height=300,bg = "white")
+		canva.place(x = 404,y = 0)
 		#------------------------background-----------------------------------------------
 		# self.img2 = tk.PhotoImage(file= "COC/res/elixir.png")
 		# canva.create_image(20,20,image=self.img2,anchor =NW)
@@ -146,7 +153,7 @@ class COC_GUI(tk.Frame):
 		text.place(x = 0,y = 0)
 		
 		# Add text widget to display logging info
-		st = ScrolledText.ScrolledText(self.window, state='disabled', width = 55, height = 35, bg = "black", fg = "white")
+		st = ScrolledText.ScrolledText(self.window, state='disabled', width = 50, height = 50, bg = "black", fg = "white")
 		st.configure(font='TkFixedFont')
 		st.place(x = 0, y = 35)
 
