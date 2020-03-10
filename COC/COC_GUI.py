@@ -116,8 +116,8 @@ class COC_GUI(tk.Frame):
 		canva = Canvas(self.window,width=400,height=400,bg = "white")
 		canva.place(x = 400,y = 0)
 		#------------------------background-----------------------------------------------
-		self.img2 = tk.PhotoImage(file= "COC/res/elixir.png")
-		canva.create_image(20,20,image=self.img2,anchor =NW)
+		# self.img2 = tk.PhotoImage(file= "COC/res/elixir.png")
+		# canva.create_image(20,20,image=self.img2,anchor =NW)
 
 		#------------------------Information Board-------------------------
 		canva.create_text(150,15,text = "游戏状态")
@@ -126,8 +126,17 @@ class COC_GUI(tk.Frame):
 					  "red",
 					  "black"
 					 ]
+		self.list_pic = list()
 		for i in range(len(self.lang['info_name'])):
-			canva.create_text(50,50 + 20*i,text = self.lang['info_name'][i],fill = fill_color[i%len(fill_color)])
+			canva.create_text(130,50 + 40*i,text = self.lang['info_name'][i],fill = fill_color[i%len(fill_color)])
+			# self.source_image = lambda img = i:tk.PhotoImage(file = self.config['source_image'][img])
+			# self.source_image = lambda img = i:tk.PhotoImage(file = self.config['source_image'][i])
+			# # self.resized_source = self.source_image.subsample(5,5)
+			#canva.create_image(35,30 + 40*i , image = self.source_image, anchor = NW)
+			image = tk.PhotoImage(file = self.config['source_image'][i])
+			#puted = canva.create_image(40,30 + 40*i , image = image , anchor = NW)
+			self.list_pic.append(image)
+			canva.create_image(40,30 + 40 * i, image = self.list_pic[i], anchor = NW)
 		
 
 	def loging_board(self):                    
@@ -218,8 +227,8 @@ class COC_GUI(tk.Frame):
 		try:
 			self.config = load_configure("COC/config/config.json")
 		except Exception as e:
-			self.config = {}
-			self.save_config()
+			messagebox.showinfo("Error", "configure error")
+			exit()
 
 
 	#Saving the config into the file config.json
