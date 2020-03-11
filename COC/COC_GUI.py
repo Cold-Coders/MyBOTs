@@ -54,80 +54,72 @@ class COC_GUI(tk.Frame):
 					4 - "累计掠夺红水"
 					5 - "累计掠夺黑水"
 		'''
-
 		#------------------Loading config------------------------------
 		self.loading_config()	
 		self.loading_languages()
-		self.selecting_emulator()
-		self.connect_device()  
+		#self.selecting_emulator()
+		#self.connect_device()  
 		#-------------------Basic Windows--------------------------------------
 		self.window = tk.Tk()
 		tk.Frame.__init__(self, self.window, *args, **kwargs)
-		self.window.title("My CoC Bots")
-		self.window.resizable(width = False, height = False) 
-		self.window.geometry("800x800") #wxh
-		self.window.option_add('*tearOff', 'FALSE')
-		self.grid(column=0, row=0, sticky='ew')
+		self.build_basic_window()
+		self.build_left_part()
+		self.build_right_part()
 
-		self.loging_board()
-		self.set_function()
-		self.test_area()
-		self.information_show()
-		self.place_image("COC/res/dragon.png",550,300)
-
-	def place_image(self,image,x,y):
-		self.img = tk.PhotoImage(file=image)
-		self.panel = tk.Label(self.window, image = self.img)
-		self.panel.place(x = x, y = y)
-
-	
 	def start(self):
 		t1 = threading.Thread(target=worker, args=[])
 		t1.daemon = True
 		t1.start()
 		self.window.mainloop()
 
+	def build_right_part(self):
+		self.right_part = Canvas(self.window,bg = "white",width=400,height=800)
+		self.right_part.grid(row = 0, column = 1 ,rowspan = 2, sticky=N+S+E+W)
+		self.set_information()
+		self.set_function()
+		self.test_area()
 
-	def set_function(self):
-		self.func = list()
+		self.dragon = tk.PhotoImage(file = "COC/res/dragon.png")
+		self.right_part.create_image(150,300,image=self.dragon,anchor = NW)
+		#self.place_image("COC/res/dragon.png",150,300)
 
-		for i in range(len(self.lang['func_name'])):
-			self.func.append(BooleanVar())
-			donate = Checkbutton( text = self.lang['func_name'][i],variable = self.func[i],
-			 					offvalue = 0, height = 1, width = 10)
-			donate.place(x = 450, y = 330 + i*30)
+	def place_image(self,image,x,y):
+		self.img = tk.PhotoImage(file=image)
+		self.panel = tk.Label(self.window, image = self.img)
+		self.panel.place(x = x, y = y)
 
-	
+
 	def test_area(self):
-		canvas = Canvas(self.window,width=400,height=300,bg = "white")
-		canvas.place(x = 404,y = 500)
-		canvas.create_text(75,30,text = self.lang['Test_Area'], fill="darkblue",font="Times 20 italic bold")
-		
+		self.right_part.create_text(75,530,text = self.lang['Test_Area'], fill="darkblue",font="Times 20 italic bold")
 		#------------------------background-----------------------------------------------
-		self.img1 = tk.PhotoImage(file= "COC/res/COC_logo.png")
-		bg = canvas.create_image(230,220,image=self.img1,anchor =NW)
+		self.logo = tk.PhotoImage(file = "COC/res/COC_logo.png")
+		self.right_part.create_image(230,720,image=self.logo,anchor = NW)
 
 		#------------------------test button saved in text_button-------------------------
 		self.test_button = list()
 
 		for i in range(len(self.lang['test_name'])):
-			btn = Button(self.window, text = self.lang['test_name'][i],
+			btn = Button(self.right_part, text = self.lang['test_name'][i],
 						anchor = "center" , highlightcolor = "red")
 			btn.configure(width = 14, activebackground = "red", relief = FLAT)
-			canvas.create_window(35, 60 + i*40, anchor= NW , window=btn)
+			self.right_part.create_window(30, 560 + i*40, anchor= NW , window=btn)
 			self.test_button.append(btn)
 		
-		canvas.tag_lower(bg)
 
-	def information_show(self):
-		canva = Canvas(self.window,width=400,height=300,bg = "white")
-		canva.place(x = 404,y = 0)
+	def set_function(self):
+		self.func = list()
+		for i in range(len(self.lang['func_name'])):
+			self.func.append(BooleanVar())
+			donate = Checkbutton(self.right_part, text = self.lang['func_name'][i],
+				variable = self.func[i],bg="white", offvalue = 0, height = 1, width = 10)
+			donate.place(x = 20, y = 330 + i*30)
+
+	def set_information(self):
 		#------------------------background-----------------------------------------------
 		# self.img2 = tk.PhotoImage(file= "COC/res/elixir.png")
 		# canva.create_image(20,20,image=self.img2,anchor =NW)
-
 		#------------------------Information Board-------------------------
-		canva.create_text(150,15,text = "游戏状态")
+		self.right_part.create_text(75,15,text = "游戏状态", fill="darkblue",font="Times 20 italic bold")
 		fill_color = [
 					  "brown",
 					  "red",
@@ -135,27 +127,24 @@ class COC_GUI(tk.Frame):
 					 ]
 		self.list_pic = list()
 		for i in range(len(self.lang['info_name'])):
-			canva.create_text(130,50 + 40*i,text = self.lang['info_name'][i],fill = fill_color[i%len(fill_color)])
-			# self.source_image = lambda img = i:tk.PhotoImage(file = self.config['source_image'][img])
-			# self.source_image = lambda img = i:tk.PhotoImage(file = self.config['source_image'][i])
-			# # self.resized_source = self.source_image.subsample(5,5)
-			#canva.create_image(35,30 + 40*i , image = self.source_image, anchor = NW)
+			self.right_part.create_text(110,50 + 40*i,text = self.lang['info_name'][i],fill = fill_color[i%len(fill_color)])
 			image = tk.PhotoImage(file = self.config['source_image'][i])
-			#puted = canva.create_image(40,30 + 40*i , image = image , anchor = NW)
 			self.list_pic.append(image)
-			canva.create_image(40,30 + 40 * i, image = self.list_pic[i], anchor = NW)
+			self.right_part.create_image(20,30 + 40 * i, image = self.list_pic[i], anchor = NW)
 		
 
-	def loging_board(self):                    
-		# Build GUI
-		text = tk.Text(self.window, height = 1, width = 29 ,fg = "white", bg = "black", font="Times 20 italic bold")
+	def build_left_part(self):                    
+		# Build Left Part log
+		text = tk.Text(self.frame, height = 0.2, fg = "white", bg = "black", font="Times 20 italic bold")
 		text.insert(INSERT,self.lang['log'])
-		text.place(x = 0,y = 0)
-		
+		text.grid(row = 0,column = 0, sticky=N+S+E+W)
+
 		# Add text widget to display logging info
-		st = ScrolledText.ScrolledText(self.window, state='disabled', width = 50, height = 50, bg = "black", fg = "white")
+		st = ScrolledText.ScrolledText(self.frame, state='disabled',
+					bg = "black", fg = "white", height = 48)
 		st.configure(font='TkFixedFont')
-		st.place(x = 0, y = 35)
+		st.grid(row = 1, column = 0, sticky=N+S+E+W)
+		#st.place(x = 0, y = 35)
 
 		# Create textLogger
 		text_handler = TextHandler(st)
@@ -170,6 +159,24 @@ class COC_GUI(tk.Frame):
 		logger.addHandler(text_handler)
 		
 
+	def build_basic_window(self):
+		#------------------------set up windows and title-------------------------
+		self.window.title("My CoC Bots")
+		self.window.geometry("800x800") #wxh
+		self.window.maxsize(1000, 800)
+		self.window.minsize(800, 800)
+		#self.window.resizable(width = False, height = False)
+		self.window.option_add('*tearOff', 'FALSE')
+		
+		Grid.rowconfigure(self.window,0, weight=1)
+		Grid.columnconfigure(self.window, 0, weight=1)
+
+		self.frame = Frame(self.window)
+		self.frame.grid(row=0, column=0, sticky=N+S+E+W)
+		Grid.columnconfigure(self.frame, 0, weight=1)
+		Grid.columnconfigure(self.frame, 1, weight=1)
+		Grid.rowconfigure(self.frame, 0, weight=1)
+		Grid.rowconfigure(self.frame, 1, weight=1)
 
 	#uiautomator connect to a device
 	def connect_device(self):
