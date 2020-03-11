@@ -3,10 +3,9 @@ import tkinter as tk # note that module name has changed from Tkinter in Python 
 import json,os,time,threading,logging
 import tkinter.scrolledtext as ScrolledText
 import tkinter.font
+
 from PIL import ImageTk
 import PIL.Image
-
-
 from subprocess import call
 from tkinter import *
 from tkinter import messagebox
@@ -79,22 +78,27 @@ class COC_GUI(tk.Frame):
 		self.set_function()
 		self.test_area()
 
-		self.dragon = tk.PhotoImage(file = "COC/res/dragon.png")
-		self.right_part.create_image(150,300,image=self.dragon,anchor = NW)
-		#self.place_image("COC/res/dragon.png",150,300)
+		#self.dragon = tk.PhotoImage(file = "COC/res/dragon.png")
+		#self.right_part.create_image(150,300,image=self.dragon,anchor = NW)
+		#self.place_image()
+		self.place_image(self.right_part,"COC/res/dragon.png",150,300)
 
-	def place_image(self,image,x,y):
-		self.img = tk.PhotoImage(file=image)
-		self.panel = tk.Label(self.window, image = self.img)
-		self.panel.place(x = x, y = y)
+
+	def place_image(self,frame,image,x,y):
+		img =PIL.Image.open(image)
+		self.img = ImageTk.PhotoImage(img)
+		frame.create_image(x,y,image=self.img,anchor = NW)
 
 
 	def test_area(self):
 		self.right_part.create_text(75,530,text = self.lang['Test_Area'], fill="darkblue",font="Times 20 italic bold")
 		#------------------------background-----------------------------------------------
-		self.logo = tk.PhotoImage(file = "COC/res/COC_logo.png")
+		#self.logo = tk.PhotoImage(file = "COC/res/COC_logo.png")
+		self.logo = PIL.Image.open(self.config['coc_logo'])
+		#image = image.resize((20, 20))
+		self.logo = ImageTk.PhotoImage(self.logo)
 		self.right_part.create_image(230,720,image=self.logo,anchor = NW)
-
+		
 		#------------------------test button saved in text_button-------------------------
 		self.test_button = list()
 
@@ -128,7 +132,9 @@ class COC_GUI(tk.Frame):
 		self.list_pic = list()
 		for i in range(len(self.lang['info_name'])):
 			self.right_part.create_text(110,50 + 40*i,text = self.lang['info_name'][i],fill = fill_color[i%len(fill_color)])
-			image = tk.PhotoImage(file = self.config['source_image'][i])
+			image = PIL.Image.open(self.config['source_image'][i])
+			#image = image.resize((20, 20))
+			image = ImageTk.PhotoImage(image)
 			self.list_pic.append(image)
 			self.right_part.create_image(20,30 + 40 * i, image = self.list_pic[i], anchor = NW)
 		
