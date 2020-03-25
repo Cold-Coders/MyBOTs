@@ -5,6 +5,7 @@ import os
 import signal
 import sys
 import subprocess
+from subprocess import call
 from util import *
 
 
@@ -27,6 +28,22 @@ if Win:
 
 
 class GUI_Tools:
+
+	@staticmethod
+	def checkUIautomator():
+		#check the version of Uiautomator2
+		try:
+			if Win:
+				check_version = subprocess.check_output("pip list --outdated |finstr 'uiautomator2'", shell=True)
+			else:
+				check_version = subprocess.check_output("pip list --outdated |grep 'uiautomator2'", shell=True)
+		except subprocess.CalledProcessError as e:
+			#raise RuntimeError("command '{}' return with error (code {}): {}".format(e.cmd, e.returncode, e.output))
+			return True
+
+		return False
+		#check_version = check_version.decode("utf-8").split()
+		#print(check_version)
 
 	@staticmethod
 	def set_close(root):

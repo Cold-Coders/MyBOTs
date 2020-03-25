@@ -6,7 +6,7 @@ import tkinter.font
 
 from PIL import ImageTk
 import PIL.Image
-from subprocess import call
+
 from tkinter import *
 from tkinter import messagebox
 from util import *
@@ -56,8 +56,8 @@ class COC_GUI(tk.Frame):
 		#------------------Loading config------------------------------
 		self.loading_config()	
 		self.loading_languages()
-		#self.selecting_emulator()
-		#self.connect_device()  
+		self.selecting_emulator()
+		self.connect_device()  
 		#-------------------Basic Windows--------------------------------------
 		self.window = tk.Tk()
 		tk.Frame.__init__(self, self.window, *args, **kwargs)
@@ -186,12 +186,11 @@ class COC_GUI(tk.Frame):
 
 	#uiautomator connect to a device
 	def connect_device(self):
-		#check the version of Uiautomator2
-		try:
-			call('pip install -U uiautomator2')
-			call('pip3 install -U uiautomator2')
-		except Exception as e:
-			pass
+		if not G.checkUIautomator():
+			messagebox.showinfo("uiautomator2 needs to upgrade", "Please update uiautomator2 by using\
+				\npython -m pip install -U uiautomator2")
+			exit()
+
 
 	# selecting an emulator
 	def selecting_emulator(self):
