@@ -1,5 +1,6 @@
 import time,json,os,sys,re
 
+
 def r_color(c1,c2,diff = 8):
 	if type(c1) is tuple and type(c2) is tuple :
 	  return abs(c1[0] - c2[0]) <= diff and abs(c1[1] - c2[1])  <= diff and abs(c1[1] - c2[1]) <= diff

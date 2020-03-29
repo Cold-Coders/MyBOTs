@@ -36,5 +36,9 @@ adb -s emulator-5556 shell rm /data/local/tmp/minicap
 adb -s emulator-5556 shell rm /data/local/tmp/minicap.so
 
 pip freeze > requirements.txt
+
+pip list --outdated | grep 'uiautomator2'
+pip list --outdated | finstr 'uiautomator2'
+
 ```
 

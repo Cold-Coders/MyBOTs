@@ -1,1 +1,0 @@
-TEXTVIEW = 'android.widget.TextView'
