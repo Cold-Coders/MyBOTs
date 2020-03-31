@@ -34,12 +34,48 @@ class COC_BOT_GUI(tk.Frame):
 		self.build_basic_window()
 		self.build_left_part()
 		self.build_right_part()
+		self.build_menu()
 
 	def start(self):
 		#t1 = threading.Thread(target=worker, args=[])
 		#t1.daemon = True
 		#t1.start()
 		self.window.mainloop()
+
+	def build_menu(self):
+		def donothing():
+		   filewin = Toplevel(self.window)
+		   button = Button(filewin, text="Do nothing button")
+		   button.pack()
+
+		menubar = Menu(self.window)
+
+		filemenu = Menu(menubar, tearoff=0)
+		filemenu.add_command(label="New", command=donothing)
+
+		filemenu.add_separator()
+
+		filemenu.add_command(label="Exit", command=self.window.quit)
+		menubar.add_cascade(label="File", menu=filemenu)
+		editmenu = Menu(menubar, tearoff=0)
+		editmenu.add_command(label="Undo", command=donothing)
+
+		editmenu.add_separator()
+
+		editmenu.add_command(label="Cut", command=donothing)
+		editmenu.add_command(label="Copy", command=donothing)
+		editmenu.add_command(label="Paste", command=donothing)
+		editmenu.add_command(label="Delete", command=donothing)
+		editmenu.add_command(label="Select All", command=donothing)
+
+		menubar.add_cascade(label="Edit", menu=editmenu)
+		helpmenu = Menu(menubar, tearoff=0)
+		helpmenu.add_command(label="Help Index", command=donothing)
+		helpmenu.add_command(label="About...", command=donothing)
+		menubar.add_cascade(label="Help", menu=helpmenu)
+
+		self.window.config(menu=menubar)
+
 
 	def build_right_part(self):
 		self.right_part = Canvas(self.window,bg = "white",width=400,height=800)
