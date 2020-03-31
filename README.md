@@ -40,5 +40,10 @@ pip freeze > requirements.txt
 pip list --outdated | grep 'uiautomator2'
 pip list --outdated | finstr 'uiautomator2'
 
+
+## VirtualEnvironment
+python3 -m venv bots
+. bots/bin/activate
+pip install -r requirements.txt
 ```
 
