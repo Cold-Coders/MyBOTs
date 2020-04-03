@@ -40,3 +40,8 @@ def worker():
         msg = 'Current time: ' + timeStr
         logging.info(msg) 
         
+
+def show_log(msg):
+    timeStr = time.asctime()
+    msg = timeStr + ": " + msg
+    logging.info(msg) 

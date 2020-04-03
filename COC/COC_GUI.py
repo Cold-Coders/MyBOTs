@@ -15,7 +15,7 @@ from util import *
 from GUI.GUI_logs import *
 
 from COC.COC_Bot import COC_BOT
-
+from COC.Func.Others import Utils as U
 
 if not sys.platform == 'win32':
 	import appscript
@@ -111,7 +111,8 @@ class COC_BOT_GUI(tk.Frame):
 			btn.configure(width = 14, activebackground = "red", relief = FLAT)
 			self.right_part.create_window(30, 560 + i*40, anchor= NW , window=btn)
 			self.test_button.append(btn)
-		
+
+		self.test_button[0]['command']= lambda: U.zoom_out(self.d)
 
 	def set_function(self):
 		self.func = list()
@@ -226,6 +227,7 @@ class COC_BOT_GUI(tk.Frame):
 	def loading_config(self):
 		try: 
 			self.config.update(load_configure("COC/config/config.json"))
+			self.d = self.config['d']
 		except Exception as e:
 			raise e
 			messagebox.showinfo("Error", "configure error")

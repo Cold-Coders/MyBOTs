@@ -1,8 +1,8 @@
 import time
 import uiautomator2
-from util import *
 import cv2
-
+from util import *
+from GUI.GUI_logs import *
 
 #其他操作
 class Utils:
@@ -40,12 +40,10 @@ class Utils:
 		cv2.imwrite('screenshot.png', screen)
 
 	@staticmethod
-	def zoom_in(d):
-		d.touch.down(255, 255) # 模拟按下
-
-		d.drag(500, 255, 290, 255, 0.5)
-		#time.sleep(.1) # down 和 move 之间的延迟，自己控制
-		d.touch.up(255, 255) # 模拟抬起
+	def zoom_out(d):
+		for i in range(5):
+			d(className="android.view.View").pinch_in(percent=100, steps=10)
+		show_log("Zoom_out")
 
 	@staticmethod
 	def current_app(d):
