@@ -63,6 +63,7 @@ class EMULATOR(tk.Frame):
 		devices = list()
 		Emulator = {'dnplayer.exe':'雷电模拟器',
 					'NemuPlayer.exe':'网易MuMu',
+					'NemuPlayer':'网易MuMu',
 					'BlueStacks.exe':'蓝叠',
 					"Nox.exe":'夜神'
 					}

@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 import tkinter as tk # note that module name has changed from Tkinter in Python 2 to tkinter in Python 3
-import os
+import os,sys
 from tkinter import messagebox
 from util import *
 from GUI.GUI_utils import *
@@ -14,6 +14,10 @@ class DEVICE(tk.Frame):
 		self.devices = self.get_devices()
 
 		n = len(self.devices)
+
+		if 'emu' not in self.config.keys() and n == 0:
+			messagebox.showinfo("Didn't find a device", "Please enable the development mode for Android \n or using an emulator")
+			exit()
 
 		#check if emu connected adb
 		self.connect_adb()
@@ -34,9 +38,6 @@ class DEVICE(tk.Frame):
 	
 
 	def connect_adb(self):
-		if 'emu' not in self.config.keys():
-			messagebox.showinfo("Didn't find a device", "Please enable the development mode for Android \n or using an emulator")
-			exit()
 
 		emu = self.config['emu'][:-1]
 		num = int(self.config['emu'][-1])
@@ -89,8 +90,11 @@ class DEVICE(tk.Frame):
 	def get_devices(self):
 		#restart = 'adb/adb kill-server && adb/adb start-server'
 		#os.system(restart)
+		if sys.platform == 'win32':
+			get_devices = 'adb\\adb devices'
+		else:
+			get_devices = 'adb/adb devices'
 
-		get_devices = 'adb\\adb devices'
 		stream = os.popen(get_devices)
 
 		devices_adb = stream.read()
