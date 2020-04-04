@@ -16,9 +16,8 @@ class DEVICE(tk.Frame):
 		n = len(self.devices)
 
 		#check if emu connected adb
-		if n < 2:
-			self.connect_adb()
-			ss(5)
+		self.connect_adb()
+		
 
 		if not n > 0:
 			messagebox.showinfo("Didn't find a device", "Please enable the development mode for Android \n or using an emulator")
@@ -60,24 +59,28 @@ class DEVICE(tk.Frame):
 		except Exception as e:
 			raise e
 			messagebox.showinfo("Error Can not connect to ADB", "Emu is not support")
-
+			exit()
 
 		port_addon = 0
 		if num > 1:
 			port_addon += addon_base[emu]
 		port_addon += (num - 1) * addons[emu]
 
-
+		
 		device_name = '127.0.0.1:' + str(port + port_addon)
 
+		exist = False
+		for i in range(len(self.devices)):
+			if self.devices[i] == device_name:
+				exist = True
+				break
 
-
-		if len(self.devices) == 0 or \
-			(len(self.devices) == 1 and self.devices[0] != device_name):
+		if not exist:
 			connect = 'adb\\adb connect ' + device_name
-			#print( connect  )
+			print( connect  )
 			os.system(connect)
-
+			
+		ss(3)
 		
 	def get_devices(self):
 		#restart = 'adb/adb kill-server && adb/adb start-server'
