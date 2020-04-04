@@ -44,22 +44,24 @@ class DEVICE(tk.Frame):
 
 		ports = {
 				"夜神" : 62001,
-				"网易MuMu" :7555
+				"网易MuMu" :7555,
+				"雷电模拟器": 5555
 				}
 
 		addon_base = {
 				"夜神" : 23,
-				"网易MuMu" : 0
+				"网易MuMu" : 0,
+				"雷电模拟器": 0
 		}
 
 		addons = {
 				"夜神" : 1,
-				"网易MuMu" : 0
+				"网易MuMu" : 0,
+				"雷电模拟器": 2
 		}
 
 		try:
 			port = ports[emu]
-		
 		except Exception as e:
 			raise e
 			messagebox.showinfo("Error Can not connect to ADB", "Emu is not support")
@@ -69,13 +71,18 @@ class DEVICE(tk.Frame):
 		if num > 1:
 			port_addon += addon_base[emu]
 		port_addon += (num - 1) * addons[emu]
-
 		
 		device_name = '127.0.0.1:' + str(port + port_addon)
 
 		exist = False
 		for i in range(len(self.devices)):
-			if self.devices[i] == device_name:
+			if emu == "雷电模拟器":
+				n_emu = 5554 + (num - 1) * addons[emu]
+				if self.devices[i] == "emulator-"+ str(n_emu):
+					exist = True
+					break
+					
+			elif self.devices[i] == device_name:
 				exist = True
 				break
 

@@ -42,7 +42,7 @@ class Utils:
 	@staticmethod
 	def zoom_out(d):
 		for i in range(5):
-			d(className="android.view.View").pinch_in(percent=100, steps=10)
+			d(className="android.view.View").pinch_in(percent=60, steps=10)
 		show_log("Zoom_out")
 
 	@staticmethod
