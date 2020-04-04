@@ -42,15 +42,18 @@ class DEVICE(tk.Frame):
 		num = int(self.config['emu'][-1])
 
 		ports = {
-				"夜神" : 62001
+				"夜神" : 62001,
+				"网易MuMu" :7555
 				}
 
 		addon_base = {
-				"夜神" : 23
+				"夜神" : 23,
+				"网易MuMu" : 0
 		}
 
 		addons = {
-				"夜神" : 1
+				"夜神" : 1,
+				"网易MuMu" : 0
 		}
 
 		try:
@@ -80,7 +83,8 @@ class DEVICE(tk.Frame):
 			print( connect  )
 			os.system(connect)
 			
-		ss(3)
+		#re-find devices
+		self.devices = self.get_devices()
 		
 	def get_devices(self):
 		#restart = 'adb/adb kill-server && adb/adb start-server'

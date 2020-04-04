@@ -19,8 +19,6 @@ if __name__ == "__main__":
 	# select a device
 	DEVICE(config)
 	
-	print(config)
-
 	#select for games
 	config['d'] = u2.connect( config['device'] )
 
