@@ -15,12 +15,15 @@ class SELECTGAME(tk.Frame):
 		self.games = self.find_a_game()
 
 		if len(self.games) == 0:
-			messagebox.showinfo("Didn't find an available game", "We are available for \
+			messagebox.showinfo("Didn't find an available game",
+				"Please open the Game first.\
+				 \nWe are available for \
 				 \n 1. Clash of clan\
 				 \n 2. MIR mobile from Tencent")
 			exit()
 		elif len(self.games) == 1:
 			self.config['game'] = self.games[0]
+
 		else:
 			self.window = tk.Tk()
 			tk.Frame.__init__(self, self.window, *args, **kwargs)

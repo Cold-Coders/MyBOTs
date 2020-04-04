@@ -13,22 +13,23 @@ if __name__ == "__main__":
 
 	config['Win32'] = True if sys.platform == 'win32' else False
 	
-	# select a device
-	DEVICE(config).start()
-
 	# select for correct emulator
-	if config['device'] is not None and "emulator" in config['device']:
-		EMULATOR(config)
+	EMULATOR(config)
+	
+	# select a device
+	DEVICE(config)
+	
+	print(config)
 
 	#select for games
 	config['d'] = u2.connect( config['device'] )
-	SELECTGAME(config)
 
+	SELECTGAME(config)
 
 	#choose bots
 	BotList = {'com.supercell.clashofclans.guopan': 1,
-				'com.tencent.tmgp.rxcq': 2,
-				'com.supercell.clashofclans': 1
+			   'com.supercell.clashofclans': 1,
+			   'com.tencent.tmgp.rxcq': 2
 	}
 
 	MyBot = None

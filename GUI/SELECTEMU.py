@@ -2,6 +2,7 @@
 import tkinter as tk
 import psutil,sys
 from tkinter import messagebox
+from GUI.GUI_utils import *
 
 class EMULATOR(tk.Frame):
 
@@ -11,38 +12,59 @@ class EMULATOR(tk.Frame):
 
 		self.emus = self.find_emulator()
 
-		if len(self.emus) == 0:
-			messagebox.showinfo("Didn't find an emulatr", "Please start emulator first")
-			exit()
-		elif len(self.emus) == 1:
-			self.config['pid'] = self.emus[0][1]
-		else:
+		self.define_emus()
+		#if len(self.emus) == 0:
+		#	messagebox.showinfo("Didn't find an emulatr", "Please start emulator first")
+		#	exit()		
+
+		if len(self.emus) == 1:
+			self.set_emu(0)
+
+		elif len(self.emus) > 1:
 			self.window = tk.Tk()
 			tk.Frame.__init__(self, self.window, *args, **kwargs)
 			self.select_emu_GUI()
+
+	def define_emus(self):
+		emus_dict = {}
+		for i in range(len(self.emus)):
+			name = self.emus[i][0]
+			if name not in emus_dict:
+				emus_dict[name] = 1
+				self.emus[i][0] += "1"
+			else:
+				emus_dict[name] += 1
+				self.emus[i][0] += str(emus_dict[name])
+
+	def set_emu(self,i):
+		self.config['emu'] = self.emus[i][0]
+		self.config['pid'] = self.emus[i][1]
+		if sys.platform == 'win32':
+			self.config['path'] = self.emus[i][2]
 
 	def select_emu_GUI(self):
 		n = len(self.emus)
 
 		self.window.title("Select A Emulator")
-		self.window.geometry("200x" + str(n*30))
+		self.window.geometry("300x" + str(n*30))
 		self.window.resizable(width = False, height = False)
-
+		self.window.grid_columnconfigure(0, weight=1)
 		def set_devices(i):
 			self.window.destroy()
-			self.config['pid'] =  self.emus[i][1]
+			self.set_emu(i)
 
 		for i in range(n):
-			tk.Button(self.window, text = self.emus[i] ,anchor = "ne" ,width = 20,
-			 command = lambda id=i:set_devices(id) ).grid(row=i,column=0)
-
+			tk.Button(self.window, text = self.emus[i][0] ,anchor = "center" ,
+			 command = lambda id=i:set_devices(id) ).grid(row=i,column=0, sticky='nesw')
+		set_close(self.window)
 		self.window.mainloop()
 
 	def find_emulator(self):
 		devices = list()
-		Emulator = {'dnplayer':'雷电模拟器',
-					'NemuPlayer':'网易MuMu',
-					'BlueStacks':'蓝叠'
+		Emulator = {'dnplayer.exe':'雷电模拟器',
+					'NemuPlayer.exe':'网易MuMu',
+					'BlueStacks.exe':'蓝叠',
+					"Nox.exe":'夜神'
 					}
 		# show processes info
 		pids = psutil.pids()
@@ -52,13 +74,16 @@ class EMULATOR(tk.Frame):
 				process_name = p.name()
 				if process_name in Emulator.keys():
 					if sys.platform == 'win32':
+						process_path = p.exe()
+						print(process_path)
 						handle  = p.num_handles()
 						print("Process name is: %s, pid is: %s, num of handles : %s" %(process_name, pid, handle))
-						devices.append([Emulator[process_name],handle])
+						devices.append([Emulator[process_name],handle,process_path])
 					else:
 						print("Process name is: %s, pid is: %s" %(process_name, pid))
 						devices.append([Emulator[process_name],pid])
 		except Exception as e:
-			pass
+			raise e
+			exit()
 
 		return devices
