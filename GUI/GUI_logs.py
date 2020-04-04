@@ -31,17 +31,17 @@ class TextHandler(logging.Handler):
         # This is necessary because we can't modify the Text from other threads
         self.text.after(0, append)
 
-def worker():
-    # Skeleton worker function, runs in separate thread (see below)   
-    while True:
-        # Report time / date at 2-second intervals
-        time.sleep(2)
-        timeStr = time.asctime()
-        msg = 'Current time: ' + timeStr
-        logging.info(msg) 
-        
-
-def show_log(msg):
+def show_log(msg,mode = 1):
     timeStr = time.asctime()
     msg = timeStr + ": " + msg
-    logging.info(msg) 
+    #values = ['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL']
+    if mode == 0:
+    	logging.debug(msg)
+    elif mode == 1:
+    	logging.info(msg)
+    elif mode == 2:
+    	logging.warm(msg)
+    elif mode == 3:
+    	logging.error(msg)
+    elif mode == 4:
+    	logging.critcal(msg)

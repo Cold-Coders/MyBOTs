@@ -6,6 +6,25 @@ from GUI.GUI_logs import *
 
 #其他操作
 class Utils:
+
+	@staticmethod
+	def prt(*args,mode = 0):
+		n = len(args)
+		for i in range(n):
+			if type(args[i]) is str or type(args[i]) is int:
+				show_log(args[i],mode = mode)
+
+			elif type(args[i]) is list:
+				for sub_msg in args[i]:
+					if type(sub_msg) is str:
+						show_log(sub_msg, mode = mode)
+					else:
+						show_log(str (type(sub_msg)) + " is not support by prt" ,mode = 2)
+						
+			elif type(args[i]) is dict:
+				for key in args[i].keys():
+					show_log( str(key) + " : " + str(args[i][key]) ,mode = mode)
+
 	@staticmethod
 	def getElementByTextview(d):
 		# get all text-view text, attrib and center point
@@ -41,7 +60,7 @@ class Utils:
 
 	@staticmethod
 	def zoom_out(d):
-		for i in range(5):
+		for i in range(r_num(lbound = 3)):
 			d(className="android.view.View").pinch_in(percent=60, steps=10)
 		show_log("Zoom_out")
 

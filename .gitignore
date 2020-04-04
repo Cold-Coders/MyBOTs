@@ -132,3 +132,4 @@ dmypy.json
 *.html
 Orc.py
 .DS_Store
+test.py

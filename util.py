@@ -1,5 +1,14 @@
-import time,json,os,sys,re
+import time,json,os,sys,re,random
 
+def r_num(seed = -1, rand = 1, ubound = 10,lbound = 0):
+	if seed != -1:
+		random.seed(seed)	
+	else:
+		random.seed( int(time.time() % 100) )
+	if rand == 1:
+		return random.randint(lbound,ubound)
+	else:
+		return [random.randint(lbound,ubound) for i in rand]
 
 def r_color(c1,c2,diff = 8):
 	if type(c1) is tuple and type(c2) is tuple :
