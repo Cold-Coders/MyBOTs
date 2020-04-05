@@ -172,7 +172,7 @@ class Utils:
 		# 调用通用文字识别接口 get_file_content("cropped.png")
 		result = aipOcr.basicGeneral(get_file_content("cropped.png"), options) if not Accurate else aipOcr.basicAccurate(get_file_content("cropped.png"), options)
 		
-		#os.remove("cropped.png")
+		os.remove("cropped.png")
 
 		print(result)
 

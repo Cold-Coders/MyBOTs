@@ -54,7 +54,7 @@ class COC_BOT_GUI(tk.Frame):
 		self.window.mainloop()
 
 	def init_Func(self):
-		self._config["General"] = General(True if "emu" in self._config else False)
+		self._config["General"] = General(self.d)
 
 	def build_menu(self):
 		def donothing():
@@ -135,7 +135,8 @@ class COC_BOT_GUI(tk.Frame):
 				self.img_list.append(filename + str(count) + ".png")
 				U.prt("find Image" + str(count),mode = 4)
 				count += 1
-
+			self.testfind = ttk.Combobox(self.right_part,values=self.img_list)
+	
 		#Zoom out
 		self.test_button[0]['command']= lambda: U.zoom_out(self.d)
 		#Screen shot
@@ -143,9 +144,13 @@ class COC_BOT_GUI(tk.Frame):
 			U.save_screen(self.d)
 			search_imgs()
 
+
 		self.test_button[1]['command']= lambda: new_shot()
 		#Recognize information
-		self.test_button[2]['command']= lambda: U.test_orc(self.d)
+		def updateinfo():
+			self.info_text[0]['text'] = self._config["General"].Update_info(self.d)
+
+		self.test_button[2]['command']= lambda: updateinfo()
 		#Collect resourse
 		self.test_button[3]['command']= lambda: self._config["General"].collect_resourse(self.d)
 		#Donation test
@@ -186,8 +191,14 @@ class COC_BOT_GUI(tk.Frame):
 					  "black"
 					 ]
 		self.list_pic = list()
+		self.info_text = list()
 		for i in range(len(self.lang['info_name'])):
 			self.right_part.create_text(110,50 + 40*i,text = self.lang['info_name'][i],fill = fill_color[i%len(fill_color)])
+			
+			label = tk.Label(self.right_part, text = "0", relief="flat", background = "white")
+			label.place(x = 200, y = 40 + 40*i)
+			self.info_text.append(label)
+
 			image = PIL.Image.open(self.config['source_image'][i])
 			#image = image.resize((20, 20))
 			image = ImageTk.PhotoImage(image)
