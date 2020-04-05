@@ -1,7 +1,7 @@
-# COC-BOT
+# MyBOTs
 
 ## Function
-- [x] Auto-donation
+- [x] 
 
 ## Installation
 
