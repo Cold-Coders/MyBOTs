@@ -28,7 +28,8 @@
 	},
 	"titles": {
 		"error": "错误",
-		"restart": "重启"
+		"restart": "重启",
+		"find":"查找"
 	}
 
 }

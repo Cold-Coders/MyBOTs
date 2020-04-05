@@ -7,6 +7,7 @@ import PIL.Image
 
 from tkinter import *
 from tkinter import messagebox
+from tkinter import ttk
 
 from util import *
 
@@ -23,7 +24,8 @@ class COC_BOT_GUI(tk.Frame):
 	# This class defines the graphical user interface 
 	def __init__(self,config, *args, **kwargs):
 		#------------------Loading config------------------------------
-		self.config = config
+		self.config = {}
+		self._config = config
 		self.loading_config()	
 		self.loading_languages()
 		#-------------------Basic Windows--------------------------------------
@@ -36,7 +38,7 @@ class COC_BOT_GUI(tk.Frame):
 
 	def start(self):
 		def update():
-			MyBot = COC_BOT(self.config,self.lang,self)
+			MyBot = COC_BOT(self._config,self.lang,self)
 			MyBot.run()
 			#while True:
 			#	time.sleep(1)
@@ -124,6 +126,19 @@ class COC_BOT_GUI(tk.Frame):
 		#Identify information
 		#Donation test
 
+		#Find test
+		self.testfind = ttk.Combobox(self.right_part, 
+                            values=[
+                                    "January", 
+                                    "February",
+                                    "March",
+                                    "April"])
+
+		self.testfind.current(1)
+		self.find = Button(self.right_part, text = self.lang['titles']['find'],
+						anchor = "center" , highlightcolor = "red")
+		self.right_part.create_window(30 , 560 + 4 *40, anchor= NW , window=self.testfind)
+		self.right_part.create_window(30 , 560 + 5 *40, anchor= NW , window=self.find)
 
 	def set_function(self):
 		self.func = list()
@@ -214,14 +229,14 @@ class COC_BOT_GUI(tk.Frame):
 		except Exception as e: #exit if error
 			#messagebox.showinfo("Error", "Did not find the language profile")
 			self.config['lang'] = ''
-			self.save_config()
+			#self.save_config()
 			exit()
 
 	#loading config by json file
 	def loading_config(self):
 		try: 
 			self.config.update(load_configure("COC/config/config.json"))
-			self.d = self.config['d']
+			self.d = self._config['d']
 		except Exception as e:
 			raise e
 			messagebox.showinfo("Error", "configure error")
