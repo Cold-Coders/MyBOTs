@@ -7,8 +7,6 @@ import PIL.Image
 
 from tkinter import *
 from tkinter import messagebox
-import tkinter.scrolledtext as ScrolledText
-import tkinter.font
 
 from util import *
 
@@ -38,7 +36,7 @@ class COC_BOT_GUI(tk.Frame):
 
 	def start(self):
 		def update():
-			MyBot = COC_BOT(self.config,self.lang)
+			MyBot = COC_BOT(self.config,self.lang,self)
 			MyBot.run()
 			#while True:
 			#	time.sleep(1)
@@ -156,26 +154,8 @@ class COC_BOT_GUI(tk.Frame):
 		text.insert(INSERT,self.lang['log'])
 		text.grid(row = 0,column = 0, sticky=N+E+W)
 
-		# Add text widget to display logging info
-		st = ScrolledText.ScrolledText(self.frame, state='disabled',
-					bg = "black", fg = "white", height = 59)
+		MyLogUi(self.frame,height = 59).grid(row = 1, column = 0)
 
-		st.configure(font='TkFixedFont')
-		st.grid(row = 1, column = 0, sticky=N+S+E+W)
-		st.place(x = 0, y = 35)
-
-		# Create textLogger
-		text_handler = TextHandler(st)
-
-		# Logging configuration
-		logging.basicConfig(filename='test.log',
-			level=logging.INFO, 
-			format='%(asctime)s - %(levelname)s - %(message)s')        
-		
-		#Add the handler to logger
-		logger = logging.getLogger()        
-		logger.addHandler(text_handler)
-		
 
 	def build_basic_window(self):
 		#------------------------set up windows and title-------------------------

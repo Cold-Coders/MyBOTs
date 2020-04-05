@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 import tkinter as tk
-import psutil,sys
+import psutil,sys,os
 from tkinter import messagebox
 from GUI.GUI_utils import *
 
@@ -76,7 +76,8 @@ class EMULATOR(tk.Frame):
 				if process_name in Emulator.keys():
 					if sys.platform == 'win32':
 						process_path = p.exe()
-						print(process_path)
+						process_path = process_path[:process_path.rfind("\\")]
+						#print(process_path)
 						handle  = p.num_handles()
 						print("Process name is: %s, pid is: %s, num of handles : %s" %(process_name, pid, handle))
 						devices.append([Emulator[process_name],handle,process_path])

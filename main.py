@@ -5,8 +5,8 @@ from GUI.SELECTADEVICE import DEVICE
 from GUI.SELECTEMU import EMULATOR
 from GUI.SELECTGAME import SELECTGAME
 
-
 from COC.COC_GUI import COC_BOT_GUI
+
 
 if __name__ == "__main__":
 	config = {}

@@ -8,7 +8,7 @@ from GUI.GUI_logs import *
 class Utils:
 
 	@staticmethod
-	def prt(*args,mode = 0):
+	def prt(*args,mode = 1):
 		n = len(args)
 		for i in range(n):
 			if type(args[i]) is str or type(args[i]) is int:
@@ -20,7 +20,7 @@ class Utils:
 						show_log(sub_msg, mode = mode)
 					else:
 						show_log(str (type(sub_msg)) + " is not support by prt" ,mode = 2)
-						
+
 			elif type(args[i]) is dict:
 				for key in args[i].keys():
 					show_log( str(key) + " : " + str(args[i][key]) ,mode = mode)

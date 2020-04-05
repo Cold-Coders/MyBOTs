@@ -1,18 +1,23 @@
-import threading
+import threading,os
+
+from tkinter import messagebox
 from util import *
 from CONSTANT import *
-from COC.Func.Others import Utils as u
 from GUI.GUI_logs import *
+
+from COC.Func.Others import Utils as u
+from COC.Func.Emu_restarter import Emu_restarter as restarter
 
 
 #模拟器分辨需求为 860x732 dpi 160
 class COC_BOT():
 
-	def __init__(self,config,lang):
+	def __init__(self,config,lang,frame):
 
 		self._error = 0
 		self._config = config
 		self._lang = lang
+		self._gui = frame
 		self.d = self._config['d']
 
 		prt(self._config,title = "配置信息")
@@ -40,7 +45,15 @@ class COC_BOT():
 
 		height,width = self.d.window_size()
 		if height != 732 and width != 860:
-			u.prt(self._lang["resolution_error"])
+			u.prt(self._lang["tips"]["resolution_error"],mode = 3)
+			reopen = messagebox.askyesno(self._lang["titles"]["error"], self._lang["tips"]["resolution_error"])
+			if reopen:
+				restarter.Emu(self._config,self._lang)
+			else:
+				u.prt(self._lang["tips"]["close_bot"],mode = 3)
+				ss(5)
+				self._gui.window.destroy()
+				exit()
 
 
 	def Launch_app(self):

@@ -18,6 +18,7 @@ def r_color(c1,c2,diff = 8):
 	elif len(c1) == 3 and len(c2) == 3:
 	  return abs(c1[0] - c2[0]) <= diff and abs(c1[1] - c2[1])  <= diff and abs(c1[1] - c2[1]) <= diff
 
+# args[0] 总次数, args[1] 每次间隔多少秒, percent 显示的格式
 def ss(*args,precent = 1):
 	if len(args) == 1 and args[0] > 0:
 		#print("delay",args[0])
