@@ -73,4 +73,4 @@ def show_log(msg,mode = 1):
 	elif mode == 3:
 		logging.error(msg)
 	elif mode == 4:
-		logging.critcal(msg)
+		logging.critical(msg)

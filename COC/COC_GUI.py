@@ -119,26 +119,36 @@ class COC_BOT_GUI(tk.Frame):
 			self.right_part.create_window(30 + (i%3*120) , 560 + (i//3) *40, anchor= NW , window=btn)
 			self.test_button.append(btn)
 
+		# find imgs
+		def search_imgs():
+			self.img_list = list()
+			count = 1
+			filename = 'screenshot'
+			while os.path.isfile(filename + str(count) + ".png"):
+				self.img_list.append(filename + str(count) + ".png")
+				U.prt("find Image" + str(count),mode = 4)
+				count += 1
+
 		#Zoom out
 		self.test_button[0]['command']= lambda: U.zoom_out(self.d)
 		#Screen shot
-		self.test_button[1]['command']= lambda: U.save_screen(self.d)
+		def new_shot():
+			U.save_screen(self.d)
+			U.search_imgs()
+		self.test_button[1]['command']= lambda: new_shot()
 		#Identify information
 		#Donation test
 
 		#Find test
-		self.testfind = ttk.Combobox(self.right_part, 
-                            values=[
-                                    "January", 
-                                    "February",
-                                    "March",
-                                    "April"])
+		search_imgs()
+		self.testfind = ttk.Combobox(self.right_part,values=self.img_list)
+		self.right_part.create_window(30 , 560 + 4 *40 + 10, anchor= NW , window=self.testfind)
 
-		self.testfind.current(1)
 		self.find = Button(self.right_part, text = self.lang['titles']['find'],
-						anchor = "center" , highlightcolor = "red")
-		self.right_part.create_window(30 , 560 + 4 *40, anchor= NW , window=self.testfind)
+						anchor = "center" , highlightcolor = "red",
+						command = lambda: U.test_read_img(self.d, self.testfind.get()))
 		self.right_part.create_window(30 , 560 + 5 *40, anchor= NW , window=self.find)
+
 
 	def set_function(self):
 		self.func = list()
@@ -215,7 +225,7 @@ class COC_BOT_GUI(tk.Frame):
 		for b in btn:
 			b['command']=lambda lang=b['text']:Set_lang(langs[lang])
 
-		new_window.mainloop()		
+		new_window.mainloop()
 
 	#loading config of languages
 	def loading_languages(self):

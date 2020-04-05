@@ -1,8 +1,9 @@
 import time, cv2, os.path
+import aircv as ac
 import uiautomator2
 from util import *
-from GUI.GUI_logs import *
 
+from GUI.GUI_logs import *
 
 #其他操作
 class Utils:
@@ -35,6 +36,32 @@ class Utils:
 			print("Attrib:", elem.attrib)
 			# Coordinate eg: (100, 200)
 			print("Position:", elem.center())
+	
+	@staticmethod
+	def test_read_img(d,target):
+
+		def draw_circle(img, pos, circle_radius, color, line_width):
+			cv2.circle(img, pos, circle_radius, color, line_width)
+			cv2.imshow('objDetect', imsrc) 
+			cv2.waitKey(0)
+			cv2.destroyAllWindows()
+
+		if type(d) == uiautomator2.Device:
+			screen = d.screenshot(format="opencv")
+		else:
+			Utils.prt("Error by Reading Image",mode = 4)
+			return
+
+		imobj = ac.imread(target)
+		imsrc = d.screenshot(format="opencv")
+		pos = ac.find_template(imsrc, imobj)
+ 
+		circle_center_pos = (int(pos['result'][0]),int(pos['result'][1]))
+		circle_radius = 30
+		color = (0, 255, 0)
+		line_width = 1
+		
+		draw_circle(imsrc, circle_center_pos, circle_radius, color, line_width)
 
 	# save_screen(d) - one file as screenshot.png
 	# save_scree(d, filename )  save screenshot as filename
@@ -62,6 +89,7 @@ class Utils:
 
 		cv2.imwrite(filename + str(count) + ".png" , screen)
 		Utils.prt("Screenshot saved. file: " + filename + str(count) + ".png",mode = 2)
+		
 
 	@staticmethod
 	def zoom_out(d):
