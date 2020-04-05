@@ -1,19 +1,34 @@
 {
-	"log" : "Log",
+	"log" : "Log Area",
 	"Test_Area":"Test Area",
-	"s_dev":"Select A Device",
-	"func_name":["Auto Donate",
-				"Lower Rank",
-				"Auto Harvest"],
-	"test_name":["Zoom_out",
-				"Collect Resourse",
-				"Donation"
+	"func_name":["Auto Donation",
+				"Auto Lower rank",
+				"Auto Harvest"
+				],
+	"test_name":["Zoom out",
+				"Screen shot",
+				"Recognize Info",
+				"test donation"
 				],
 	"info_name":["Gold",
 				 "Elixir",
-				 "Dark-Elixir",
-				 "Cumulative Gold Harvest",
-				 "Cumulative Elixir Harves",
-				 "Cumulative D-Elixir Harves"
-				]
+				 "Dart-Eli",
+				 "Cumulative gold",
+				 "Cumulative elixir",
+				 "Cumulative Dart-Eli"
+				],
+	"tips" : {
+		"resolution_error": "The Resolution is not support ,Please set as 860x832 dpi-160",
+		"close_bot":"It is not support , Shut down after 5 seconds",
+		"re_connect_emu":"After Emulator restart completely, then Click Yes",
+		"not_support_emu":"It is not support, Please rejust manually",
+		"re_connect_u2":"re connect Uiautomator2",
+		"re_start_game":"restart game"
+	},
+	"titles": {
+		"error": "Error",
+		"restart": "Restart",
+		"find":"Finding"
+	}
+
 }

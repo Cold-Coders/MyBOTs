@@ -149,6 +149,11 @@ class COC_BOT_GUI(tk.Frame):
 						command = lambda: U.test_read_img(self.d, self.testfind.get()))
 		self.right_part.create_window(30 , 560 + 5 *40, anchor= NW , window=self.find)
 
+		self.refresh = Button(self.right_part, text = self.lang['titles']['refresh'],
+						anchor = "center" , highlightcolor = "red",
+						command = lambda: search_imgs())
+		self.right_part.create_window(80 , 560 + 5 *40, anchor= NW , window=self.refresh)
+
 
 	def set_function(self):
 		self.func = list()

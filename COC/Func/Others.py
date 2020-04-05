@@ -49,6 +49,10 @@ class Utils:
 		if type(d) == uiautomator2.Device:
 			screen = d.screenshot(format="opencv")
 		else:
+			Utils.prt("Error (uiautomator2)",mode = 4)
+			return
+
+		if not os.path.isfile(target):
 			Utils.prt("Error by Reading Image",mode = 4)
 			return
 
@@ -58,7 +62,7 @@ class Utils:
  
 		circle_center_pos = (int(pos['result'][0]),int(pos['result'][1]))
 		circle_radius = 30
-		color = (0, 255, 0)
+		color = (255, 0, 0)
 		line_width = 1
 		
 		draw_circle(imsrc, circle_center_pos, circle_radius, color, line_width)
