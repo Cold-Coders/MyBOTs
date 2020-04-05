@@ -5,6 +5,7 @@ import numpy
 from util import *
 
 from GUI.GUI_logs import *
+from CONSTANT import *
 
 from Orc import *
 from aip import AipOcr
@@ -34,7 +35,7 @@ class Utils:
 	@staticmethod
 	def getElementByTextview(d):
 		# get all text-view text, attrib and center point
-		for elem in self.d.xpath("//android.widget.TextView").all():
+		for elem in self.d.xpath("//" + TEXTVIEW).all():
 			print("Text:", elem.text)
 			# Dictionary eg: 
 			# {'index': '1', 'text': '999+', 'resource-id': 'com.netease.cloudmusic:id/qb', 'package': 'com.netease.cloudmusic', 'content-desc': '', 'checkable': 'false', 'checked': 'false', 'clickable': 'false', 'enabled': 'true', 'focusable': 'false', 'focused': 'false','scrollable': 'false', 'long-clickable': 'false', 'password': 'false', 'selected': 'false', 'visible-to-user': 'true', 'bounds': '[661,1444][718,1478]'}
@@ -117,7 +118,7 @@ class Utils:
 	@staticmethod
 	def zoom_out(d):
 		for i in range(r_num(lbound = 3)):
-			d(className="android.view.View").pinch_in(percent=60, steps=10)
+			d(className= VIEWVIEW).pinch_in(percent=60, steps=10)
 		Utils.prt("Zoom_out",mode = 2)
 
 	@staticmethod
@@ -138,12 +139,6 @@ class Utils:
 			ss(random.randint(1,5) * 0.1)
 		except(Exception):
 			ss()
-
-
-	@staticmethod
-	def test_orc(d):
-		screen = d.screenshot(format="opencv")
-		print( Utils.BdOrc(screen,(700,20,810,40) , Accurate = True) )
 
 	'''
 	Baidu Orc
