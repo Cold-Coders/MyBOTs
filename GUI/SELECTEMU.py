@@ -40,7 +40,8 @@ class EMULATOR(tk.Frame):
 		self.config['emu'] = self.emus[i][0]
 		self.config['pid'] = self.emus[i][1]
 		if sys.platform == 'win32':
-			self.config['path'] = self.emus[i][2]
+			self.config['handle'] = self.emus[i][2]
+			self.config['path'] = self.emus[i][3]
 
 	def select_emu_GUI(self):
 		n = len(self.emus)
@@ -80,7 +81,7 @@ class EMULATOR(tk.Frame):
 						#print(process_path)
 						handle  = p.num_handles()
 						print("Process name is: %s, pid is: %s, num of handles : %s" %(process_name, pid, handle))
-						devices.append([Emulator[process_name],handle,process_path])
+						devices.append([Emulator[process_name],pid,handle,process_path])
 					else:
 						print("Process name is: %s, pid is: %s" %(process_name, pid))
 						devices.append([Emulator[process_name],pid])
