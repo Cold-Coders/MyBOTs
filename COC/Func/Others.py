@@ -1,11 +1,16 @@
 import time, cv2, os.path
 import aircv as ac
 import uiautomator2
+import numpy
 from util import *
 
 from GUI.GUI_logs import *
 
-#其他操作
+from Orc import *
+from aip import AipOcr
+
+aipOcr  = AipOcr(APP_ID, API_KEY, SECRET_KEY)
+
 class Utils:
 
 	@staticmethod
@@ -38,16 +43,11 @@ class Utils:
 			print("Position:", elem.center())
 	
 	@staticmethod
-	def test_read_img(d,target):
-
-		def draw_circle(img, pos, circle_radius, color, line_width):
-			cv2.circle(img, pos, circle_radius, color, line_width)
-			cv2.imshow('objDetect', imsrc) 
-			cv2.waitKey(0)
-			cv2.destroyAllWindows()
-
-		if type(d) == uiautomator2.Device:
-			screen = d.screenshot(format="opencv")
+	def find_position(d,target,confidence = 0.8):
+		if type(d) is uiautomator2.Device:
+			imsrc = d.screenshot(format="opencv")
+		elif type(d) is numpy.ndarray:
+			imsrc = d
 		else:
 			Utils.prt("Error (uiautomator2)",mode = 4)
 			return
@@ -57,13 +57,32 @@ class Utils:
 			return
 
 		imobj = ac.imread(target)
+		
+		result = ac.find_template(imsrc, imobj)
+
+		if result['confidence'] > confidence:
+			pos = (int(result['result'][0]),int(result['result'][1]))
+		else:
+			print(result)
+			pos = (-1,-1)
+		return pos
+
+
+	@staticmethod
+	def test_read_img(d,target):
+
+		def draw_circle(img, pos, circle_radius, color, line_width):
+			cv2.circle(img, pos, circle_radius, color, line_width)
+			cv2.imshow('objDetect', imsrc) 
+			cv2.waitKey(0)
+			cv2.destroyAllWindows()
+
 		imsrc = d.screenshot(format="opencv")
-		pos = ac.find_template(imsrc, imobj)
- 
-		circle_center_pos = (int(pos['result'][0]),int(pos['result'][1]))
-		circle_radius = 30
-		color = (255, 0, 0)
-		line_width = 1
+		circle_center_pos = Utils.find_position(imsrc,target)
+		Utils.prt("position: " + str(circle_center_pos) ,mode = 0)
+		circle_radius = 20
+		color = (0, 0, 255)
+		line_width = 2
 		
 		draw_circle(imsrc, circle_center_pos, circle_radius, color, line_width)
 
@@ -115,7 +134,47 @@ class Utils:
 			if r:
 				d.click(random.randint(1,sx), random.randint(1,sy))
 			else:
-				d.click(sx, sy)
+				d.click(sx +r_num(lbound = 3), sy + r_num(lbound = 3))
 			ss(random.randint(1,5) * 0.1)
 		except(Exception):
 			ss()
+
+
+	@staticmethod
+	def test_orc(d):
+		screen = d.screenshot(format="opencv")
+		print( Utils.BdOrc(screen,(700,15,800,40)) )
+
+	'''
+	Baidu Orc
+	'''
+	@staticmethod
+	def BdOrc(screen,area,Accurate = False):
+		# 定义参数变量
+		options = {
+		  'detect_direction': 'true',
+		  'language_type': 'CHN_ENG',
+		  "detect_language" : "true",
+		  "probability" : "false"
+		}
+		x1,y1,x2,y2 = area
+
+		cropped = screen[y1:y2, x1:x2]
+
+		gray = cv2.cvtColor(cropped, cv2.COLOR_BGR2GRAY)
+		
+		cv2.imwrite("cropped.png", gray)
+
+		#with open(filePath, 'rb') as fp:
+        #	return fp.read()
+
+		# 调用通用文字识别接口 get_file_content("cropped.png")
+		result = aipOcr.basicGeneral(gray, options) if not Accurate else aipOcr.basicAccurate(get_file_content("cropped.png"), options)
+		result = result["words_result"]
+		if type(result) is list and len(result) > 0:
+			result = result[0]["words"]
+			return result
+		else:
+			print(result)
+		#os.remove("cropped.png")
+		

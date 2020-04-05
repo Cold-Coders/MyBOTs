@@ -15,6 +15,7 @@ from GUI.GUI_logs import *
 
 from COC.COC_Bot import COC_BOT
 from COC.Func.Others import Utils as U
+from COC.Func.General import General
 
 if not sys.platform == 'win32':
 	import appscript
@@ -31,6 +32,9 @@ class COC_BOT_GUI(tk.Frame):
 		#-------------------Basic Windows--------------------------------------
 		self.window = tk.Tk()
 		tk.Frame.__init__(self, self.window, *args, **kwargs)
+
+		self.init_Func()
+
 		self.build_basic_window()
 		self.build_left_part()
 		self.build_right_part()
@@ -48,6 +52,9 @@ class COC_BOT_GUI(tk.Frame):
 		info_update.start()
 
 		self.window.mainloop()
+
+	def init_Func(self):
+		self._config["General"] = General()
 
 	def build_menu(self):
 		def donothing():
@@ -136,7 +143,10 @@ class COC_BOT_GUI(tk.Frame):
 			U.save_screen(self.d)
 			U.search_imgs()
 		self.test_button[1]['command']= lambda: new_shot()
-		#Identify information
+		#Recognize information
+		self.test_button[2]['command']= lambda: U.test_orc(self.d)
+		#Collect resourse
+		self.test_button[3]['command']= lambda: self._config["General"].collect_resourse(self.d)
 		#Donation test
 
 		#Find test

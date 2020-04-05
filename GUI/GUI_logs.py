@@ -15,7 +15,7 @@ class MyLogUi:
 					bg = bg, fg = fg, height = height)
 		self.st.configure(font='TkFixedFont')
 		self.st.tag_config('INFO', foreground='white')
-		self.st.tag_config('DEBUG', foreground='gray')
+		self.st.tag_config('DEBUG', foreground='green')
 		self.st.tag_config('WARNING', foreground='orange')
 		self.st.tag_config('ERROR', foreground='red')
 		self.st.tag_config('CRITICAL', foreground='red', underline=1)
@@ -65,7 +65,7 @@ def show_log(msg,mode = 1):
 	msg = timeStr + ": " + msg
 	#values = ['DEBUG', 'INFO', 'WARNING', 'ERROR', 'CRITICAL']
 	if mode == 0:
-		logging.debug(msg)
+		logging.log(10,msg)
 	elif mode == 1:
 		logging.info(msg)
 	elif mode == 2:

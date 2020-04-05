@@ -7,7 +7,7 @@ from GUI.GUI_logs import *
 
 from COC.Func.Others import Utils as u
 from COC.Func.Emu_restarter import Emu_restarter as restarter
-
+from COC.Func.General import General
 
 #模拟器分辨需求为 860x732 dpi 160
 class COC_BOT():
@@ -36,7 +36,7 @@ class COC_BOT():
 
 			#打印统计
 			#prt(self._count,title = "统计")
-			ss(10,1, precent = 2)
+			#ss(10,1, precent = 2)
 
 	def Check_profil(self):
 		#If it is not emulator, skip

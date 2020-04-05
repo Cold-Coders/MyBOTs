@@ -19,7 +19,7 @@ def r_color(c1,c2,diff = 8):
 	  return abs(c1[0] - c2[0]) <= diff and abs(c1[1] - c2[1])  <= diff and abs(c1[1] - c2[1]) <= diff
 
 # args[0] 总次数, args[1] 每次间隔多少秒, percent 显示的格式
-def ss(*args,precent = 1):
+def ss(*args,precent = 0):
 	if len(args) == 1 and args[0] > 0:
 		#print("delay",args[0])
 		time.sleep(args[0])
@@ -32,7 +32,9 @@ def ss(*args,precent = 1):
 		for i in range(1,args[0] + 1):
 			time.sleep(args[1])
 			sec = args[1]*args[0]
-			if precent == 1:
+			if percent == 0:
+				print("休眠 {0:f} 秒.".format(sec,prec))
+			elif precent == 1:
 				prec = (i/args[0]*100)
 				print("休眠 {0:f} 秒, {1:.1f} %".format(sec,prec), end="\r")
 			elif precent == 2:
