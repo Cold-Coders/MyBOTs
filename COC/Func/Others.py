@@ -1,14 +1,16 @@
-import time, cv2, os.path
+import time, cv2, os.path ,sys
 import aircv as ac
 import uiautomator2
 import numpy
-from util import *
+import pytesseract
+
+from aip import AipOcr
 
 from GUI.GUI_logs import *
 from CONSTANT import *
-
+from util import *
 from Orc import *
-from aip import AipOcr
+
 
 aipOcr  = AipOcr(APP_ID, API_KEY, SECRET_KEY)
 
@@ -179,3 +181,25 @@ class Utils:
 		else:
 			print("error")
 		
+
+	'''
+    Orc by tesseract
+    '''
+    @staticmethod
+    def orcbyArea(screen,area):
+    	x1,y1,x2,y2 = area
+
+        cropped = screen[y1:y2, x1:x2]
+        #cv2.imwrite('out.jpg', cropped)
+        gray = cv2.cvtColor(cropped, cv2.COLOR_BGR2GRAY)
+        
+        #cv2.imwrite("cropped.png", gray) Image.open("cropped.png")
+        
+        tessdata_dir_config = '--tessdata-dir "C:\\Program Files (x86)\\Tesseract-OCR\\tessdata"'
+        if sys.platform == 'win32':
+            text = pytesseract.image_to_string(gray, config=tessdata_dir_config)
+        else:
+            text = pytesseract.image_to_string(gray)
+        #os.remove("cropped.png")
+        #print("<"*5,text)
+        return text

@@ -5,3 +5,4 @@ Pillow==7.0.0
 matplotlib==3.2.1
 aircv==1.4.6
 baidu-aip
+pytesseract

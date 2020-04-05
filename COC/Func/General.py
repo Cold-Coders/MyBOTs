@@ -6,8 +6,9 @@ from GUI.GUI_logs import *
 from COC.Func.Others import Utils as U
 
 class General:
-	def __init__(self, d):
+	def __init__(self, d , orc):
 		self.d = d
+		self.orc = orc
 		h,w = self.d.window_size()
 		self.resolution = str(w) + "x" + str(h)
 		path = 'COC/recognition/' + self.resolution + "/Resource/"
@@ -22,6 +23,7 @@ class General:
 				  
 				  }
 		}
+
 
 	def collect_resourse(self,d):
 
@@ -49,8 +51,15 @@ class General:
 			U.prt("Didn't find gold" ,mode = 3)
 
 	def Update_info(self,d):
+		def orc(screen,area, Accurate = False):
+			#baidu
+			if self.orc == 1:
+				U.BdOrc(screen, area , Accurate = Accurate)
+			elif self.orc == 2:
+				U.orcbyArea(screen, area )
 		screen = d.screenshot(format="opencv")
+
 		gold_Area = self.Area[self.resolution]["gold"]
-		gold = U.BdOrc(screen, gold_Area , Accurate = True)
+		gold = orc(screen, gold_Area)
 		U.prt( "Gold " + gold,mode = 2)
 		return gold
