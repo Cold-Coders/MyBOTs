@@ -31,33 +31,33 @@ class Emu_restarter:
 			}
 
 			if emu not in cmds:
-				u.prt(lang["tips"]['not_support_emu'])
+				u.prt(lang["tips"]['not_support_emu'], mode = 3)
 				exit()
+
+			#before restart, save the activity name for later use
+			acty = u.current_act(config['d'])
 
 			for cmd in cmds[emu]:
 				u.prt(cmd)
 				os.popen(cmd)
 				ss(2)
 
-
-			u.prt(lang["tips"]["re_connect_emu"])
+			u.prt(lang["tips"]["re_connect_emu"], mode = 2)
 			#wait 10s until start 
 			messagebox.showinfo(lang["titles"]["restart"], lang["tips"]["re_connect_emu"])
-			
-
 
 			#re connect adb
 			EMULATOR(config)
 
 			DEVICE(config)
 
-			u.prt(lang["tips"]["re_connect_u2"])
+			u.prt(lang["tips"]["re_connect_u2"], mode = 2)
 			#re-connect uiautomator2
 			config['d'] = u2.connect( config['device'] )
 
-			u.prt(lang["tips"]["re_start_game"])
+			u.prt(lang["tips"]["re_start_game"], mode = 2)
 			#restart game
-			config['d'].app_start(config['game'])
+			config['d'].app_start(config['game'],acty)
 			#dnconsole.exe quit --index 0
 			#dnconsole.exe modify --index 0 --resolution 860,732,160
 			#dnconsole.exe launch --index 0

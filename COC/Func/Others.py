@@ -1,8 +1,8 @@
-import time
+import time, cv2, os.path
 import uiautomator2
-import cv2
 from util import *
 from GUI.GUI_logs import *
+
 
 #其他操作
 class Utils:
@@ -36,33 +36,38 @@ class Utils:
 			# Coordinate eg: (100, 200)
 			print("Position:", elem.center())
 
+	# save_screen(d) - one file as screenshot.png
+	# save_scree(d, filename )  save screenshot as filename
 	@staticmethod
-	def save_screen(d,*args):
+	def save_screen(d,gray = False,*args):
 		if type(d) == uiautomator2.Device:
 			screen = d.screenshot(format="opencv")
 		else:
 			screen = d
+
 		n = len(args)
+
+		#if gray is enable, make it as gray
+		if gray:
+			screen = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
+
 		if n == 1 and (type(args[0]) is int or type(args[0]) is str):
 			cv2.imwrite(str(args[0]) + '.png', screen)
 			return
 
-		if n >= 1 and isinstance(args[0], AREA):
-			screen = screen[args[0].y1:args[0].y2, args[0].x1:args[0].x2]
-			if n >= 2 and args[1] == 'g':
-				gray = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
-				if n >= 3:
-					cv2.imwrite('g_' + str(args[2]) + '.png', gray)  
-				else:
-					cv2.imwrite('g.png', gray)
+		count = 1
+		filename = 'screenshot'
+		while os.path.isfile(filename + str(count) + ".png"):
+			count += 1
 
-		cv2.imwrite('screenshot.png', screen)
+		cv2.imwrite(filename + str(count) + ".png" , screen)
+		Utils.prt("Screenshot saved. file: " + filename + str(count) + ".png",mode = 2)
 
 	@staticmethod
 	def zoom_out(d):
 		for i in range(r_num(lbound = 3)):
 			d(className="android.view.View").pinch_in(percent=60, steps=10)
-		show_log("Zoom_out")
+		Utils.prt("Zoom_out",mode = 2)
 
 	@staticmethod
 	def current_app(d):

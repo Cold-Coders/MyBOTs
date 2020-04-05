@@ -13,18 +13,22 @@ class DEVICE(tk.Frame):
 		# ADB find connect devices
 		self.devices = self.get_devices()
 
-		n = len(self.devices)
-
-		if 'emu' not in self.config.keys() and n == 0:
+		if 'emu' not in self.config.keys() and len(self.devices) == 0:
 			messagebox.showinfo("Didn't find a device", "Please enable the development mode for Android \n or using an emulator")
 			exit()
 
 		#check if emu connected adb
 		self.connect_adb()
 		
+		n = len(self.devices)
 
-		if not n > 0:
+		if not len(self.devices) > 0:
 			messagebox.showinfo("Didn't find a device", "Please enable the development mode for Android \n or using an emulator")
+			if sys.platform == 'win32':
+				killadb = 'adb\\adb kill-server'
+			else:
+				killadb = 'adb/adb kill-server'
+			os.popen(killadb)
 			exit()
 
 		elif n == 1:
@@ -93,14 +97,15 @@ class DEVICE(tk.Frame):
 			
 		#re-find devices
 		self.devices = self.get_devices()
+
 		
 	def get_devices(self):
-		#restart = 'adb/adb kill-server && adb/adb start-server'
-		#os.system(restart)
 		if sys.platform == 'win32':
 			get_devices = 'adb\\adb devices'
+			#restart = 'adb\\adb kill-server && adb\\adb start-server'
 		else:
 			get_devices = 'adb/adb devices'
+			#restart = 'adb/adb kill-server && adb/adb start-server'
 
 		stream = os.popen(get_devices)
 
@@ -111,7 +116,6 @@ class DEVICE(tk.Frame):
 
 		#port=os.system('netstat -aon|findstr "555"')#25端口号
 		#out=os.system('tasklist|findstr "3316"')#3316进是程
-
 		print("Found Device:")
 		devices = list()
 		for i in range(0,len(devices_adb),2):

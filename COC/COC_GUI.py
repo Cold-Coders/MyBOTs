@@ -114,10 +114,16 @@ class COC_BOT_GUI(tk.Frame):
 			btn = Button(self.right_part, text = self.lang['test_name'][i],
 						anchor = "center" , highlightcolor = "red")
 			btn.configure(width = 14, activebackground = "red", relief = FLAT)
-			self.right_part.create_window(30, 560 + i*40, anchor= NW , window=btn)
+			self.right_part.create_window(30 + (i%3*120) , 560 + (i//3) *40, anchor= NW , window=btn)
 			self.test_button.append(btn)
 
+		#Zoom out
 		self.test_button[0]['command']= lambda: U.zoom_out(self.d)
+		#Screen shot
+		self.test_button[1]['command']= lambda: U.save_screen(self.d)
+		#Identify information
+		#Donation test
+
 
 	def set_function(self):
 		self.func = list()

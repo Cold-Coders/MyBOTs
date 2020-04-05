@@ -69,7 +69,7 @@ def show_log(msg,mode = 1):
 	elif mode == 1:
 		logging.info(msg)
 	elif mode == 2:
-		logging.warm(msg)
+		logging.warning(msg)
 	elif mode == 3:
 		logging.error(msg)
 	elif mode == 4:
