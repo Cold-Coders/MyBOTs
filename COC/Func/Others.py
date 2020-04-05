@@ -143,7 +143,7 @@ class Utils:
 	@staticmethod
 	def test_orc(d):
 		screen = d.screenshot(format="opencv")
-		print( Utils.BdOrc(screen,(700,15,800,40)) )
+		print( Utils.BdOrc(screen,(700,20,810,40) , Accurate = True) )
 
 	'''
 	Baidu Orc
@@ -165,16 +165,22 @@ class Utils:
 		
 		cv2.imwrite("cropped.png", gray)
 
-		#with open(filePath, 'rb') as fp:
-        #	return fp.read()
+		def get_file_content(filePath):
+			with open(filePath, 'rb') as fp:
+				return fp.read()
 
 		# 调用通用文字识别接口 get_file_content("cropped.png")
-		result = aipOcr.basicGeneral(gray, options) if not Accurate else aipOcr.basicAccurate(get_file_content("cropped.png"), options)
-		result = result["words_result"]
-		if type(result) is list and len(result) > 0:
-			result = result[0]["words"]
+		result = aipOcr.basicGeneral(get_file_content("cropped.png"), options) if not Accurate else aipOcr.basicAccurate(get_file_content("cropped.png"), options)
+		
+		#os.remove("cropped.png")
+
+		print(result)
+
+		if "words_result" in result:
+			result = result["words_result"]
+			if type(result) is list and len(result) > 0:
+				result = result[0]["words"]
 			return result
 		else:
-			print(result)
-		#os.remove("cropped.png")
+			print("error")
 		

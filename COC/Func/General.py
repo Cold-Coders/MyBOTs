@@ -6,11 +6,16 @@ from GUI.GUI_logs import *
 from COC.Func.Others import Utils as U
 
 class General:
-	def __init__(self):
+	def __init__(self,emu):
 		path = 'COC/recognition/Resource/'
 		self.elixir = [ path + "elixir_8x8.png"]
 		self.gold   = [ path + "gold_8x8.png",
 						path + "gold_18x18.png"]
+
+		if emu:
+			self.Area = {
+				"gold": (700,20,810,40)
+			}
 
 	def collect_resourse(self,d):
 
@@ -36,3 +41,7 @@ class General:
 				break
 		if tag:
 			U.prt("Didn't find gold" ,mode = 3)
+
+	def Updated_info(self,d):
+		screen = d.screenshot(format="opencv")
+		print( U.BdOrc(screen,(700,20,810,40) , Accurate = True) )

@@ -54,7 +54,7 @@ class COC_BOT_GUI(tk.Frame):
 		self.window.mainloop()
 
 	def init_Func(self):
-		self._config["General"] = General()
+		self._config["General"] = General(True if "emu" in self._config else False)
 
 	def build_menu(self):
 		def donothing():
@@ -141,7 +141,8 @@ class COC_BOT_GUI(tk.Frame):
 		#Screen shot
 		def new_shot():
 			U.save_screen(self.d)
-			U.search_imgs()
+			search_imgs()
+
 		self.test_button[1]['command']= lambda: new_shot()
 		#Recognize information
 		self.test_button[2]['command']= lambda: U.test_orc(self.d)
