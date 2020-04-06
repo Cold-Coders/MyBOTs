@@ -5,6 +5,7 @@ import numpy
 import pytesseract
 
 from aip import AipOcr
+from PIL import Image
 
 from GUI.GUI_logs import *
 from CONSTANT import *
@@ -114,6 +115,10 @@ class Utils:
 			count += 1
 
 		cv2.imwrite(filename + str(count) + ".png" , screen)
+
+		gray = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
+		cv2.imwrite(filename + str(count) + "_g.png" , gray)
+
 		Utils.prt("Screenshot saved. file: " + filename + str(count) + ".png",mode = 2)
 		
 
@@ -190,16 +195,20 @@ class Utils:
 		x1,y1,x2,y2 = area
 
 		cropped = screen[y1:y2, x1:x2]
-		#cv2.imwrite('out.jpg', cropped)
+		cv2.imwrite('cropped.jpg', cropped)
+		
 		gray = cv2.cvtColor(cropped, cv2.COLOR_BGR2GRAY)
-		
-		#cv2.imwrite("cropped.png", gray) Image.open("cropped.png")
-		
-		tessdata_dir_config = '--tessdata-dir "C:\\Program Files (x86)\\Tesseract-OCR\\tessdata"'
+		cv2.imwrite("cropped.png", gray) 
+
+		#Image.open("cropped.png")
+		#Image.fromarray(gray)
+		tessdata_dir_config = '--tessdata-dir "C:\\Program Files\\Tesseract-OCR\\tessdata"'
 		if sys.platform == 'win32':
-			text = pytesseract.image_to_string(gray, config=tessdata_dir_config)
+			text = pytesseract.image_to_string(Image.fromarray(gray), config=tessdata_dir_config , lang='chi_sim')
 		else:
-			text = pytesseract.image_to_string(gray)
+			text = pytesseract.image_to_string(Image.fromarray(gray), lang='chi_sim')
+		
 		#os.remove("cropped.png")
-		#print("<"*5,text)
+
+		print("tesseract :", text)
 		return text

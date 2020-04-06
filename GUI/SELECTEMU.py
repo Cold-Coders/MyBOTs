@@ -87,6 +87,6 @@ class EMULATOR(tk.Frame):
 						devices.append([Emulator[process_name],pid])
 		except Exception as e:
 			raise e
-			exit()
+			#exit()
 
 		return devices

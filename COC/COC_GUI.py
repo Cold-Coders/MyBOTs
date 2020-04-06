@@ -54,7 +54,7 @@ class COC_BOT_GUI(tk.Frame):
 		self.window.mainloop()
 
 	def init_Func(self):
-		self._config["General"] = General(self.d)
+		self._config["General"] = General(self.d,self.config['orc'])
 
 	def build_menu(self):
 		def donothing():
@@ -136,7 +136,7 @@ class COC_BOT_GUI(tk.Frame):
 				U.prt("find Image" + str(count),mode = 4)
 				count += 1
 			self.testfind = ttk.Combobox(self.right_part,values=self.img_list)
-	
+
 		#Zoom out
 		self.test_button[0]['command']= lambda: U.zoom_out(self.d)
 		#Screen shot

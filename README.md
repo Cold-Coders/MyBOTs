@@ -12,6 +12,7 @@
 - [Appium](https://github.com/appium/appium-desktop/releases/tag/v1.15.1)
 - [uiautomator2](https://github.com/openatx/uiautomator2)
 - [uiautomatorviewer] ...\Android\Sdk\tools\bin\uiautomatorviewer
+- [tesseract-v5.0.0](https://digi.bib.uni-mannheim.de/tesseract/tesseract-ocr-w64-setup-v5.0.0-alpha.20200328.exe)
 ```bash
 pip install Appium-Python-Client
 pip install pytest

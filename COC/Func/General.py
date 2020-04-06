@@ -19,7 +19,7 @@ class General:
 
 		self.Area = {
 		"860x732":{
-					"gold": (700,20,810,40)
+					"gold": (700,20,800,40)
 				  
 				  }
 		}
@@ -61,5 +61,5 @@ class General:
 
 		gold_Area = self.Area[self.resolution]["gold"]
 		gold = orc(screen, gold_Area)
-		U.prt( "Gold " + gold,mode = 2)
-		return gold
+		#U.prt( "Gold " + gold,mode = 2)
+		return 1
