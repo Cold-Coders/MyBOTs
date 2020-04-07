@@ -30,7 +30,8 @@
 		"error": "错误",
 		"restart": "重启",
 		"find":"查找",
-		"refresh":"刷新列表"
+		"refresh":"刷新列表",
+		"revert_test": "Orc处理"
 	}
 
 }

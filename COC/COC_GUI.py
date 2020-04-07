@@ -135,7 +135,9 @@ class COC_BOT_GUI(tk.Frame):
 				self.img_list.append(filename + str(count) + ".png")
 				U.prt("find Image" + str(count),mode = 4)
 				count += 1
+
 			self.testfind = ttk.Combobox(self.right_part,values=self.img_list)
+			self.right_part.create_window(30 , 560 + 4 *40 + 10, anchor= NW , window=self.testfind)
 
 		#Zoom out
 		self.test_button[0]['command']= lambda: U.zoom_out(self.d)
@@ -148,7 +150,9 @@ class COC_BOT_GUI(tk.Frame):
 		self.test_button[1]['command']= lambda: new_shot()
 		#Recognize information
 		def updateinfo():
-			self.info_text[0]['text'] = self._config["General"].Update_info(self.d)
+			info = self._config["General"].Update_info(self.d)
+			for i in range(len(info)):
+				self.info_text[i]['text'] = info[i]
 
 		self.test_button[2]['command']= lambda: updateinfo()
 		#Collect resourse
@@ -157,18 +161,27 @@ class COC_BOT_GUI(tk.Frame):
 
 		#Find test
 		search_imgs()
-		self.testfind = ttk.Combobox(self.right_part,values=self.img_list)
-		self.right_part.create_window(30 , 560 + 4 *40 + 10, anchor= NW , window=self.testfind)
+		#self.testfind = ttk.Combobox(self.right_part,values=self.img_list)
+		#self.right_part.create_window(30 , 560 + 4 *40 + 10, anchor= NW , window=self.testfind)
 
 		self.find = Button(self.right_part, text = self.lang['titles']['find'],
 						anchor = "center" , highlightcolor = "red",
 						command = lambda: U.test_read_img(self.d, self.testfind.get()))
 		self.right_part.create_window(30 , 560 + 5 *40, anchor= NW , window=self.find)
 
+		# 刷新查找列表
 		self.refresh = Button(self.right_part, text = self.lang['titles']['refresh'],
 						anchor = "center" , highlightcolor = "red",
 						command = lambda: search_imgs())
-		self.right_part.create_window(80 , 560 + 5 *40, anchor= NW , window=self.refresh)
+		self.right_part.create_window(75 , 560 + 5 *40, anchor= NW , window=self.refresh)
+
+		#将识别的图片进行处理,文件名与截图前面一直 末尾为_g
+		self.pre_orc = Button(self.right_part, text = self.lang['titles']['revert_test'],
+						anchor = "center" , highlightcolor = "red",
+						command = lambda: U.revert_test() )
+		self.right_part.create_window(140 , 560 + 5 *40, anchor= NW , window=self.pre_orc)
+
+
 
 
 	def set_function(self):

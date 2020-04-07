@@ -46,5 +46,24 @@ pip list --outdated | finstr 'uiautomator2'
 python3 -m venv bots
 . bots/bin/activate
 pip install -r requirements.txt
+
 ```
 
+#### 字体库制作
+```
+tif文件命名格式[lang].[fontname].exp[num].tif
+tif命名规则：lang为语言名称，fontname为字体名称，num为图片序号；
+比如训练自定义字库 testlang、字体名normal，则命名为testlang.normal.exp0.tif
+tesseract tif文件名.tif -l 字体库 box文件名 makebox
+
+tif文件名与box文件名保持一致
+tesseract coc_emu_num.normal.exp0.tif coc_emu_num.normal.exp0 –l chi_sim batch.nochop makebox
+
+在cmd窗口中执行echo normal 0 0 0 0 0 >font_properties
+
+5.使用tesseract生成coc_emu_num.normal.exp0.tr训练文件
+
+在终端上执行以下命令：
+tesseract coc_emu_num.normal.exp0.tif coc_emu_num.normal.exp0 nobatch box.train
+tesseract coc_emu_num.normal.exp0.tif coc_emu_num.normal.exp0 -l chi_sim nobatch box.train
+```

@@ -19,7 +19,8 @@ class General:
 
 		self.Area = {
 		"860x732":{
-					"gold": (700,20,800,40)
+					"gold": (700,20,800,40),
+					"elixir": (700,70,800,90)
 				  
 				  }
 		}
@@ -51,15 +52,32 @@ class General:
 			U.prt("Didn't find gold" ,mode = 3)
 
 	def Update_info(self,d):
+		
 		def orc(screen,area, Accurate = False):
+			text = ""
 			#baidu
 			if self.orc == 1:
-				U.BdOrc(screen, area , Accurate = Accurate)
+				text = U.BdOrc(screen, area , Accurate = Accurate)
 			elif self.orc == 2:
-				U.orcbyArea(screen, area )
+				text = U.orcbyArea(screen, area )
+			
+			new_text = ""
+			for word in text:
+				if word in "1234567890":
+					new_text += word
+			return new_text
+
 		screen = d.screenshot(format="opencv")
 
 		gold_Area = self.Area[self.resolution]["gold"]
 		gold = orc(screen, gold_Area)
-		#U.prt( "Gold " + gold,mode = 2)
-		return 1
+		
+
+		elixir_Area = self.Area[self.resolution]["elixir"]
+		elixir = orc(screen, elixir_Area)
+
+		U.prt( "Gold " + gold + " Elixir " + elixir,mode = 2)
+		if gold.isdigit() and elixir.isdigit():
+			return ( int(gold) , int(elixir) )
+		else:
+			return (-1,-1)

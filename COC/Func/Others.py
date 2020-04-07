@@ -1,7 +1,7 @@
 import time, cv2, os.path ,sys
 import aircv as ac
 import uiautomator2
-import numpy
+import numpy as np
 import pytesseract
 
 from aip import AipOcr
@@ -50,7 +50,7 @@ class Utils:
 	def find_position(d,target,confidence = 0.8):
 		if type(d) is uiautomator2.Device:
 			imsrc = d.screenshot(format="opencv")
-		elif type(d) is numpy.ndarray:
+		elif type(d) is np.ndarray:
 			imsrc = d
 		else:
 			Utils.prt("Error (uiautomator2)",mode = 4)
@@ -117,7 +117,7 @@ class Utils:
 		cv2.imwrite(filename + str(count) + ".png" , screen)
 
 		gray = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
-		cv2.imwrite(filename + str(count) + "_g.png" , gray)
+		cv2.imwrite(filename + "_g" + str(count) + ".png" , gray)
 
 		Utils.prt("Screenshot saved. file: " + filename + str(count) + ".png",mode = 2)
 		
@@ -184,31 +184,57 @@ class Utils:
 				result = result[0]["words"]
 			return result
 		else:
-			print("error")
+			print("baidu orc error")
 		
+	@staticmethod
+	def revert_test():
+		count = 1
+		filename = 'screenshot_g'
+		while os.path.isfile(filename + str(count) + ".png"):
+			img = cv2.imread(filename + str(count) + ".png")
+			gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+			cv2.imwrite(filename + str(count) + ".png" ,Utils.revert_white_to_black(gray) )
+			Utils.prt("已将" + filename + str(count) + "处理为ORC图片",mode = 4)
+			count += 1
 
+	@staticmethod
+	def revert_white_to_black(gray):
+		h = gray.shape[0]
+		w = gray.shape[1]
+		dst = np.zeros((h,w),np.uint8)
+
+		for i in range(0,h):
+		    for j in range(0,w):
+		        if gray[i,j] > 250:
+		        	dst[i,j] =  0
+		        else:
+		        	dst[i,j] = 255
+
+		cv2.imwrite('cropped.png', dst)
+		return dst
 	'''
 	Orc by tesseract
 	'''
 	@staticmethod
-	def orcbyArea(screen,area):
+	def orcbyArea(screen,area,lang = "eng"):
 		x1,y1,x2,y2 = area
 
 		cropped = screen[y1:y2, x1:x2]
-		cv2.imwrite('cropped.jpg', cropped)
+		#cv2.imwrite('cropped.png', cropped)
 		
 		gray = cv2.cvtColor(cropped, cv2.COLOR_BGR2GRAY)
-		cv2.imwrite("cropped.png", gray) 
 
-		#Image.open("cropped.png")
+		recogize = Image.fromarray(Utils.revert_white_to_black(gray))
+		
+		#Image.open("cropped2.png")
 		#Image.fromarray(gray)
 		tessdata_dir_config = '--tessdata-dir "C:\\Program Files\\Tesseract-OCR\\tessdata"'
 		if sys.platform == 'win32':
-			text = pytesseract.image_to_string(Image.fromarray(gray), config=tessdata_dir_config , lang='chi_sim')
+			text = pytesseract.image_to_string(recogize, config=tessdata_dir_config , lang=lang)
 		else:
-			text = pytesseract.image_to_string(Image.fromarray(gray), lang='chi_sim')
+			text = pytesseract.image_to_string(recogize, lang=lang)
 		
 		#os.remove("cropped.png")
-
+		
 		print("tesseract :", text)
 		return text
