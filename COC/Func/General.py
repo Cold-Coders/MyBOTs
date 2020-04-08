@@ -46,8 +46,8 @@ class General:
 
 		Area = {
 					"860x732":{
-								"gold": (700,20,800,40),
-								"elixir": (700,70,800,90)
+								"gold":   (700,20,805,40),
+								"elixir": (700,70,805,90)
 							  }
 		}
 		self.Area = Area[resolution]
