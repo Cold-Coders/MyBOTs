@@ -54,7 +54,11 @@ class COC_BOT_GUI(tk.Frame):
 		self.window.mainloop()
 
 	def init_Func(self):
-		self._config["General"] = General(self.d,self.config['orc'])
+		h,w = self.d.window_size()
+		resolution = str(w) + "x" + str(h)
+		self._config["General"] = General(self.d,self.config['orc'],resolution)
+		self._config["Upgrade"] = Upgrade(self.d,self.config['lang'],resolution)
+
 
 	def build_menu(self):
 		def donothing():

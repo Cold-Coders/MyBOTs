@@ -6,41 +6,60 @@ from GUI.GUI_logs import *
 from COC.Func.Others import Utils as U
 
 class General:
-	def __init__(self, d , orc):
+	def __init__(self, d , orc , resolution):
 		self.d = d
 		self.orc = orc
-		h,w = self.d.window_size()
-		self.resolution = str(w) + "x" + str(h)
-		path = 'COC/recognition/' + self.resolution + "/Resource/"
+		
+		path = 'COC/recognition/' + resolution + "/Resource/"
 
-		self.elixir = [ path + "elixir_8x8.png"]
-		self.gold   = [ path + "gold_8x8.png",
-						path + "gold_18x18.png"]
+		elixir = {
+					"860x732": [ path + "elixir_8x8.png"]
+				 }
 
-		self.obstacle = [ path + "Gem_10x9.png",
-						  path + "Mushroom_9x9.png",
-						  path + "Stone_9x7.png",
-						  path + "Stone_11x9.png",
-						  path + "Stone_14x15.png",
-						  path + "Tree_12x9.png",
-						  path + "Tree1_16x14.png",
-						  path + "Tree2_16x18.png",
-						  path + "Trunk_7x14.png",
-						  path + "Trunk_11x9.png"
-						]
+		self.elixir = elixir[resolution]
 
-		self.Area = {
+		gold   = {
+						"860x732":	[ path + "gold_8x8.png",
+									path + "gold_18x18.png"]
+					  }
+		self.gold = gold[resolution]
+
+
+		obstacle = {
+						"860x732":	
+							[ path + "Gem_10x9.png",
+							  path + "Mushroom_9x9.png",
+							  path + "Stone_9x7.png",
+							  path + "Stone_11x9.png",
+							  path + "Stone_14x15.png",
+							  path + "Tree_12x9.png",
+							  path + "Tree1_16x14.png",
+							  path + "Tree2_16x18.png",
+							  path + "Trunk_7x14.png",
+							  path + "Trunk_11x9.png"
+							]
+
+						}
+		self.obstacle = obstacle[resolution]
+
+
+
+		Area = {
 					"860x732":{
 								"gold": (700,20,800,40),
 								"elixir": (700,70,800,90)
 							  }
 		}
+		self.Area = Area[resolution]
 
-		self.buttons = {
+
+		buttons = {
 					"860x732":{
 								"remove_obstacle": (427,630)
 							  }
 		}
+		self.buttons = buttons[resolution]
+
 
 
 	def collect_resourse(self,d):
@@ -86,11 +105,11 @@ class General:
 
 		screen = d.screenshot(format="opencv")
 
-		gold_Area = self.Area[self.resolution]["gold"]
+		gold_Area = self.Area["gold"]
 		gold = orc(screen, gold_Area)
 		
 
-		elixir_Area = self.Area[self.resolution]["elixir"]
+		elixir_Area = self.Area["elixir"]
 		elixir = orc(screen, elixir_Area)
 
 		U.prt( "Gold " + gold + " Elixir " + elixir,mode = 2)
@@ -101,16 +120,19 @@ class General:
 
 	def remove_single_obstacle(self,d):
 		tag = True
-		rx,ry = self.buttons[self.resolution]["remove_obstacle"]
+		rx,ry = self.buttons["remove_obstacle"]
 
 		for img in self.obstacle:
 			x,y = U.find_position(d,img,confidence = 0.85)
 			if x != -1:
 				U.tap(d,x,y)
 				U.prt("remove obstacle at (" + str(x) + "," + str(y) + ")" ,mode = 1)
-				
+				#if it enough resourse to remove
 				U.tap(d,rx,ry)
 				tag = False
 				break
+				#else: cancel
+
+				
 		if tag:
-			U.prt("Didn't find any obstacle" ,mode = 3)
+			U.prt("Didn't find any removable obstacle" ,mode = 3)

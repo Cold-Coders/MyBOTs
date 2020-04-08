@@ -1,7 +1,46 @@
+import aircv as ac
+import uiautomator2
+from util import *
+
+from GUI.GUI_logs import *
+from COC.Func.Others import Utils as U
+
 class Upgrade:
 
-	def __init__(self):
+	def __init__(self, d , lang, resolution):
+		self.d = d
+		path = 'COC/recognition/' + self.resolution + "/Upgrade/"
+
+		suggests = {
+					"860x732":{
+						"eng" : path + "suggest_eng.png",
+						"chn" : path + "suggest_chn.png"
+					}
+		}
+
+		Area = {
+					"860x732":{
+								"worker": (700,20,800,40),
+								"wokring": (111,111,111,11),
+							  }
+		}
+
+		buttons = {
+					"860x732":{
+								"worker" :  (330,30),
+								"upgrade1": (427,630),
+								"upgrade2":	(438,530)
+							  }
+		}
+
+	def check_Worker(self):
+		pass	
+
+	def Suggest_upgrade(self):
 		pass
 
-	def init(self,d):
-		self.d = d
+	def is_enough(self):
+		pass
+		#always has the last zero
+		#simple to check if the zero is red or white
+
