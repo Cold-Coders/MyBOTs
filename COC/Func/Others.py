@@ -64,10 +64,10 @@ class Utils:
 		
 		result = ac.find_template(imsrc, imobj)
 
+		print(result)
 		if result['confidence'] > confidence:
 			pos = (int(result['result'][0]),int(result['result'][1]))
 		else:
-			print(result)
 			pos = (-1,-1)
 		return pos
 

@@ -157,7 +157,8 @@ class COC_BOT_GUI(tk.Frame):
 		self.test_button[2]['command']= lambda: updateinfo()
 		#Collect resourse
 		self.test_button[3]['command']= lambda: self._config["General"].collect_resourse(self.d)
-		#Donation test
+		#Remove obstacle once
+		self.test_button[4]['command']= lambda: self._config["General"].remove_single_obstacle(self.d)
 
 		#Find test
 		search_imgs()
