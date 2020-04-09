@@ -7,6 +7,7 @@ from GUI.SELECTGAME import SELECTGAME
 
 from COC.COC_GUI import COC_BOT_GUI
 
+from util import *
 
 if __name__ == "__main__":
 	config = {}
@@ -16,6 +17,8 @@ if __name__ == "__main__":
 	# select for correct emulator
 	EMULATOR(config)
 	
+	prt(config)
+
 	# select a device
 	DEVICE(config)
 	

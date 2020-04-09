@@ -127,9 +127,17 @@ class Utils:
 
 	@staticmethod
 	def zoom_out(d):
-		for i in range(r_num(lbound = 3)):
-			d(className= VIEWVIEW).pinch_in(percent=60, steps=10)
-		Utils.prt("Zoom_out",mode = 2)
+		try:
+			for i in range(r_num(lbound = 3)):
+				d(className= VIEWVIEW).pinch_in(percent=60, steps=10)
+			Utils.prt("Zoom_out",mode = 2)
+		
+		except Exception as e:
+			#raise e
+			d.toast.show("Hello world")
+			xml = d.dump_hierarchy()
+			prt(xml)
+		
 
 	@staticmethod
 	def current_app(d):

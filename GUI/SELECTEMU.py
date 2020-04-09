@@ -73,7 +73,12 @@ class EMULATOR(tk.Frame):
 		try:
 			for pid in pids:
 				p = psutil.Process(pid)# get process name according to pid
-				process_name = p.name()
+				try:
+					process_name = p.name()
+				except Exception as e:
+					#raise e
+					continue
+
 				if process_name in Emulator.keys():
 					if sys.platform == 'win32':
 						process_path = p.exe()

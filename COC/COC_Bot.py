@@ -6,7 +6,6 @@ from CONSTANT import *
 from GUI.GUI_logs import *
 
 from COC.Func.Others import Utils as u
-from COC.Func.Emu_restarter import Emu_restarter as restarter
 from COC.Func.General import General
 
 #模拟器分辨需求为 860x732 dpi 160
@@ -23,8 +22,6 @@ class COC_BOT():
 		prt(self._config,title = "配置信息")
 		u.prt("机器信息",self.d.info)
 
-		self.Check_profil()
-
 		self._app = config['game']
 		self._count = dict()
 
@@ -37,23 +34,6 @@ class COC_BOT():
 			#打印统计
 			#prt(self._count,title = "统计")
 			#ss(10,1, precent = 2)
-
-	def Check_profil(self):
-		#If it is not emulator, skip
-		if 'emu' not in self._config:
-			return
-
-		height,width = self.d.window_size()
-		if height != 732 and width != 860:
-			u.prt(self._lang["tips"]["resolution_error"],mode = 3)
-			reopen = messagebox.askyesno(self._lang["titles"]["error"], self._lang["tips"]["resolution_error"])
-			if reopen:
-				restarter.Emu(self._config,self._lang)
-			else:
-				u.prt(self._lang["tips"]["close_bot"],mode = 3)
-				ss(5)
-				self._gui.window.destroy()
-				exit()
 
 
 	def Launch_app(self):

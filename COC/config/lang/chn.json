@@ -19,7 +19,7 @@
 				 "累计掠夺黑水"
 				],
 	"tips" : {
-		"resolution_error": "模拟器分辨率不正确,请设置为860x832 dpi-160",
+		"resolution_error": "模拟器分辨率不正确,请设置为860x732 dpi-160",
 		"close_bot":"当前模式不支持,机器人在5秒后关闭",
 		"re_connect_emu":"模拟器重新启动 完成 后点击重新连接",
 		"not_support_emu":"当前模式不支持 请手动调整",

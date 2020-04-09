@@ -11,7 +11,10 @@ class Emu_restarter:
 
 	@staticmethod
 	def Emu(config,lang):
-		if sys.platform == 'win32':
+		if not sys.platform == 'win32':
+			messagebox.showinfo(lang["titles"]["restart"], lang["tips"]["not_support_emu"])
+			exit()
+		else:
 			emu = config[ "emu" ]
 			path = config['path']
 
@@ -32,6 +35,7 @@ class Emu_restarter:
 
 			if emu not in cmds:
 				u.prt(lang["tips"]['not_support_emu'], mode = 3)
+				messagebox.showinfo(lang["titles"]["restart"], lang["tips"]["not_support_emu"])
 				exit()
 
 			#before restart, save the activity name for later use

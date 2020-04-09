@@ -17,6 +17,8 @@ from COC.COC_Bot import COC_BOT
 from COC.Func.Others import Utils as U
 from COC.Func.General import General
 from COC.Func.Upgrade import Upgrade
+from COC.Func.Emu_restarter import Emu_restarter as restarter
+
 
 if not sys.platform == 'win32':
 	import appscript
@@ -34,6 +36,7 @@ class COC_BOT_GUI(tk.Frame):
 		self.window = tk.Tk()
 		tk.Frame.__init__(self, self.window, *args, **kwargs)
 
+		self.check_resolution()
 		self.init_Func()
 
 		self.build_basic_window()
@@ -59,6 +62,23 @@ class COC_BOT_GUI(tk.Frame):
 		resolution = str(w) + "x" + str(h)
 		self._config["General"] = General(self.d,self.config['orc'],resolution)
 		self._config["Upgrade"] = Upgrade(self.d,self.config['lang'],resolution)
+
+	def check_resolution(self):
+		#If it is not emulator, skip
+		if 'emu' not in self._config:
+			return
+
+		height,width = self.d.window_size()
+		if height != 732 and width != 860:
+			U.prt(self.lang["tips"]["resolution_error"],mode = 3)
+			reopen = messagebox.askyesno(self.lang["titles"]["error"], self.lang["tips"]["resolution_error"])
+			if reopen:
+				restarter.Emu(self._config,self.lang)
+			else:
+				u.prt(self.lang["tips"]["close_bot"],mode = 3)
+				ss(5)
+				self.window.destroy()
+				exit()
 
 
 	def build_menu(self):
