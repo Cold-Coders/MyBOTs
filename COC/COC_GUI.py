@@ -16,6 +16,7 @@ from GUI.GUI_logs import *
 from COC.COC_Bot import COC_BOT
 from COC.Func.Others import Utils as U
 from COC.Func.General import General
+from COC.Func.Upgrade import Upgrade
 
 if not sys.platform == 'win32':
 	import appscript
