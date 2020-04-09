@@ -12,35 +12,22 @@ class General:
 		
 		path = 'COC/recognition/' + resolution + "/Resource/"
 
-		elixir = {
-					"860x732": [ path + "elixir_8x8.png"]
-				 }
+		self.elixir = [ path + "elixir_8x8.png"]
 
-		self.elixir = elixir[resolution]
+		self.gold = [ path + "gold_8x8.png",
+					  path + "gold_18x18.png"]
 
-		gold   = {
-						"860x732":	[ path + "gold_8x8.png",
-									path + "gold_18x18.png"]
-					  }
-		self.gold = gold[resolution]
-
-
-		obstacle = {
-						"860x732":	
-							[ path + "Gem_10x9.png",
-							  path + "Mushroom_9x9.png",
-							  path + "Stone_9x7.png",
-							  path + "Stone_11x9.png",
-							  path + "Stone_14x15.png",
-							  path + "Tree_12x9.png",
-							  path + "Tree1_16x14.png",
-							  path + "Tree2_16x18.png",
-							  path + "Trunk_7x14.png",
-							  path + "Trunk_11x9.png"
-							]
-
-						}
-		self.obstacle = obstacle[resolution]
+		self.obstacle = [   path + "Gem_10x9.png",
+						  	path + "Mushroom_9x9.png",
+						  	path + "Stone_9x7.png",
+							path + "Stone_11x9.png",
+							path + "Stone_14x15.png",
+							path + "Tree_12x9.png",
+							path + "Tree1_16x14.png",
+							path + "Tree2_16x18.png",
+							path + "Trunk_7x14.png",
+							path + "Trunk_11x9.png"
+						]
 
 
 

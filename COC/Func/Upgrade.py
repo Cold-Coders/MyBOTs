@@ -12,25 +12,19 @@ class Upgrade:
 		path = 'COC/recognition/' + resolution + "/Upgrade/"
 
 		suggests = {
-					"860x732":{
-						"eng" : path + "suggest_eng.png",
-						"chn" : path + "suggest_chn.png"
-					}
+					"eng" : path + "suggest_eng.png",
+					"chn" : path + "suggest_chn.png"
 		}
 
 		Area = {
-					"860x732":{
-								"worker": (700,20,800,40),
-								"wokring": (111,111,111,11),
-							  }
+					"worker": (700,20,800,40),
+					"wokring": (111,111,111,11),
 		}
 
 		buttons = {
-					"860x732":{
-								"worker" :  (330,30),
-								"upgrade1": (427,630),
-								"upgrade2":	(438,530)
-							  }
+					"worker" :  (330,30),
+					"upgrade1": (427,630),
+					"upgrade2":	(438,530)
 		}
 
 	def check_Worker(self):
