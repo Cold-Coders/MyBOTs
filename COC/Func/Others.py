@@ -47,7 +47,7 @@ class Utils:
 			print("Position:", elem.center())
 	
 	@staticmethod
-	def find_position(d,target,confidence = 0.8):
+	def find_position(d,target,confidence = 0.7):
 		if type(d) is uiautomator2.Device:
 			imsrc = d.screenshot(format="opencv")
 		elif type(d) is np.ndarray:
@@ -68,10 +68,10 @@ class Utils:
 		if result is None:
 			return(-1,-1)
 
-		print(result)
 		if result['confidence'] > confidence:
 			return (int(result['result'][0]),int(result['result'][1]))
 		
+		print(result)
 		return(-1,-1)
 
 

@@ -153,13 +153,13 @@ class COC_BOT_GUI(tk.Frame):
 
 		# find imgs
 		def search_imgs():
-			self.img_list = list()
-			count = 1
-			filename = 'screenshot'
-			while os.path.isfile(filename + str(count) + ".png"):
-				self.img_list.append(filename + str(count) + ".png")
-				U.prt("find Image" + str(count),mode = 4)
-				count += 1
+			if not sys.platform == 'win32':
+				find_img = "ls | grep '.png'"
+			else:
+				find_img = "dir | findstr '.png'"
+
+			stream = os.popen(find_img)
+			self.img_list = stream.read().split()
 
 			self.testfind = ttk.Combobox(self.right_part,values=self.img_list)
 			self.right_part.create_window(30 , 560 + 4 *40 + 10, anchor= NW , window=self.testfind)

@@ -110,7 +110,7 @@ class General:
 		rx,ry = self.buttons["remove_obstacle"]
 
 		for img in self.obstacle:
-			x,y = U.find_position(d,img,confidence = 0.85)
+			x,y = U.find_position(d,img,confidence = 0.7)
 			if x != -1:
 				U.tap(d,x,y)
 				U.prt("remove obstacle at (" + str(x) + "," + str(y) + ")" ,mode = 1)
