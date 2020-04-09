@@ -9,7 +9,7 @@ class Upgrade:
 
 	def __init__(self, d , lang, resolution):
 		self.d = d
-		path = 'COC/recognition/' + self.resolution + "/Upgrade/"
+		path = 'COC/recognition/' + resolution + "/Upgrade/"
 
 		suggests = {
 					"860x732":{
