@@ -220,9 +220,12 @@ class Utils:
 		        	dst[i,j] =  0
 		        else:
 		        	dst[i,j] = 255
-
-		cv2.imwrite('cropped.png', dst)
+		count = 1
+		while os.path.isfile('cropped' + str(count) + ".png"):
+			count += 1
+		cv2.imwrite('cropped' + str(count) + ".png", dst)
 		return dst
+
 	'''
 	Orc by tesseract
 	'''

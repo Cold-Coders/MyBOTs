@@ -51,9 +51,6 @@ class COC_BOT():
 		if self._app == 'com.supercell.clashofclans.guopan' \
 		and activity == 'com.flamingo.sdk.view.PluginActivity':
 			try:
-				if EXISTS("添加小号",TEXTVIEW):
-					u.tap(self.d,416,131)
-					ss(1)
 				if EXISTS("登录",TEXTVIEW):
 					CLICK("登录",TEXTVIEW)
 					ss(1)
@@ -61,7 +58,7 @@ class COC_BOT():
 					CLICK("进入游戏",TEXTVIEW)
 					if '果盘进入' in self._count:
 						self._count['果盘进入'] += 1
-						print("果盘游戏进入次数: ",self._count['果盘进入'], end="\r")
+						u.prt("果盘游戏进入次数: ",self._count['果盘进入'])
 					else:
 						self._count['果盘进入'] = 1 
 					ss(1)

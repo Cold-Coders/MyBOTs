@@ -1,14 +1,20 @@
 import aircv as ac
 import uiautomator2
-from util import *
+
+from tkinter import *
+from tkinter import messagebox
+from tkinter import ttk
 
 from GUI.GUI_logs import *
 from COC.Func.Others import Utils as U
 
+from util import *
+
 class General:
-	def __init__(self, d , orc , resolution):
+	def __init__(self, d , config , lang , resolution):
 		self.d = d
-		self.orc = orc
+		self.orc = config['orc']
+		self.lang = lang
 		
 		path = 'COC/recognition/' + resolution + "/Resource/"
 
@@ -47,6 +53,13 @@ class General:
 		}
 		self.buttons = buttons[resolution]
 
+
+		if 'General' not in config:
+			self.config = {
+
+			}
+		else:
+			self.config = config['General']
 
 
 	def collect_resourse(self,d):
@@ -104,6 +117,14 @@ class General:
 			return ( int(gold) , int(elixir) )
 		else:
 			return (-1,-1)
+
+
+	def set_obstacle(self,window):
+		set_window = Toplevel(window)
+		set_window.geometry("400x400")
+		button = Button(set_window, text="Do nothing button")
+		button.pack()
+
 
 	def remove_single_obstacle(self,d):
 		tag = True

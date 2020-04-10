@@ -11,5 +11,12 @@
     ],
     "coc_logo": "COC/res/COC_logo.png",
     "coc_icon":"COC/res/coc_icon.png",
-    "resource" : "COC/res/resource.png"
+    "resource" : "COC/res/resource.png",
+    
+    "General":{
+        "GUI_path" : "COC/res/obstacle",
+        "removable" : {
+                        "tree1": true
+                      }
+    }
 }

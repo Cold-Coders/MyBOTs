@@ -32,6 +32,19 @@
 		"find":"查找",
 		"refresh":"刷新列表",
 		"revert_test": "Orc处理"
+	},
+	"menu" :{
+		"Exit" : "退出",
+		"setting" : "连接设置",
+		"reconnect" : "重连设备",
+		"initial" : "初始化U2",
+		"general" : "基础功能设置",
+		"obstacle": "障碍物移除设置",
+		"donation": "捐兵设置",
+		"collect" : "收集设置"
+	},
+	"General":{
+		"s":"测试"
 	}
 
 }

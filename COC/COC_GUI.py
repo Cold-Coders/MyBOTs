@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 import tkinter as tk # note that module name has changed from Tkinter in Python 2 to tkinter in Python 3
 import json,os,time,threading,logging
+import uiautomator2 as u2
 
 from PIL import ImageTk
 import PIL.Image
@@ -36,9 +37,11 @@ class COC_BOT_GUI(tk.Frame):
 		self.window = tk.Tk()
 		tk.Frame.__init__(self, self.window, *args, **kwargs)
 
+		#-------------------Initialize function--------------------------------------
 		self.check_resolution()
 		self.init_Func()
 
+		#-------------------Initialize widget--------------------------------------
 		self.build_basic_window()
 		self.build_left_part()
 		self.build_right_part()
@@ -60,7 +63,7 @@ class COC_BOT_GUI(tk.Frame):
 	def init_Func(self):
 		h,w = self.d.window_size()
 		resolution = str(w) + "x" + str(h)
-		self._config["General"] = General(self.d,self.config['orc'],resolution)
+		self._config["General"] = General(self.d,self.config,self.lang['General'],resolution)
 		self._config["Upgrade"] = Upgrade(self.d,self.config['lang'],resolution)
 
 	def check_resolution(self):
@@ -82,37 +85,39 @@ class COC_BOT_GUI(tk.Frame):
 
 
 	def build_menu(self):
+
+		menubar = Menu(self.window)
+		text = self.lang["menu"]
+
 		def donothing():
 		   filewin = Toplevel(self.window)
 		   button = Button(filewin, text="Do nothing button")
 		   button.pack()
 
-		menubar = Menu(self.window)
+		#-------------------Bots Setting--------------------------------------
+		BOTMenu = Menu(menubar, tearoff=0)
+		def init_U2():
+			os.system("python -m uiautomator2 init")
+		BOTMenu.add_command(label=text["initial"], command=init_U2)
+		def re_connect_u2():
+			self._config['d'] = u2.connect( self._config['device'] )
+			self.d = self._config['d']
+		BOTMenu.add_command(label=text["reconnect"], command=re_connect_u2)
+		BOTMenu.add_separator()
+		BOTMenu.add_command(label=text["Exit"], command=self.window.quit)
 
-		filemenu = Menu(menubar, tearoff=0)
-		filemenu.add_command(label="New", command=donothing)
+		#-------------------General Setting--------------------------------------
+		GenMenu = Menu(menubar, tearoff=0)
+		GenMenu.add_command(label=text["obstacle"],
+				command=lambda : self._config["General"].set_obstacle(self.window))
+		GenMenu.add_command(label=text["donation"], command=donothing)
+		GenMenu.add_command(label=text["collect"], command=donothing)
+		
+		
 
-		filemenu.add_separator()
-
-		filemenu.add_command(label="Exit", command=self.window.quit)
-		menubar.add_cascade(label="File", menu=filemenu)
-		editmenu = Menu(menubar, tearoff=0)
-		editmenu.add_command(label="Undo", command=donothing)
-
-		editmenu.add_separator()
-
-		editmenu.add_command(label="Cut", command=donothing)
-		editmenu.add_command(label="Copy", command=donothing)
-		editmenu.add_command(label="Paste", command=donothing)
-		editmenu.add_command(label="Delete", command=donothing)
-		editmenu.add_command(label="Select All", command=donothing)
-
-		menubar.add_cascade(label="Edit", menu=editmenu)
-		helpmenu = Menu(menubar, tearoff=0)
-		helpmenu.add_command(label="Help Index", command=donothing)
-		helpmenu.add_command(label="About...", command=donothing)
-		menubar.add_cascade(label="Help", menu=helpmenu)
-
+		#-------------------Menubar widget--------------------------------------
+		menubar.add_cascade(label=text["setting"], menu=BOTMenu)
+		menubar.add_cascade(label=text["general"], menu=GenMenu)
 		self.window.config(menu=menubar)
 
 
@@ -153,13 +158,17 @@ class COC_BOT_GUI(tk.Frame):
 
 		# find imgs
 		def search_imgs():
+			self.img_list = list()
 			if not sys.platform == 'win32':
 				find_img = "ls | grep '.png'"
 			else:
-				find_img = "dir | findstr '.png'"
-
+				find_img = 'dir|findstr ".png"'
+	
 			stream = os.popen(find_img)
-			self.img_list = stream.read().split()
+			imgs = stream.read().split()
+			for img in imgs:
+				if ".png" == img.strip()[-4:]:
+					self.img_list.append(img)
 
 			self.testfind = ttk.Combobox(self.right_part,values=self.img_list)
 			self.right_part.create_window(30 , 560 + 4 *40 + 10, anchor= NW , window=self.testfind)
