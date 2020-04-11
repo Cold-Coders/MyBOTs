@@ -244,7 +244,7 @@ class Utils:
 	Orc by tesseract
 	'''
 	@staticmethod
-	def orcbyArea(screen,area,lang = "chi_sim+eng"):
+	def orcbyArea(screen,area,lang = "num"):
 		#x1,y1,x2,y2 = area
 		#cropped = screen[y1:y2, x1:x2]
 		cropped = Utils.crop_screen(screen,area)
@@ -256,14 +256,13 @@ class Utils:
 		
 		#Image.open("cropped2.png")
 		#Image.fromarray(gray)
-		tessdata_dir_config = '--tessdata-dir "C:/Program Files/Tesseract-OCR/tessdata"'
-		
-		lang_path = "Tesseract_font/num+" + lang
+		#tessdata_dir_config = '--tessdata-dir "C:/Program Files/Tesseract-OCR/tessdata"'
+		tessdata_dir_config = '--tessdata-dir "Tesseract_font/"'
 
 		if sys.platform == 'win32':
-			text = pytesseract.image_to_string(recogize, config=tessdata_dir_config , lang=lang_path)
+			text = pytesseract.image_to_string(recogize, config=tessdata_dir_config , lang=lang)
 		else:
-			text = pytesseract.image_to_string(recogize, lang=lang_path)
+			text = pytesseract.image_to_string(recogize, lang=lang)
 		
 		#os.remove("cropped.png")
 

@@ -40,7 +40,8 @@ class General:
 		Area = {
 					"860x732":{
 								"gold":   (700,20,805,40),
-								"elixir": (700,70,805,90)
+								"elixir": (700,70,805,90),
+								"d_elixir" :  (700,120,805,140)
 							  }
 		}
 		self.Area = Area[resolution]
@@ -112,11 +113,16 @@ class General:
 		elixir_Area = self.Area["elixir"]
 		elixir = orc(screen, elixir_Area)
 
-		U.prt( "Gold " + gold + " Elixir " + elixir,mode = 2)
+		dart_elixir_Area = self.Area["d_elixir"]
+		dart_elixir = orc(screen, dart_elixir_Area)
+				
+		U.prt( "Gold " + gold + " Elixir " + elixir + " Dart_elixir " + dart_elixir,mode = 2)
 		if gold.isdigit() and elixir.isdigit():
-			return ( int(gold) , int(elixir) )
+			if dart_elixir.isdigit():
+				return ( int(gold) , int(elixir), int(dart_elixir) )
+			return ( int(gold) , int(elixir), 0 )
 		else:
-			return (-1,-1)
+			return (-1,-1,-1)
 
 
 	def set_obstacle(self,window):
