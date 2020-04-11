@@ -257,10 +257,13 @@ class Utils:
 		#Image.open("cropped2.png")
 		#Image.fromarray(gray)
 		tessdata_dir_config = '--tessdata-dir "C:/Program Files/Tesseract-OCR/tessdata"'
+		
+		lang_path = "Tesseract_font/num+" + lang
+
 		if sys.platform == 'win32':
-			text = pytesseract.image_to_string(recogize, config=tessdata_dir_config , lang=lang)
+			text = pytesseract.image_to_string(recogize, config=tessdata_dir_config , lang=lang_path)
 		else:
-			text = pytesseract.image_to_string(recogize, lang=lang)
+			text = pytesseract.image_to_string(recogize, lang=lang_path)
 		
 		#os.remove("cropped.png")
 
