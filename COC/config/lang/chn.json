@@ -9,7 +9,8 @@
 				"游戏截图",
 				"识别资源",
 				"收集资源",
-				"移除障碍"
+				"移除障碍",
+				"截图区域观察"
 				],
 	"info_name":["金钱",
 				 "红水",
@@ -24,14 +25,17 @@
 		"re_connect_emu":"模拟器重新启动 完成 后点击重新连接",
 		"not_support_emu":"当前模式不支持 请手动调整",
 		"re_connect_u2":"重新连接Uiautomator2",
-		"re_start_game":"游戏重新启动"
+		"re_start_game":"游戏重新启动",
+		"coordinate_error":"坐标不是数字无法截取区域"
 	},
 	"titles": {
 		"error": "错误",
 		"restart": "重启",
 		"find":"查找",
 		"refresh":"刷新列表",
-		"revert_test": "Orc处理"
+		"revert_test": "Orc处理",
+		"partial" :"区域截图",
+		"full": "全屏幕"
 	},
 	"menu" :{
 		"Exit" : "退出",

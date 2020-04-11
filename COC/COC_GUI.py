@@ -176,10 +176,36 @@ class COC_BOT_GUI(tk.Frame):
 		#Zoom out
 		self.test_button[0]['command']= lambda: U.zoom_out(self.d)
 		#Screen shot
-		def new_shot():
-			U.save_screen(self.d)
-			search_imgs()
+		self.shot_mode = tk.IntVar()
+		self.shot_color = tk.IntVar()
+		def get_cords():
+			cord = list()
+			for corp in self.corps:
+				num = corp.get()
+				try:
+					num = int(num)
+				except Exception as e:
+					U.prt(self.lang['tips']['coordinate_error'],mode = 3)
+					raise e
+				cord.append(num)
 
+			area = tuple(cord)
+			return area
+
+		def new_shot():
+			mode = self.shot_mode.get()
+			color = self.shot_color.get()
+			# 0 color 1 gray self.shot_color
+			if mode == 1:
+				Screen = U.crop_screen(self.d.screenshot(format="opencv"),get_cords())
+			elif  mode == 0:
+				Screen = self.d
+			if color == 0:
+				U.save_screen(Screen)
+			elif color == 1:
+				U.save_screen(Screen,gray = True)
+
+			search_imgs()
 
 		self.test_button[1]['command']= lambda: new_shot()
 		#Recognize information
@@ -193,6 +219,8 @@ class COC_BOT_GUI(tk.Frame):
 		self.test_button[3]['command']= lambda: self._config["General"].collect_resourse(self.d)
 		#Remove obstacle once
 		self.test_button[4]['command']= lambda: self._config["General"].remove_single_obstacle(self.d)
+		#Test crop Area
+		self.test_button[5]['command']= lambda: U.test_crop(self.d,get_cords())
 
 		#Find test
 		search_imgs()
@@ -216,8 +244,24 @@ class COC_BOT_GUI(tk.Frame):
 						command = lambda: U.revert_test() )
 		self.right_part.create_window(140 , 560 + 5 *40, anchor= NW , window=self.pre_orc)
 
-
-
+		#--------------------------Screen Shot by Area-----------------------------------------------------
+		tk.Label(self.right_part,text = "x1", relief="flat", background = "white").place(x = 30, y = 680)
+		tk.Label(self.right_part,text = "y1", relief="flat", background = "white").place(x = 30, y = 700)
+		tk.Label(self.right_part,text = "x2", relief="flat", background = "white").place(x = 100, y = 680)
+		tk.Label(self.right_part,text = "y2", relief="flat", background = "white").place(x = 100, y = 700)
+		self.corps = [tk.Entry(width = 5),tk.Entry(width = 5),tk.Entry(width = 5),tk.Entry(width = 5)]
+		self.right_part.create_window(50 , 680, anchor= NW , window=self.corps[0])
+		self.right_part.create_window(50 , 680 + 20, anchor= NW , window=self.corps[1])
+		self.right_part.create_window(120 , 680, anchor= NW , window=self.corps[2])
+		self.right_part.create_window(120 , 680  + 20, anchor= NW , window=self.corps[3])
+		tk.Radiobutton(self.right_part,text = 'Color', relief="flat", background = "white",
+		 				value=0, var=self.shot_color).place(x = 175, y = 680)
+		tk.Radiobutton(self.right_part,text = 'Gray', relief="flat", background = "white" ,
+		 				value=1, var=self.shot_color).place(x = 175, y = 700)
+		tk.Radiobutton(self.right_part,text = self.lang['titles']['full'], relief="flat", background = "white",
+		 				value=0, var=self.shot_mode).place(x = 245, y = 680)
+		tk.Radiobutton(self.right_part,text = self.lang['titles']['partial'], relief="flat", background = "white" ,
+		 				value=1, var=self.shot_mode).place(x = 245, y = 700)
 
 	def set_function(self):
 		self.func = list()

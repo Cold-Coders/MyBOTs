@@ -104,23 +104,24 @@ class Utils:
 
 		n = len(args)
 
+		filename = 'screenshot'
 		#if gray is enable, make it as gray
 		if gray:
 			screen = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
+			filename = "screenshot_g"
 
 		if n == 1 and (type(args[0]) is int or type(args[0]) is str):
 			cv2.imwrite(str(args[0]) + '.png', screen)
 			return
 
 		count = 1
-		filename = 'screenshot'
 		while os.path.isfile(filename + str(count) + ".png"):
 			count += 1
 
 		cv2.imwrite(filename + str(count) + ".png" , screen)
 
-		gray = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
-		cv2.imwrite(filename + "_g" + str(count) + ".png" , gray)
+		#gray = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
+		#cv2.imwrite(filename + "_g" + str(count) + ".png" , gray)
 
 		Utils.prt("Screenshot saved. file: " + filename + str(count) + ".png",mode = 2)
 		
@@ -170,9 +171,10 @@ class Utils:
 		  "detect_language" : "true",
 		  "probability" : "false"
 		}
-		x1,y1,x2,y2 = area
 
-		cropped = screen[y1:y2, x1:x2]
+		#x1,y1,x2,y2 = area
+		#cropped = screen[y1:y2, x1:x2]
+		cropped = Utils.crop_screen(screen,area)
 
 		gray = cv2.cvtColor(cropped, cv2.COLOR_BGR2GRAY)
 		
@@ -226,14 +228,26 @@ class Utils:
 		cv2.imwrite('cropped' + str(count) + ".png", dst)
 		return dst
 
+	@staticmethod
+	def test_crop(d,area):
+		imsrc = Utils.crop_screen(d.screenshot(format="opencv"),area)
+		cv2.imshow('Crop test', imsrc) 
+		cv2.waitKey(0)
+		cv2.destroyAllWindows()
+
+	@staticmethod
+	def crop_screen(screen,area):
+		x1,y1,x2,y2 = area
+		return screen[y1:y2, x1:x2]
+
 	'''
 	Orc by tesseract
 	'''
 	@staticmethod
-	def orcbyArea(screen,area,lang = "eng"):
-		x1,y1,x2,y2 = area
-
-		cropped = screen[y1:y2, x1:x2]
+	def orcbyArea(screen,area,lang = "chi_sim+eng"):
+		#x1,y1,x2,y2 = area
+		#cropped = screen[y1:y2, x1:x2]
+		cropped = Utils.crop_screen(screen,area)
 		#cv2.imwrite('cropped.png', cropped)
 		
 		gray = cv2.cvtColor(cropped, cv2.COLOR_BGR2GRAY)
@@ -242,13 +256,13 @@ class Utils:
 		
 		#Image.open("cropped2.png")
 		#Image.fromarray(gray)
-		tessdata_dir_config = '--tessdata-dir "C:\\Program Files\\Tesseract-OCR\\tessdata"'
+		tessdata_dir_config = '--tessdata-dir "C:/Program Files/Tesseract-OCR/tessdata"'
 		if sys.platform == 'win32':
 			text = pytesseract.image_to_string(recogize, config=tessdata_dir_config , lang=lang)
 		else:
 			text = pytesseract.image_to_string(recogize, lang=lang)
 		
 		#os.remove("cropped.png")
-		
+
 		print("tesseract :", text)
 		return text
