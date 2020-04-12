@@ -9,6 +9,11 @@
         "COC/res/elixir_storage.png",
         "COC/res/dark_storage.png"
     ],
+    "BuilderBase_image":[
+        "COC/res/gold.png",
+        "COC/res/elixir.png",
+        "COC/res/gem.png"
+    ],
     "coc_logo": "COC/res/COC_logo.png",
     "coc_icon":"COC/res/coc_icon.png",
     "resource" : "COC/res/resource.png",

@@ -63,7 +63,7 @@ class COC_BOT_GUI(tk.Frame):
 	def init_Func(self):
 		h,w = self.d.window_size()
 		resolution = str(w) + "x" + str(h)
-		self._config["General"] = General(self.d,self.config,self.lang['General'],resolution)
+		self._config["General"] = General(self,resolution)
 		self._config["Upgrade"] = Upgrade(self.d,self.config['lang'],resolution)
 
 	def check_resolution(self):
@@ -186,7 +186,7 @@ class COC_BOT_GUI(tk.Frame):
 					num = int(num)
 				except Exception as e:
 					U.prt(self.lang['tips']['coordinate_error'],mode = 3)
-					raise e
+					#raise e
 				cord.append(num)
 
 			area = tuple(cord)
@@ -282,7 +282,7 @@ class COC_BOT_GUI(tk.Frame):
 					  "red",
 					  "black"
 					 ]
-		self.list_info_pic = list()
+		self.homevillage_img = list()
 		self.info_text = list()
 		self.list_info_widget = list()
 
@@ -295,11 +295,18 @@ class COC_BOT_GUI(tk.Frame):
 
 			image = PIL.Image.open(self.config['HomeVillage_image'][i]).resize((40, 40))
 			image = ImageTk.PhotoImage(image)
-			self.list_info_pic.append(image)
+			self.homevillage_img.append(image)
 
 			self.list_info_widget.append( self.right_part.create_image(20 + 180*int(i/3) ,50 + 40 * (i%3),
-								 image = self.list_info_pic[i], anchor = NW) )
+								 image = self.homevillage_img[i], anchor = NW) )
 		
+		self.builder_img = list()
+		for i in range( len(self.config['BuilderBase_image']) ):
+			img = PIL.Image.open(self.config['BuilderBase_image'][i]).resize((40, 40))
+			img = ImageTk.PhotoImage(img)
+			self.builder_img.append(img)
+
+
 		#改变提示为建筑大师资源 和 家乡基地
 		self.info_title = tk.Label(self.right_part, text = self.lang["titles"]["HomeVillage"],
 					relief="flat", background = "white", fg="blue").place(x = 100, y = 30)

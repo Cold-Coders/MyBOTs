@@ -133,3 +133,4 @@ dmypy.json
 Orc.py
 .DS_Store
 test.py
+*.tif

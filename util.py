@@ -10,13 +10,6 @@ def r_num(seed = -1, rand = 1, ubound = 10,lbound = 0):
 	else:
 		return [random.randint(lbound,ubound) for i in rand]
 
-def r_color(c1,c2,diff = 8):
-	if type(c1) is tuple and type(c2) is tuple :
-	  return abs(c1[0] - c2[0]) <= diff and abs(c1[1] - c2[1])  <= diff and abs(c1[1] - c2[1]) <= diff
-	elif type(c1) is int and type(c2) is int:
-	  return abs(c1 - c2) <= diff
-	elif len(c1) == 3 and len(c2) == 3:
-	  return abs(c1[0] - c2[0]) <= diff and abs(c1[1] - c2[1])  <= diff and abs(c1[1] - c2[1]) <= diff
 
 # args[0] 总次数, args[1] 每次间隔多少秒, percent 显示的格式
 def ss(*args,precent = 0):

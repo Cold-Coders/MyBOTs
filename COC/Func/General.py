@@ -11,11 +11,11 @@ from COC.Func.Others import Utils as U
 from util import *
 
 class General:
-	def __init__(self, d , config , lang , resolution):
-		self.d = d
-		self.orc = config['orc']
-		self.lang = lang
-		
+	def __init__(self, GUI , resolution):
+		self.d = GUI._config['d']
+		self.orc = GUI.config['orc']
+		self.lang = GUI.lang['General']
+
 		path = 'COC/recognition/' + resolution + "/Resource/"
 
 		self.elixir = [ path + "elixir_8x8.png"]
@@ -41,7 +41,7 @@ class General:
 					"860x732":{
 								"gold":   (700,20,805,40),
 								"elixir": (700,70,805,90),
-								"d_elixir" :  (750,120,805,140)
+								"d_elixir" :  (710,120,805,140)
 							  }
 		}
 		self.Area = Area[resolution]
@@ -49,19 +49,30 @@ class General:
 
 		buttons = {
 					"860x732":{
-								"remove_obstacle": (427,630)
+								"remove_obstacle": (427,630),
+								"gem_color" : (820,131)
 							  }
 		}
 		self.buttons = buttons[resolution]
 
 
-		if 'General' not in config:
+		if 'General' not in GUI.config:
 			self.config = {
 
 			}
 		else:
-			self.config = config['General']
+			self.config =  GUI.config['General']
 
+		self.change_to_gem = lambda: GUI.right_part.itemconfig(
+				GUI.list_info_widget[2],image = GUI.builder_img[2])
+
+		def change_to_builderbase(imgs):
+			for i in range(len(imgs)):
+				GUI.right_part.itemconfig(
+					GUI.list_info_widget[i],image = imgs[i])
+
+		self.Image_to_builder = lambda: change_to_builderbase(GUI.builder_img)
+		self.Image_to_homebase = lambda: change_to_builderbase(GUI.homevillage_img)
 
 	def collect_resourse(self,d):
 
@@ -115,8 +126,23 @@ class General:
 
 		dart_elixir_Area = self.Area["d_elixir"]
 		dart_elixir = orc(screen, dart_elixir_Area)
-				
-		U.prt( "Gold " + gold + " Elixir " + elixir + " Dart_elixir " + dart_elixir,mode = 2)
+		
+		#check 9 pixel around (208, 236, 120)
+		gem_x,gem_y = self.buttons['gem_color']
+		gem_color = (208, 236, 120)
+		flag = False
+		for i in range(3):
+			for j in range(3):
+				pos = (gem_x + i,gem_y + j)
+				if not U.isColor(screen,pos,gem_color,diff = 10):
+					flag = True
+					break
+		if flag:
+			self.Image_to_homebase()
+		else:
+			self.Image_to_builder()
+
+		U.prt( "Gold " + gold + " Elixir " + elixir + " Dart_elixir/Gem " + dart_elixir,mode = 2)
 		if gold.isdigit() and elixir.isdigit():
 			if dart_elixir.isdigit():
 				return ( int(gold) , int(elixir), int(dart_elixir) )
@@ -147,6 +173,5 @@ class General:
 				break
 				#else: cancel
 
-				
 		if tag:
 			U.prt("Didn't find any removable obstacle" ,mode = 3)

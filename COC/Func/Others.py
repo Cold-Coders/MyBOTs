@@ -280,3 +280,24 @@ class Utils:
 		else:
 			pixel = img[int(ry), int(rx)]
 		return pixel[2],pixel[1],pixel[0]
+
+	@staticmethod
+	def r_color(c1,c2,diff = 8):
+		if type(c1) is tuple and type(c2) is tuple :
+		  return abs(c1[0] - c2[0]) <= diff and abs(c1[1] - c2[1])  <= diff and abs(c1[1] - c2[1]) <= diff
+		elif type(c1) is int and type(c2) is int:
+		  return abs(c1 - c2) <= diff
+		elif len(c1) == 3 and len(c2) == 3:
+		  return abs(c1[0] - c2[0]) <= diff and abs(c1[1] - c2[1])  <= diff and abs(c1[1] - c2[1]) <= diff
+		Utils.prt("Color1 ", c1, "Color2 ", c2 ,mode = 3)
+		return False
+
+	@staticmethod
+	def isColor(screen,pos,color,diff = 8):
+		if type(screen) == uiautomator2.Device:
+			screen = screen.screenshot(format="opencv")
+		else:
+			screen = screen
+		x,y = pos
+		pixel = Utils.getPixel(screen,x,y)
+		return Utils.r_color(pixel,color,diff)
