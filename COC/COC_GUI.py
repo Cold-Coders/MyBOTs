@@ -282,21 +282,23 @@ class COC_BOT_GUI(tk.Frame):
 					  "red",
 					  "black"
 					 ]
-		self.list_pic = list()
+		self.list_info_pic = list()
 		self.info_text = list()
+		self.list_info_widget = list()
 
-		for i in range(len(self.config['source_image'])):
+		for i in range(len(self.config['HomeVillage_image'])):
 			#self.right_part.create_text(110,50 + 40*i,text = self.lang['info_name'][i],fill = fill_color[i%len(fill_color)])
 			
 			label = tk.Label(self.right_part, text = "0", relief="flat", background = "white")
 			label.place(x = 60 + 200*int(i//3) , y = 60 + 40*(i%3) )
 			self.info_text.append(label)
 
-			image = PIL.Image.open(self.config['source_image'][i])
-			#image = image.resize((20, 20))
+			image = PIL.Image.open(self.config['HomeVillage_image'][i]).resize((40, 40))
 			image = ImageTk.PhotoImage(image)
-			self.list_pic.append(image)
-			self.right_part.create_image(20 + 180*int(i/3) ,50 + 40 * (i%3), image = self.list_pic[i], anchor = NW)
+			self.list_info_pic.append(image)
+
+			self.list_info_widget.append( self.right_part.create_image(20 + 180*int(i/3) ,50 + 40 * (i%3),
+								 image = self.list_info_pic[i], anchor = NW) )
 		
 		#改变提示为建筑大师资源 和 家乡基地
 		self.info_title = tk.Label(self.right_part, text = self.lang["titles"]["HomeVillage"],
@@ -304,6 +306,8 @@ class COC_BOT_GUI(tk.Frame):
 		
 		tk.Label(self.right_part, text = self.lang["titles"]["Cumulative"],
 					relief="flat", background = "white", fg="blue").place(x = 260, y = 30)
+
+		#self.right_part.itemconfig(self.list_info_widget[2],image = self.list_info_pic[0])
 
 	def build_left_part(self):                    
 		# Build Left Part log

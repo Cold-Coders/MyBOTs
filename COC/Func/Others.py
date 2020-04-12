@@ -223,7 +223,7 @@ class Utils:
 				else:
 					dst[i,j] = 255
 		count = 1
-		while os.path.isfile('cropped' + str(count) + ".png"):
+		while os.path.isfile('cropped' + str(count) + ".tif"):
 			count += 1
 		cv2.imwrite('cropped' + str(count) + ".tif", dst)
 		return dst
