@@ -13,7 +13,7 @@ if __name__ == "__main__":
 	config = {}
 
 	config['Win32'] = True if sys.platform == 'win32' else False
-	
+
 	# select for correct emulator
 	EMULATOR(config)
 	

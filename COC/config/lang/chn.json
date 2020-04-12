@@ -12,13 +12,6 @@
 				"移除障碍",
 				"截图区域观察"
 				],
-	"info_name":["金钱",
-				 "红水",
-				 "黑水",
-				 "累计掠夺金币",
-				 "累计掠夺红水",
-				 "累计掠夺黑水"
-				],
 	"tips" : {
 		"resolution_error": "模拟器分辨率不正确,请设置为860x732 dpi-160",
 		"close_bot":"当前模式不支持,机器人在5秒后关闭",
@@ -35,7 +28,10 @@
 		"refresh":"刷新列表",
 		"revert_test": "Orc处理",
 		"partial" :"区域截图",
-		"full": "全屏幕"
+		"full": "全屏幕",
+		"HomeVillage": "家乡基地",
+		"BuilderBase" : "建筑大师基地",
+		"Cumulative" : "累计获得"
 	},
 	"menu" :{
 		"Exit" : "退出",

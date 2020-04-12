@@ -2,12 +2,12 @@
     "lang": "chn",
     "orc": 2,
     "source_image":[
-    	"COC/res/gold_storage.png",
-    	"COC/res/elixir_storage.png",
-    	"COC/res/dark_storage.png",
     	"COC/res/gold.png",
         "COC/res/elixir.png",
-        "COC/res/dark_elixir.png"
+        "COC/res/dark_elixir.png",
+        "COC/res/gold_storage.png",
+        "COC/res/elixir_storage.png",
+        "COC/res/dark_storage.png"
     ],
     "coc_logo": "COC/res/COC_logo.png",
     "coc_icon":"COC/res/coc_icon.png",

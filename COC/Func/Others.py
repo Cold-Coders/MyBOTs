@@ -206,7 +206,7 @@ class Utils:
 		while os.path.isfile(filename + str(count) + ".png"):
 			img = cv2.imread(filename + str(count) + ".png")
 			gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-			cv2.imwrite(filename + str(count) + ".png" ,Utils.revert_white_to_black(gray) )
+			cv2.imwrite(filename + str(count) + ".tif" ,Utils.revert_white_to_black(gray) )
 			Utils.prt("已将" + filename + str(count) + "处理为ORC图片",mode = 4)
 			count += 1
 
@@ -217,15 +217,15 @@ class Utils:
 		dst = np.zeros((h,w),np.uint8)
 
 		for i in range(0,h):
-		    for j in range(0,w):
-		        if gray[i,j] > 250:
-		        	dst[i,j] =  0
-		        else:
-		        	dst[i,j] = 255
+			for j in range(0,w):
+				if gray[i,j] > 250:
+					dst[i,j] =  0
+				else:
+					dst[i,j] = 255
 		count = 1
 		while os.path.isfile('cropped' + str(count) + ".png"):
 			count += 1
-		cv2.imwrite('cropped' + str(count) + ".png", dst)
+		cv2.imwrite('cropped' + str(count) + ".tif", dst)
 		return dst
 
 	@staticmethod
@@ -268,3 +268,15 @@ class Utils:
 
 		print("tesseract :", text)
 		return text
+
+	"""
+	获取某一坐标的RGB值(灰度图会报错)
+	"""
+	@staticmethod
+	def getPixel(img, rx, ry):
+		pixel = []
+		if type(rx) is float and type(ry) is float:
+			pixel = img[int(ry*len(img)), int(rx*len(img[0]))]
+		else:
+			pixel = img[int(ry), int(rx)]
+		return pixel[2],pixel[1],pixel[0]
