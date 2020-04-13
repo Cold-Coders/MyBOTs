@@ -67,7 +67,7 @@ class Utils:
 	# save_screen(d) - one file as screenshot.png
 	# save_scree(d, filename )  save screenshot as filename
 	@staticmethod
-	def save_screen(d,gray = False,*args):
+	def save_screen(d,*args,gray = False):
 		if type(d) == uiautomator2.Device:
 			screen = d.screenshot(format="opencv")
 		else:
@@ -76,14 +76,15 @@ class Utils:
 		n = len(args)
 
 		filename = 'screenshot'
+		
+		if n == 1 and (type(args[0]) is int or type(args[0]) is str):
+			cv2.imwrite(str(args[0]) + '.png', screen)
+			return
+
 		#if gray is enable, make it as gray
 		if gray:
 			screen = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
 			filename = "screenshot_g"
-
-		if n == 1 and (type(args[0]) is int or type(args[0]) is str):
-			cv2.imwrite(str(args[0]) + '.png', screen)
-			return
 
 		count = 1
 		while os.path.isfile(filename + str(count) + ".png"):
@@ -193,10 +194,13 @@ class Utils:
 					dst[i,j] =  0
 				else:
 					dst[i,j] = 255
-		count = 1
-		while os.path.isfile('cropped' + str(count) + ".tif"):
-			count += 1
-		cv2.imwrite('cropped' + str(count) + ".tif", dst)
+
+		if False:		
+			count = 1
+			while os.path.isfile('cropped' + str(count) + ".tif"):
+				count += 1
+			cv2.imwrite('cropped' + str(count) + ".tif", dst)
+
 		return dst
 
 	@staticmethod
@@ -208,6 +212,10 @@ class Utils:
 
 	@staticmethod
 	def crop_screen(screen,area):
+		if type(screen) == uiautomator2.Device:
+			screen = screen.screenshot(format="opencv")
+		else:
+			screen = screen
 		x1,y1,x2,y2 = area
 		return screen[y1:y2, x1:x2]
 
@@ -285,23 +293,22 @@ class Utils:
 			Utils.prt("Error (uiautomator2)",mode = 4)
 			return
 
-		if not os.path.isfile(target):
+		#print(target, type(target))
+		if type(target) is np.ndarray:
+			imobj = target
+		elif not os.path.isfile(target):
 			Utils.prt("Error by Reading Image",mode = 4)
 			return
-
-		imobj = ac.imread(target)
+		else:
+			imobj = ac.imread(target)
 		
 		result = ac.find_template(imsrc, imobj)
-
 		
-		if result is None:
-			return(-1,-1)
-
-		if result['confidence'] > confidence:
+		if result['confidence'] > confidence and result is not None:
 			return (int(result['result'][0]),int(result['result'][1]))
 		
 		print(result)
-		return(-1,-1)
+		return (-1,-1)
 
 	@staticmethod
 	def find_PosbyArea(d,Area,target,confidence = 0.7):

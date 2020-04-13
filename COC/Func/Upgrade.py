@@ -7,8 +7,9 @@ from COC.Func.Others import Utils as U
 
 class Upgrade:
 
-	def __init__(self, d , lang, resolution):
-		self.d = d
+	def __init__(self, GUI, resolution):
+		self.d = GUI._config['d']
+		
 		path = 'COC/recognition/' + resolution + "/Upgrade/"
 
 		suggests = {

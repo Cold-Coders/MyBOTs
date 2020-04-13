@@ -74,14 +74,14 @@ class General:
 		self.Image_to_builder = lambda: change_to_builderbase(GUI.builder_img)
 		self.Image_to_homebase = lambda: change_to_builderbase(GUI.homevillage_img)
 
-	def collect_resourse(self,d):
+	def collect_resourse(self):
 
 		tag = True
 
 		for img in self.elixir:
-			x,y = U.find_position(d,img,confidence = 0.85)
+			x,y = U.find_position(self.d,img,confidence = 0.85)
 			if x != -1:
-				U.tap(d,x,y)
+				U.tap(self.d,x,y)
 				U.prt("click elixir at point (" + str(x) + "," + str(y) + ")" ,mode = 1)
 				tag = False
 				break
@@ -90,16 +90,16 @@ class General:
 
 		tag = True
 		for img in self.gold:
-			x,y = U.find_position(d,img,confidence = 0.87)
+			x,y = U.find_position(self.d,img,confidence = 0.87)
 			if x != -1:
-				U.tap(d,x,y)
+				U.tap(self.d,x,y)
 				U.prt("click gold at point (" + str(x) + "," + str(y) + ")" ,mode = 1)
 				tag = False
 				break
 		if tag:
 			U.prt("Didn't find gold" ,mode = 3)
 
-	def Update_info(self,d):
+	def Update_info(self):
 		
 		def orc(screen,area, Accurate = False):
 			text = ""
@@ -115,7 +115,7 @@ class General:
 					new_text += word
 			return new_text
 
-		screen = d.screenshot(format="opencv")
+		screen = self.d.screenshot(format="opencv")
 
 		gold_Area = self.Area["gold"]
 		gold = orc(screen, gold_Area)
@@ -158,17 +158,17 @@ class General:
 		button.pack()
 
 
-	def remove_single_obstacle(self,d):
+	def remove_single_obstacle(self):
 		tag = True
 		rx,ry = self.buttons["remove_obstacle"]
 
 		for img in self.obstacle:
-			x,y = U.find_position(d,img,confidence = 0.7)
+			x,y = U.find_position(self.d,img,confidence = 0.7)
 			if x != -1:
-				U.tap(d,x,y)
+				U.tap(self.d,x,y)
 				U.prt("remove obstacle at (" + str(x) + "," + str(y) + ")" ,mode = 1)
 				#if it enough resourse to remove
-				U.tap(d,rx,ry)
+				U.tap(self.d,rx,ry)
 				tag = False
 				break
 

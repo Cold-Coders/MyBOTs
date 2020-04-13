@@ -5,8 +5,8 @@ from util import *
 from GUI.GUI_logs import *
 from COC.Func.Others import Utils as U
 
-class Upgrade:
-
+class Errors:
+	
 	def __init__(self, d):
 		self.d = d
 

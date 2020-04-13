@@ -18,6 +18,7 @@ from COC.COC_Bot import COC_BOT
 from COC.Func.Others import Utils as U
 from COC.Func.General import General
 from COC.Func.Upgrade import Upgrade
+from COC.Func.Donation import Donation
 from COC.Func.Emu_restarter import Emu_restarter as restarter
 
 
@@ -64,7 +65,8 @@ class COC_BOT_GUI(tk.Frame):
 		h,w = self.d.window_size()
 		resolution = str(w) + "x" + str(h)
 		self._config["General"] = General(self,resolution)
-		self._config["Upgrade"] = Upgrade(self.d,self.config['lang'],resolution)
+		self._config["Upgrade"] = Upgrade(self,resolution)
+		self._config["Donation"] = Donation(self,resolution)
 
 	def check_resolution(self):
 		#If it is not emulator, skip
@@ -210,17 +212,19 @@ class COC_BOT_GUI(tk.Frame):
 		self.test_button[1]['command']= lambda: new_shot()
 		#Recognize information
 		def updateinfo():
-			info = self._config["General"].Update_info(self.d)
+			info = self._config["General"].Update_info()
 			for i in range(len(info)):
 				self.info_text[i]['text'] = info[i]
 
 		self.test_button[2]['command']= lambda: updateinfo()
 		#Collect resourse
-		self.test_button[3]['command']= lambda: self._config["General"].collect_resourse(self.d)
+		self.test_button[3]['command']= lambda: self._config["General"].collect_resourse()
 		#Remove obstacle once
-		self.test_button[4]['command']= lambda: self._config["General"].remove_single_obstacle(self.d)
+		self.test_button[4]['command']= lambda: self._config["General"].remove_single_obstacle()
 		#Test crop Area
 		self.test_button[5]['command']= lambda: U.test_crop(self.d,get_cords())
+		#Test donation
+		self.test_button[6]['command']= lambda: self._config["Donation"].donateOnce()
 
 		#Find test
 		search_imgs()
