@@ -22,7 +22,7 @@ class Donation:
 					"860x732":{
 								"chat_box":   (0,0,310,732),
 								"donation_offset": [30,-145,300,-30],
-								"slot_offset": [45,-80,75,-50],
+								"slot_offset": [45,-75,75,-50],
 								"donation_box": (310,0,860,732)
 							  }
 		}
@@ -50,7 +50,7 @@ class Donation:
 		#open the chat
 		x,y = self.buttons['open_chat']
 		U.tap(self.d,x,y)
-		ss(2)
+		ss(3)
 
 		# loop to find request
 		x,y = U.find_PosbyArea(self.d, self.Area["chat_box"] , self.req_btn,confidence = 0.87)
@@ -77,10 +77,9 @@ class Donation:
 				U.tap(self.d, x, y)
 				ss(2)
 
-
 				#x2,y2 = U.find_position(self.d , crop2 ,confidence = 0.9)
-				x2,y2 = U.find_PosbyArea(self.d, self.Area["donation_box"] , crop2)
-				#print()
+				x2,y2 = U.find_PosbyArea(self.d, self.Area["donation_box"] , crop2,confidence = 0.5)
+				print(x2,y2)
 				if x2 != -1:
 					U.prt("在捐赠列表找到对应的兵,并点击(" + str(x2) + "," + str(y2) + ")捐赠")
 					#click and to find if exist and click 3 times
@@ -90,6 +89,7 @@ class Donation:
 				else:
 					U.prt("未找到对应兵种,加入训练列表", mode = 2)
 					self.train_list.append(crop)
+					U.save_screen(crop2,"donation")
 
 				#os.remove("donation.png")
 

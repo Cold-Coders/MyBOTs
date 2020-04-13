@@ -225,7 +225,8 @@ class COC_BOT_GUI(tk.Frame):
 		self.test_button[5]['command']= lambda: U.test_crop(self.d,get_cords())
 		#Test donation
 		self.test_button[6]['command']= lambda: self._config["Donation"].donateOnce()
-
+		#Test IMAGE
+		self.test_button[7]['command']= lambda: U.Image_Test(self.d)
 		#Find test
 		search_imgs()
 		#self.testfind = ttk.Combobox(self.right_part,values=self.img_list)
