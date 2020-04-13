@@ -88,7 +88,7 @@ class Donation:
 						U.tap(self.d,x2,y2)
 					ss(1)
 				else:
-					U.prt("未找到对应兵种，加入训练列表"， mode = 2)
+					U.prt("未找到对应兵种,加入训练列表"， mode = 2)
 					self.train_list.append(crop)
 
 				#os.remove("donation.png")
