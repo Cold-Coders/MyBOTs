@@ -45,35 +45,6 @@ class Utils:
 			print("Attrib:", elem.attrib)
 			# Coordinate eg: (100, 200)
 			print("Position:", elem.center())
-	
-	@staticmethod
-	def find_position(d,target,confidence = 0.7):
-		if type(d) is uiautomator2.Device:
-			imsrc = d.screenshot(format="opencv")
-		elif type(d) is np.ndarray:
-			imsrc = d
-		else:
-			Utils.prt("Error (uiautomator2)",mode = 4)
-			return
-
-		if not os.path.isfile(target):
-			Utils.prt("Error by Reading Image",mode = 4)
-			return
-
-		imobj = ac.imread(target)
-		
-		result = ac.find_template(imsrc, imobj)
-
-		
-		if result is None:
-			return(-1,-1)
-
-		if result['confidence'] > confidence:
-			return (int(result['result'][0]),int(result['result'][1]))
-		
-		print(result)
-		return(-1,-1)
-
 
 	@staticmethod
 	def test_read_img(d,target):
@@ -283,14 +254,16 @@ class Utils:
 
 	@staticmethod
 	def r_color(c1,c2,diff = 8):
+		is_color = False
 		if type(c1) is tuple and type(c2) is tuple :
-		  return abs(c1[0] - c2[0]) <= diff and abs(c1[1] - c2[1])  <= diff and abs(c1[1] - c2[1]) <= diff
+		  is_color = abs(c1[0] - c2[0]) <= diff and abs(c1[1] - c2[1])  <= diff and abs(c1[1] - c2[1]) <= diff
 		elif type(c1) is int and type(c2) is int:
-		  return abs(c1 - c2) <= diff
+		  is_color = abs(c1 - c2) <= diff
 		elif len(c1) == 3 and len(c2) == 3:
-		  return abs(c1[0] - c2[0]) <= diff and abs(c1[1] - c2[1])  <= diff and abs(c1[1] - c2[1]) <= diff
-		Utils.prt("Color1 ", c1, "Color2 ", c2 ,mode = 3)
-		return False
+		  is_color = abs(c1[0] - c2[0]) <= diff and abs(c1[1] - c2[1])  <= diff and abs(c1[1] - c2[1]) <= diff
+		if not is_color:
+			print("Color1 ", c1, "Color2 ", c2 )
+		return is_color
 
 	@staticmethod
 	def isColor(screen,pos,color,diff = 8):
@@ -301,3 +274,41 @@ class Utils:
 		x,y = pos
 		pixel = Utils.getPixel(screen,x,y)
 		return Utils.r_color(pixel,color,diff)
+
+	@staticmethod
+	def find_position(d,target,confidence = 0.7):
+		if type(d) is uiautomator2.Device:
+			imsrc = d.screenshot(format="opencv")
+		elif type(d) is np.ndarray:
+			imsrc = d
+		else:
+			Utils.prt("Error (uiautomator2)",mode = 4)
+			return
+
+		if not os.path.isfile(target):
+			Utils.prt("Error by Reading Image",mode = 4)
+			return
+
+		imobj = ac.imread(target)
+		
+		result = ac.find_template(imsrc, imobj)
+
+		
+		if result is None:
+			return(-1,-1)
+
+		if result['confidence'] > confidence:
+			return (int(result['result'][0]),int(result['result'][1]))
+		
+		print(result)
+		return(-1,-1)
+
+	@staticmethod
+	def find_PosbyArea(d,Area,target,confidence = 0.7):
+		if type(d) is uiautomator2.Device:
+			imsrc = d.screenshot(format="opencv")
+		else:
+			Utils.prt("Error (uiautomator2)",mode = 4)
+			return
+		imsrc = Utils.crop_screen(imsrc,Area)
+		return Utils.find_position(imsrc,target,confidence)

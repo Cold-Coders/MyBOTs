@@ -36,7 +36,6 @@ class General:
 						]
 
 
-
 		Area = {
 					"860x732":{
 								"gold":   (700,20,805,40),
@@ -50,7 +49,8 @@ class General:
 		buttons = {
 					"860x732":{
 								"remove_obstacle": (427,630),
-								"gem_color" : (820,131)
+								"gem_color" : (820,131),
+								"remove_red" :(433,605)
 							  }
 		}
 		self.buttons = buttons[resolution]
@@ -171,7 +171,5 @@ class General:
 				U.tap(d,rx,ry)
 				tag = False
 				break
-				#else: cancel
-
 		if tag:
 			U.prt("Didn't find any removable obstacle" ,mode = 3)
