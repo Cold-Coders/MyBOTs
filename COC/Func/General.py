@@ -171,5 +171,6 @@ class General:
 				U.tap(d,rx,ry)
 				tag = False
 				break
+
 		if tag:
-			U.prt("Didn't find any removable obstacle" ,mode = 3)
+			U.prt("Didn't find any removable obstacle",mode = 3)
