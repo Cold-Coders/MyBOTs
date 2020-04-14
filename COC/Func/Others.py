@@ -332,12 +332,12 @@ class Utils:
 			dstPoints = []
 			img2 = cv2.split(screen)
 			# 分离R 二值化
-			ret, dst1 = cv2.threshold(img2[0], 250, 255, cv2.THRESH_BINARY_INV)
+			#ret, dst1 = cv2.threshold(img2[0], 250, 255, cv2.THRESH_BINARY_INV)
 			# 分离G 二值化
-			ret, dst2 = cv2.threshold(img2[1], 250, 255, cv2.THRESH_BINARY_INV)
+			#ret, dst2 = cv2.threshold(img2[1], 250, 255, cv2.THRESH_BINARY_INV)
 			# 分离B 二值化
 			ret, dst3 = cv2.threshold(img2[2], 220, 255, cv2.THRESH_BINARY)
-			img2 = dst1&dst2&dst3 # 相与
+			#img2 = dst1&dst2&dst3 # 相与
 			# 模糊边界
 			img2 = cv2.GaussianBlur(img2, (5, 5), 0)
 			import matplotlib.pyplot as plt
@@ -346,7 +346,7 @@ class Utils:
 			# 找轮廓
 			cnts = cv2.findContours(img2, cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
 			cnts = cnts[1] if imutils.is_cv3() else cnts[0]
-			print(cnts)
+
 			if len(cnts):
 				for c in cnts:
 					# 获取中心点
