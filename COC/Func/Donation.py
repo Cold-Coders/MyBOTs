@@ -96,6 +96,7 @@ class Donation:
 			else:
 				U.prt("未设置捐赠种类")
 
+
 		else:
 			U.prt("未找到捐赠按钮" , mode = 2)
 		#close the chat

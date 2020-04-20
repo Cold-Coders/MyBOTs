@@ -330,19 +330,27 @@ class Utils:
 		screen = d.screenshot(format="opencv")
 		if screen.size:
 			dstPoints = []
-			img2 = cv2.split(screen)
-			# 分离R 二值化
-			#ret, dst1 = cv2.threshold(img2[0], 250, 255, cv2.THRESH_BINARY_INV)
-			# 分离G 二值化
-			#ret, dst2 = cv2.threshold(img2[1], 250, 255, cv2.THRESH_BINARY_INV)
-			# 分离B 二值化
-			ret, dst3 = cv2.threshold(img2[2], 220, 255, cv2.THRESH_BINARY)
-			#img2 = dst1&dst2&dst3 # 相与
-			# 模糊边界
-			img2 = cv2.GaussianBlur(img2, (5, 5), 0)
-			import matplotlib.pyplot as plt
-			plt.imshow(img2,cmap='gray')#
-			plt.show()
+
+			h = screen.shape[0]
+			w = screen.shape[1]
+			for i in range(0,h):
+				for j in range(0,w):
+					pixel = screen[i, j]
+					black = np.array([0,0,0])
+					white = np.array([255,255,255])
+					R = pixel[2]
+					G = pixel[1]
+					B = pixel[0]
+					if R == 61 and G == 121 and B == 181:
+						screen[i,j] = white
+						continue
+					screen[i,j] = black
+					#print(pixel,type(pixel))
+			
+			img2 = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
+
+			cv2.imshow("inRange", img2)
+			cv2.waitKey(0)
 			# 找轮廓
 			cnts = cv2.findContours(img2, cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
 			cnts = cnts[1] if imutils.is_cv3() else cnts[0]
@@ -351,6 +359,9 @@ class Utils:
 				for c in cnts:
 					# 获取中心点
 					M = cv2.moments(c)
+					if M["m00"] == 0:
+						continue
+					#print(M)
 					cX = int(M["m10"] / M["m00"])
 					cY = int(M["m01"] / M["m00"])
 					#
@@ -361,9 +372,8 @@ class Utils:
 					cv2.circle(img2, (cX, cY), 20, (255, 255, 255), 1)
 					cv2.putText(img2, "center", (cX - 20, cY - 20),
 					cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
-				plt.imshow(img2,cmap='gray')
-				plt.show()
-
+				cv2.imshow("inRange2", img2)
+				cv2.waitKey(0)
 			#return dstPoints
 		else:
 			raise Exception('Screen process is unsuccessful')
