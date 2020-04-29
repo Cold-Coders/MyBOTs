@@ -46,7 +46,19 @@
 		"collect" : "收集设置"
 	},
 	"General":{
-		"s":"测试"
+		"s":"测试",
+		"obstacle_name" : {
+                        "宝石盒": true,
+                        "蘑菇"  : true,
+                        "石头(小)" : true,
+                        "石头(中)" : true,
+                        "石头(大)" : true,
+                        "树(小)": true,
+                        "灌木丛" : true,
+                        "树(大)":true,
+                        "树干(直立)":true,
+                        "树干(卧倒)":true
+                      }
 	}
 
 }

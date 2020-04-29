@@ -21,7 +21,16 @@
     "General":{
         "GUI_path" : "COC/res/obstacle",
         "removable" : {
-                        "tree1": true
+                        "宝石盒": "Gem_10x9.png",
+                        "蘑菇"  : "Mushroom_9x9.png",
+                        "石头(小)" : "Stone_9x7.png",
+                        "石头(中)" : "Stone_11x9.png",
+                        "石头(大)" : "Stone_14x15.png",
+                        "树(小)": "Tree_12x9.png",
+                        "灌木丛" : "Tree1_16x14.png",
+                        "树(大)":"Tree2_16x18.png",
+                        "树干(直立)":"Trunk_7x14.png",
+                        "树干(卧倒)":"Trunk_11x9.png"
                       }
     }
 }

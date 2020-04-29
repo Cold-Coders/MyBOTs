@@ -153,7 +153,7 @@ class General:
 
 	def set_obstacle(self,window):
 		set_window = Toplevel(window)
-		set_window.geometry("400x400")
+		set_window.geometry("100x250")
 		button = Button(set_window, text="Do nothing button")
 		button.pack()
 
