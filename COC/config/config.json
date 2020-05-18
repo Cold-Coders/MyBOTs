@@ -35,17 +35,17 @@
             "tree_l": [
                 8,
                 "Tree2_16x18.png",
-                true
+                false
             ],
             "tree_m": [
                 7,
                 "Tree1_16x14.png",
-                true
+                false
             ],
             "tree_s": [
                 6,
                 "Tree_12x9.png",
-                true
+                false
             ],
             "trunk_hor": [
                 10,
@@ -55,7 +55,7 @@
             "trunk_ver": [
                 9,
                 "Trunk_7x14.png",
-                true
+                false
             ]
         }
     },

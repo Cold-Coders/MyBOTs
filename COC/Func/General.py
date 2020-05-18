@@ -19,23 +19,23 @@ class General:
 
 		self._select_obstacle = dict()
 
-		path = 'COC/recognition/' + resolution + "/Resource/"
+		self.path = 'COC/recognition/' + resolution + "/Resource/"
 
-		self.elixir = [ path + "elixir_8x8.png"]
+		self.elixir = [ self.path + "elixir_8x8.png"]
 
-		self.gold = [ path + "gold_8x8.png",
-					  path + "gold_18x18.png"]
+		self.gold = [ self.path + "gold_8x8.png",
+					  self.path + "gold_18x18.png"]
 
-		self.obstacle = [   path + "Gem_10x9.png",
-							path + "Mushroom_9x9.png",
-							path + "Stone_9x7.png",
-							path + "Stone_11x9.png",
-							path + "Stone_14x15.png",
-							path + "Tree_12x9.png",
-							path + "Tree1_16x14.png",
-							path + "Tree2_16x18.png",
-							path + "Trunk_7x14.png",
-							path + "Trunk_11x9.png"
+		self.obstacle = [   self.path + "Gem_10x9.png",
+							self.path + "Mushroom_9x9.png",
+							self.path + "Stone_9x7.png",
+							self.path + "Stone_11x9.png",
+							self.path + "Stone_14x15.png",
+							self.path + "Tree_12x9.png",
+							self.path + "Tree1_16x14.png",
+							self.path + "Tree2_16x18.png",
+							self.path + "Trunk_7x14.png",
+							self.path + "Trunk_11x9.png"
 						]
 
 
@@ -194,15 +194,17 @@ class General:
 		tag = True
 		rx,ry = self.buttons["remove_obstacle"]
 
-		for img in self.obstacle:
-			x,y = U.find_position(self.d,img,confidence = 0.7)
-			if x != -1:
-				U.tap(self.d,x,y)
-				U.prt("remove obstacle at (" + str(x) + "," + str(y) + ")" ,mode = 1)
-				#if it enough resourse to remove
-				U.tap(self.d,rx,ry)
-				tag = False
-				break
+		for obs in self.config['obstacle']:
+			move_val = self._select_obstacle[obs].get()
+			if move_val == True:
+				x,y = U.find_position(self.d, self.path + self.config['obstacle'][obs][1],confidence = 0.7)
+				if x != -1:
+					U.tap(self.d,x,y)
+					U.prt("remove obstacle at (" + str(x) + "," + str(y) + ")" ,mode = 1)
+					#if it enough resourse to remove
+					U.tap(self.d,rx,ry)
+					tag = False
+					break
 
 		if tag:
 			U.prt("Didn't find any removable obstacle",mode = 3)
