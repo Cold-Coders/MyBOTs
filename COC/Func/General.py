@@ -1,13 +1,14 @@
 import aircv as ac
 import uiautomator2
 
+import tkinter
 from tkinter import *
 from tkinter import messagebox
-from tkinter import ttk
 
 from GUI.GUI_logs import *
 from COC.Func.Others import Utils as U
 
+from GUI.GUI_utils import *
 from util import *
 
 class General:
@@ -15,6 +16,8 @@ class General:
 		self.d = GUI._config['d']
 		self.orc = GUI.config['orc']
 		self.lang = GUI.lang['General']
+
+		self._select_obstacle = dict()
 
 		path = 'COC/recognition/' + resolution + "/Resource/"
 
@@ -58,11 +61,23 @@ class General:
 
 		if 'General' not in GUI.config:
 			self.config = {
-
+					"GUI_path" : "COC/res/obstacle",
+					"obstacle" : {
+									"gem_box" :  [1,"Gem_10x9.png",True],
+									"mushroom": [2,"Mushroom_9x9.png",True],
+									"stone_s" : [3,"Stone_9x7.png",True],
+									"stone_m" : [4,"Stone_11x9.png",True],
+									"stone_l" : [5,"Stone_14x15.png",True],
+									"tree_s"  : [6,"Tree_12x9.png",True],
+									"tree_m"  : [7,"Tree1_16x14.png",True],
+									"tree_l"  : [8,"Tree2_16x18.png",True],
+									"trunk_ver": [9,"Trunk_7x14.png",True],
+									"trunk_hor": [10,"Trunk_11x9.png",True]
+								  }
 			}
 		else:
 			self.config =  GUI.config['General']
-			print(self.config)
+			prt(self.config,title = "General 配置信息")
 
 		self.change_to_gem = lambda: GUI.right_part.itemconfig(
 				GUI.list_info_widget[2],image = GUI.builder_img[2])
@@ -74,6 +89,14 @@ class General:
 
 		self.Image_to_builder = lambda: change_to_builderbase(GUI.builder_img)
 		self.Image_to_homebase = lambda: change_to_builderbase(GUI.homevillage_img)
+		
+		def save_selected_value():
+			for obs_name in self._select_obstacle.keys():
+				self.config['obstacle'][obs_name][2] = self._select_obstacle[obs_name].get()
+			GUI.save_config()
+			U.prt( "config Saved",mode = 2)
+
+		self.SAVE = lambda: save_selected_value()
 
 	def collect_resourse(self):
 
@@ -155,11 +178,17 @@ class General:
 	def set_obstacle(self,window):
 		set_window = Toplevel(window)
 		set_window.geometry("100x400")
-		for obs_name in self.config['obstacle' ]:
-			donate = Checkbutton(set_window, text = obs_name,
-				variable = self.config['obstacle'][obs_name][2],bg="white", offvalue = 0, height = 1, width = 10)
+		
+		for obs_name in self.config['obstacle'].keys():
+			self._select_obstacle[obs_name] = tkinter.BooleanVar(value = self.config['obstacle'][obs_name][2])
+			donate = Checkbutton(set_window, text = self.lang['obstacle_name'][obs_name],
+				variable = self._select_obstacle[obs_name],bg="white", height = 1, width = 10)
 			donate.place(x = 10, y = 10 + self.config['obstacle'][obs_name][0]*30)
-
+		#点关闭后保存配置 set_close(root, func = 函数)
+		set_close(set_window, func = self.SAVE)
+		#Test SAVE configure
+		#self._select_obstacle["gem_box"].set(False)
+		#self.SAVE()
 
 	def remove_single_obstacle(self):
 		tag = True

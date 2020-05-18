@@ -48,16 +48,16 @@
 	"General":{
 		"s":"测试",
 		"obstacle_name" : {
-                        "Gem_box": "宝石盒",
-                        "Mushroom"  : "蘑菇",
-                        "Stone_s" : "石头（小）",
-                        "Stone_m" : "石头（中）",
-                        "Stone_l" : "石头（大）",
-                        "Tree_s": "树（小）",
-                        "Tree_m" : "灌木丛",
-                        "Tree_l": "树（大）",
-                        "Trunk_ver":"树桩（直立）",
-                        "Trunk_hor":"树桩（卧倒）"
+                        "gem_box": "宝石盒",
+                        "mushroom"  : "蘑菇",
+                        "stone_s" : "石头（小）",
+                        "stone_m" : "石头（中）",
+                        "stone_l" : "石头（大）",
+                        "tree_s": "树（小）",
+                        "tree_m" : "灌木丛",
+                        "tree_l": "树（大）",
+                        "trunk_ver":"树桩（直立）",
+                        "trunk_hor":"树桩（卧倒）"
                       }
 	}
 

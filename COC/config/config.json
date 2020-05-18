@@ -1,36 +1,75 @@
 {
-    "lang": "chn",
-    "orc": 2,
-    "HomeVillage_image":[
-    	"COC/res/gold.png",
+    "BuilderBase_image": [
+        "COC/res/gold.png",
+        "COC/res/elixir.png",
+        "COC/res/gem.png"
+    ],
+    "General": {
+        "GUI_path": "COC/res/obstacle",
+        "obstacle": {
+            "gem_box": [
+                1,
+                "Gem_10x9.png",
+                true
+            ],
+            "mushroom": [
+                2,
+                "Mushroom_9x9.png",
+                true
+            ],
+            "stone_l": [
+                5,
+                "Stone_14x15.png",
+                true
+            ],
+            "stone_m": [
+                4,
+                "Stone_11x9.png",
+                true
+            ],
+            "stone_s": [
+                3,
+                "Stone_9x7.png",
+                true
+            ],
+            "tree_l": [
+                8,
+                "Tree2_16x18.png",
+                true
+            ],
+            "tree_m": [
+                7,
+                "Tree1_16x14.png",
+                true
+            ],
+            "tree_s": [
+                6,
+                "Tree_12x9.png",
+                true
+            ],
+            "trunk_hor": [
+                10,
+                "Trunk_11x9.png",
+                false
+            ],
+            "trunk_ver": [
+                9,
+                "Trunk_7x14.png",
+                true
+            ]
+        }
+    },
+    "HomeVillage_image": [
+        "COC/res/gold.png",
         "COC/res/elixir.png",
         "COC/res/dark_elixir.png",
         "COC/res/gold_storage.png",
         "COC/res/elixir_storage.png",
         "COC/res/dark_storage.png"
     ],
-    "BuilderBase_image":[
-        "COC/res/gold.png",
-        "COC/res/elixir.png",
-        "COC/res/gem.png"
-    ],
+    "coc_icon": "COC/res/coc_icon.png",
     "coc_logo": "COC/res/COC_logo.png",
-    "coc_icon":"COC/res/coc_icon.png",
-    "resource" : "COC/res/resource.png",
-    "General":{
-        "GUI_path" : "COC/res/obstacle",
-        "obstacle" : {
-                        "gem_box" :  [1,"Gem_10x9.png",true],
-                        "mushroom": [2,"Mushroom_9x9.png",true],
-                        "stone_s" : [3,"Stone_9x7.png",true],
-                        "stone_m" : [4,"Stone_11x9.png",true],
-                        "stone_l" : [5,"Stone_14x15.png",true],
-                        "tree_s"  : [6,"Tree_12x9.png",true],
-                        "tree_m"  : [7,"Tree1_16x14.png",true],
-                        "tree_l"  : [8,"Tree2_16x18.png",true],
-                        "trunk_ver": [9,"Trunk_7x14.png",true],
-                        "trunk_hor": [10,"Trunk_11x9.png",true]
-                      }
-    }
-
+    "lang": "chn",
+    "orc": 2,
+    "resource": "COC/res/resource.png"
 }
