@@ -62,6 +62,7 @@ class General:
 			}
 		else:
 			self.config =  GUI.config['General']
+			print(self.config)
 
 		self.change_to_gem = lambda: GUI.right_part.itemconfig(
 				GUI.list_info_widget[2],image = GUI.builder_img[2])
@@ -153,9 +154,11 @@ class General:
 
 	def set_obstacle(self,window):
 		set_window = Toplevel(window)
-		set_window.geometry("100x250")
-		button = Button(set_window, text="Do nothing button")
-		button.pack()
+		set_window.geometry("100x400")
+		# for obs_name in self.config['obstacle' ]:
+		# 	donate = Checkbutton(set_window, text = obs_name,
+		# 		variable = self.config['obstacle'][obs_name][2],bg="white", offvalue = 0, height = 1, width = 10)
+		# 	donate.place(x = 10, y = 10 + self.config['obstacle'][obs_name][0]*30)
 
 
 	def remove_single_obstacle(self):
