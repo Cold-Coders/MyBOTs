@@ -24,8 +24,8 @@ class General:
 					  path + "gold_18x18.png"]
 
 		self.obstacle = [   path + "Gem_10x9.png",
-						  	path + "Mushroom_9x9.png",
-						  	path + "Stone_9x7.png",
+							path + "Mushroom_9x9.png",
+							path + "Stone_9x7.png",
 							path + "Stone_11x9.png",
 							path + "Stone_14x15.png",
 							path + "Tree_12x9.png",
@@ -155,10 +155,10 @@ class General:
 	def set_obstacle(self,window):
 		set_window = Toplevel(window)
 		set_window.geometry("100x400")
-		# for obs_name in self.config['obstacle' ]:
-		# 	donate = Checkbutton(set_window, text = obs_name,
-		# 		variable = self.config['obstacle'][obs_name][2],bg="white", offvalue = 0, height = 1, width = 10)
-		# 	donate.place(x = 10, y = 10 + self.config['obstacle'][obs_name][0]*30)
+		for obs_name in self.config['obstacle' ]:
+			donate = Checkbutton(set_window, text = obs_name,
+				variable = self.config['obstacle'][obs_name][2],bg="white", offvalue = 0, height = 1, width = 10)
+			donate.place(x = 10, y = 10 + self.config['obstacle'][obs_name][0]*30)
 
 
 	def remove_single_obstacle(self):

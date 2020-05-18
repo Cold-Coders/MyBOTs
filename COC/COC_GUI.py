@@ -379,7 +379,8 @@ class COC_BOT_GUI(tk.Frame):
 		try:
 			self.lang = load_configure("COC/config/lang/" + self.config['lang'] + ".json")	
 		except Exception as e: #exit if error
-			#messagebox.showinfo("Error", "Did not find the language profile")
+			messagebox.showinfo("Error", "language profile error")
+			print(e)
 			self.config['lang'] = ''
 			#self.save_config()
 			exit()
