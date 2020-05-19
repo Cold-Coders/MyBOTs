@@ -11,6 +11,9 @@ from COC.Func.Others import Utils as U
 from GUI.GUI_utils import *
 from util import *
 
+from PIL import ImageTk
+import PIL.Image
+
 class General:
 	def __init__(self, GUI , resolution):
 		self.d = GUI._config['d']
@@ -174,16 +177,25 @@ class General:
 		else:
 			return (-1,-1,-1)
 
+	def place_image(self,frame,image,x,y):
+		img =PIL.Image.open(image)
+		self.img = ImageTk.PhotoImage(img)
+		frame.create_image(x,y,image=self.img,anchor = NW)
+
 
 	def set_obstacle(self,window):
 		set_window = Toplevel(window)
-		set_window.geometry("100x400")
-		
+		set_window.geometry("200x420")	
+		w = Canvas(set_window, width=200, height=110)
+		self.place_image(w,"COC/res/obstacle.png",0,0)
+		w.place( x = 0, y = 310)
+
 		for obs_name in self.config['obstacle'].keys():
 			self._select_obstacle[obs_name] = tkinter.BooleanVar(value = self.config['obstacle'][obs_name][2])
 			donate = Checkbutton(set_window, text = self.lang['obstacle_name'][obs_name],
 				variable = self._select_obstacle[obs_name],bg="white", height = 1, width = 10)
-			donate.place(x = 10, y = 10 + self.config['obstacle'][obs_name][0]*30)
+			donate.place(x = 10, y = 0 + self.config['obstacle'][obs_name][0]*30-20)
+
 		#点关闭后保存配置 set_close(root, func = 函数)
 		set_close(set_window, func = self.SAVE)
 		#Test SAVE configure
