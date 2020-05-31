@@ -29,7 +29,7 @@ class Donation:
 								"chat_box":   (0,0,310,732),
 								"donation_offset": [30,-145,300,-30],
 								"slot_offset": [45,-75,75,-50],
-								"donation_box": (310,0,860,732)
+								"donation_box": (310,0,860,732),
 								"whole_screen":(0,0,860,732)
 
 							  }
@@ -168,7 +168,7 @@ def train(self):
 	U.tap(self.d,close_train_x,close_train_y)
 
 
-
+'''
 
 
 
