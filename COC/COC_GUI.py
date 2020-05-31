@@ -112,7 +112,7 @@ class COC_BOT_GUI(tk.Frame):
 		GenMenu = Menu(menubar, tearoff=0)
 		GenMenu.add_command(label=text["obstacle"],
 				command=lambda : self._config["General"].set_obstacle(self.window))
-		GenMenu.add_command(label=text["donation"], command=donothing)
+		GenMenu.add_command(label=text["donation"], command=lambda : self._config["General"].set_donation(self.window))
 		GenMenu.add_command(label=text["collect"], command=donothing)
 		
 		
