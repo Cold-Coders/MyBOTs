@@ -58,7 +58,81 @@
                         "tree_l": "树（大）",
                         "trunk_ver":"树桩（直立）",
                         "trunk_hor":"树桩（卧倒）"
-                      }
+                      },
+         "donation":{
+            "troops":{
+                "giant": "巨人",
+
+                "balloon":"气球",
+
+                "wizard": "法师",
+
+                "healer": "天使",
+
+                "dragon": "飞龙",
+
+                "pekka": "皮卡",
+
+                "baby_dragon": "龙宝",  
+
+                "miner": "矿工",
+
+                "electro":"电龙",
+
+                "yeti": "雪怪",
+
+                "minion": "亡灵",
+
+                "hog_rider": "野猪骑士",
+
+                "valkyrie": "女武神",
+
+                "golem": "石人",
+
+                "witch": "巫师",
+
+                "lava": "熔岩巨兽",
+
+                "bowler": "蓝胖",
+
+                "ice_golem": "冰人"
+
+            },
+            "spell":{
+                "lightning": "雷电",
+
+                "healing":"治疗",
+
+                "rage": "狂暴",
+
+                "jump": "弹跳",
+
+                "freeze": "弹跳",
+
+                "clone": "镜像",
+
+                "poison": "毒药",  
+
+                "earthquake": "地震",
+
+                "haste":"急速",
+
+                "skeleton": "骷髅",
+
+                "bat": "蝙蝠"
+            },
+
+            "siege":{
+                "wall_wrecker": "攻城车",
+
+                "blimp":"攻城飞艇",
+
+                "slammer": "攻城气球",
+
+                "barracks": "攻城训练营"
+
+            }
+        }
 	}
 
 }

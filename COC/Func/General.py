@@ -21,6 +21,9 @@ class General:
 		self.lang = GUI.lang['General']
 
 		self._select_obstacle = dict()
+		self._select_troops = dict()
+		self._select_spell = dict()
+		self._select_siege = dict()
 
 		self.path = 'COC/recognition/' + resolution + "/Resource/"
 
@@ -182,7 +185,7 @@ class General:
 		self.img = ImageTk.PhotoImage(img)
 		frame.create_image(x,y,image=self.img,anchor = NW)
 
-
+#-------------------Remove obstacle-------------------------------#
 	def set_obstacle(self,window):
 		set_window = Toplevel(window)
 		set_window.geometry("200x420")	
@@ -220,3 +223,34 @@ class General:
 
 		if tag:
 			U.prt("Didn't find any removable obstacle",mode = 3)
+
+#------------------------------Donation-------------------------------#
+
+	def set_donation(self,window):
+		set_window = Toplevel(window)
+		set_window.geometry("500x600")
+		w = Canvas(set_window, width=120, height=132)
+		self.place_image(w,"COC/res/electron_dragon.png",0,0)
+		w.place( x = 300, y = 300)	
+		for troop_name in self.config['donation']['troops'].keys():
+			self._select_troops[troop_name] = tkinter.BooleanVar(value = self.config['donation']['troops'][troop_name][2])
+			donate = Checkbutton(set_window, text = self.lang['donation']['troops'][troop_name],
+				variable = self._select_troops[troop_name],bg="white", height = 1, width = 10)
+			donate.place(x = 10, y = 0 + self.config['donation']['troops'][troop_name][0]*30-20)
+
+		for spell_name in self.config['donation']['spell'].keys():
+			self._select_spell[spell_name] = tkinter.BooleanVar(value = self.config['donation']['spell'][spell_name][2])
+			donate = Checkbutton(set_window, text = self.lang['donation']['spell'][spell_name],
+				variable = self._select_spell[spell_name],bg="white", height = 1, width = 10)
+			donate.place(x = 110, y = 0 + self.config['donation']['spell'][spell_name][0]*30-20)
+
+		for siege_name in self.config['donation']['siege'].keys():
+			self._select_siege[siege_name] = tkinter.BooleanVar(value = self.config['donation']['siege'][siege_name][2])
+			donate = Checkbutton(set_window, text = self.lang['donation']['siege'][siege_name],
+				variable = self._select_siege[siege_name],bg="white", height = 1, width = 10)
+			donate.place(x = 210, y = 0 + self.config['donation']['siege'][siege_name][0]*30-20)
+
+		set_close(set_window, func = self.SAVE)
+
+	def donate(self):
+		tag = True
