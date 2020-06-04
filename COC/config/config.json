@@ -4,186 +4,25 @@
         "COC/res/elixir.png",
         "COC/res/gem.png"
     ],
+    "Functionality": [
+        true,
+        true,
+        false,
+        false
+    ],
     "General": {
         "GUI_path": "COC/res/obstacle",
-        "donation": {
-            "siege": {
-                "barracks": [
-                    4,
-                    "undefined",
-                    1
-                ],
-                "blimp": [
-                    2,
-                    "undefined",
-                    1
-                ],
-                "slammer": [
-                    3,
-                    "undefined",
-                    1
-                ],
-                "wall_wrecker": [
-                    1,
-                    "undefined",
-                    1
-                ]
-            },
-            "spell": {
-                "bat": [
-                    11,
-                    "undefined",
-                    1
-                ],
-                "clone": [
-                    6,
-                    "undefined",
-                    1
-                ],
-                "earthquake": [
-                    8,
-                    "undefined",
-                    1
-                ],
-                "freeze": [
-                    5,
-                    "undefined",
-                    1
-                ],
-                "haste": [
-                    9,
-                    "undefined",
-                    1
-                ],
-                "healing": [
-                    2,
-                    "undefined",
-                    1
-                ],
-                "jump": [
-                    4,
-                    "undefined",
-                    1
-                ],
-                "lightning": [
-                    1,
-                    "undefined",
-                    1
-                ],
-                "poison": [
-                    7,
-                    "undefined",
-                    1
-                ],
-                "rage": [
-                    3,
-                    "undefined",
-                    1
-                ],
-                "skeleton": [
-                    10,
-                    "undefined",
-                    1
-                ]
-            },
-            "troops": {
-                "baby_dragon": [
-                    7,
-                    "undefined",
-                    1
-                ],
-                "balloon": [
-                    2,
-                    "undefined",
-                    1
-                ],
-                "bowler": [
-                    17,
-                    "undefined",
-                    1
-                ],
-                "dragon": [
-                    5,
-                    "undefined",
-                    1
-                ],
-                "electro": [
-                    9,
-                    "undefined",
-                    1
-                ],
-                "giant": [
-                    1,
-                    "undefined",
-                    1
-                ],
-                "golem": [
-                    14,
-                    "undefined",
-                    1
-                ],
-                "healer": [
-                    4,
-                    "undefined",
-                    1
-                ],
-                "hog_rider": [
-                    12,
-                    "undefined",
-                    1
-                ],
-                "ice_golem": [
-                    18,
-                    "undefined",
-                    1
-                ],
-                "lava": [
-                    16,
-                    "undefined",
-                    1
-                ],
-                "miner": [
-                    8,
-                    "undefined",
-                    1
-                ],
-                "minion": [
-                    11,
-                    "undefined",
-                    1
-                ],
-                "pekka": [
-                    6,
-                    "undefined",
-                    1
-                ],
-                "valkyrie": [
-                    13,
-                    "undefined",
-                    1
-                ],
-                "witch": [
-                    15,
-                    "undefined",
-                    1
-                ],
-                "wizard": [
-                    3,
-                    "undefined",
-                    1
-                ],
-                "yeti": [
-                    10,
-                    "undefined",
-                    1
-                ]
-            }
-        },
+        "b_elixir": "b_elixir_18x18.png",
+        "b_gold": "b_gold_19x18.png",
+        "dart_elixir": "dart_elixir_19x19.png",
+        "elixir": "elixir_19x19.png",
+        "gem": "b_gem_18x17.png",
+        "gold": "gold_18x18.png",
         "obstacle": {
             "gem_box": [
                 1,
                 "Gem_10x9.png",
-                true
+                false
             ],
             "mushroom": [
                 2,
@@ -198,37 +37,37 @@
             "stone_m": [
                 4,
                 "Stone_11x9.png",
-                true
+                false
             ],
             "stone_s": [
                 3,
                 "Stone_9x7.png",
-                true
+                false
             ],
             "tree_l": [
                 8,
                 "Tree2_16x18.png",
-                true
+                false
             ],
             "tree_m": [
                 7,
                 "Tree1_16x14.png",
-                true
+                false
             ],
             "tree_s": [
                 6,
                 "Tree_12x9.png",
-                true
+                false
             ],
             "trunk_hor": [
                 10,
                 "Trunk_11x9.png",
-                true
+                false
             ],
             "trunk_ver": [
                 9,
                 "Trunk_7x14.png",
-                true
+                false
             ]
         }
     },
@@ -238,7 +77,10 @@
         "COC/res/dark_elixir.png",
         "COC/res/gold_storage.png",
         "COC/res/elixir_storage.png",
-        "COC/res/dark_storage.png"
+        "COC/res/dark_storage.png",
+        "COC/res/Builder_info.png",
+        "COC/res/Master_Builder_info.png",
+        "COC/res/wait.png"
     ],
     "coc_icon": "COC/res/coc_icon.png",
     "coc_logo": "COC/res/COC_logo.png",

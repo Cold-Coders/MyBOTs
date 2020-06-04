@@ -18,7 +18,12 @@ class COC_BOT():
 		self._lang = lang
 		self._gui = frame
 		self.d = self._config['d']
-
+		#-------------功能选项-----------------------
+		self.enable_func = self._gui.func
+		#-------------功能性类-----------------------
+		self.General = self._config["General"]
+		#-------------------------------------------
+	
 		prt(self._config,title = "配置信息")
 		u.prt("机器信息",self.d.info)
 
@@ -30,6 +35,12 @@ class COC_BOT():
 		while True:
 			#如果是果盘COC 点进入游戏
 			self.GPstart()
+
+			if self.enable_func[0].get(): # 自动识别资源
+				self.General.Update_info()
+
+			if self.enable_func[1].get(): # 自动收集资源
+				self.General.collect_resourse()
 
 			#打印统计
 			#prt(self._count,title = "统计")

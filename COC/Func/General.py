@@ -15,86 +15,45 @@ from PIL import ImageTk
 import PIL.Image
 
 class General:
-	def __init__(self, GUI , resolution):
+	def __init__(self, GUI , resolution, coord):
 		self.d = GUI._config['d']
 		self.orc = GUI.config['orc']
 		self.lang = GUI.lang['General']
-
-		self._select_obstacle = dict()
-		self._select_troops = dict()
-		self._select_spell = dict()
-		self._select_siege = dict()
-
 		self.path = 'COC/recognition/' + resolution + "/Resource/"
 
-		self.elixir = [ self.path + "elixir_8x8.png"]
+		self.coordinator = coord["General"]
+		self._Common = GUI._config["Common"]
 
-		self.gold = [ self.path + "gold_8x8.png",
-					  self.path + "gold_18x18.png"]
+		self._select_obstacle = dict()
+		self.Area = self.coordinator['Area']
+		self.buttons = self.coordinator['buttons']
 
-		self.obstacle = [   self.path + "Gem_10x9.png",
-							self.path + "Mushroom_9x9.png",
-							self.path + "Stone_9x7.png",
-							self.path + "Stone_11x9.png",
-							self.path + "Stone_14x15.png",
-							self.path + "Tree_12x9.png",
-							self.path + "Tree1_16x14.png",
-							self.path + "Tree2_16x18.png",
-							self.path + "Trunk_7x14.png",
-							self.path + "Trunk_11x9.png"
-						]
+		#self.info_text[i]['text']
+		self._infoboard = GUI.info_text
 
 
-		Area = {
-					"860x732":{
-								"gold":   (700,20,805,40),
-								"elixir": (700,70,805,90),
-								"d_elixir" :  (710,120,805,140)
-							  }
-		}
-		self.Area = Area[resolution]
-
-
-		buttons = {
-					"860x732":{
-								"remove_obstacle": (427,630),
-								"gem_color" : (820,131),
-								"remove_red" :(433,605)
-							  }
-		}
-		self.buttons = buttons[resolution]
-
+		#第一次收集资源时的缩放
+		self.first = True
+		self.b_first = True
 
 		if 'General' not in GUI.config:
-			self.config = {
-					"GUI_path" : "COC/res/obstacle",
-					"obstacle" : {
-									"gem_box" :  [1,"Gem_10x9.png",True],
-									"mushroom": [2,"Mushroom_9x9.png",True],
-									"stone_s" : [3,"Stone_9x7.png",True],
-									"stone_m" : [4,"Stone_11x9.png",True],
-									"stone_l" : [5,"Stone_14x15.png",True],
-									"tree_s"  : [6,"Tree_12x9.png",True],
-									"tree_m"  : [7,"Tree1_16x14.png",True],
-									"tree_l"  : [8,"Tree2_16x18.png",True],
-									"trunk_ver": [9,"Trunk_7x14.png",True],
-									"trunk_hor": [10,"Trunk_11x9.png",True]
-								  }
-			}
+			self.init_config()
 		else:
 			self.config =  GUI.config['General']
 			prt(self.config,title = "General 配置信息")
 
+#----------------------------------------------------------------------------------------------------
 		self.change_to_gem = lambda: GUI.right_part.itemconfig(
 				GUI.list_info_widget[2],image = GUI.builder_img[2])
 
-		def change_to_builderbase(imgs):
+		def change_to_builderbase(imgs,title):
 			for i in range(len(imgs)):
 				GUI.right_part.itemconfig(
 					GUI.list_info_widget[i],image = imgs[i])
+			GUI.info_title.set(GUI.lang["titles"]["HomeVillage"] if title == 1 else GUI.lang["titles"]["BuilderBase"])
 
-		self.Image_to_builder = lambda: change_to_builderbase(GUI.builder_img)
-		self.Image_to_homebase = lambda: change_to_builderbase(GUI.homevillage_img)
+		self.Image_to_builder = lambda: change_to_builderbase(GUI.builder_img,2)
+		self.Image_to_homebase = lambda: change_to_builderbase(GUI.homevillage_img,1)
 		
 		def save_selected_value():
 			for obs_name in self._select_obstacle.keys():
@@ -104,31 +63,53 @@ class General:
 
 		self.SAVE = lambda: save_selected_value()
 
+
+#----收集资源-------------------------------------------------------------------------------------
 	def collect_resourse(self):
 
-		tag = True
+		def tap(xy,msg):
+			if xy[0] != -1:
+				U.tap(self.d,xy[0],xy[1])
+				U.prt(msg,mode = 1)
+			#else:
+				#U.prt(self.lang['msgs'][4],mode = 3)
 
-		for img in self.elixir:
-			x,y = U.find_position(self.d,img,confidence = 0.85)
-			if x != -1:
-				U.tap(self.d,x,y)
-				U.prt("click elixir at point (" + str(x) + "," + str(y) + ")" ,mode = 1)
-				tag = False
-				break
-		if tag:
-			U.prt("Didn't find elixir" ,mode = 3)
+		screen = self.d.screenshot(format="opencv")
 
-		tag = True
-		for img in self.gold:
-			x,y = U.find_position(self.d,img,confidence = 0.87)
-			if x != -1:
-				U.tap(self.d,x,y)
-				U.prt("click gold at point (" + str(x) + "," + str(y) + ")" ,mode = 1)
-				tag = False
-				break
-		if tag:
-			U.prt("Didn't find gold" ,mode = 3)
+		try:
+			if self._Common.Scense(screen,spec = 1):
 
+				if self.first:
+					U.zoom_out(self.d)
+					self.first = False
+
+				tap(U.find_position(screen, self.path + self.config['elixir'],\
+				 confidence = 0.85),self.lang['msgs'][0])
+				tap(U.find_position(screen, self.path + self.config['gold'],\
+				 confidence = 0.85),self.lang['msgs'][1])
+				tap(U.find_position(screen, self.path + self.config['dart_elixir'],\
+				 confidence = 0.85),self.lang['msgs'][2])
+
+			elif self._Common.Scense(screen,spec = 2):
+
+				if self.b_first:
+					U.zoom_out(self.d)
+					self.b_first = False
+
+				tap(U.find_position(screen, self.path + self.config['b_elixir'],\
+				 confidence = 0.85),self.lang['msgs'][0])
+				tap(U.find_position(screen, self.path + self.config['b_gold'],\
+				 confidence = 0.85),self.lang['msgs'][1])
+				tap(U.find_position(screen, self.path + self.config['gem'],\
+				 confidence = 0.85),self.lang['msgs'][3])
+			else:
+				return
+
+		except Exception as e:
+			self.init_config()
+		
+
+#----更新资源状态-------------------------------------------------------------------------------------
 	def Update_info(self):
 		
 		def orc(screen,area, Accurate = False):
@@ -145,40 +126,38 @@ class General:
 					new_text += word
 			return new_text
 
+		#gem_color = (208, 236, 120)
 		screen = self.d.screenshot(format="opencv")
-
+		if self._Common.Scense(screen,spec = 1):
+			self.Image_to_homebase()
+		elif self._Common.Scense(screen,spec = 2):
+			self.Image_to_builder()
+		else:
+			return
+		#--------------Gold---------------------------------
 		gold_Area = self.Area["gold"]
 		gold = orc(screen, gold_Area)
-		
+		if gold.isdigit():
+			self._infoboard[0]['text'] = gold
+		else:
+			self._infoboard[0]['text'] = self.lang['recog_error']
 
+		#--------------Elixir---------------------------------
 		elixir_Area = self.Area["elixir"]
 		elixir = orc(screen, elixir_Area)
+		if elixir.isdigit():
+			self._infoboard[1]['text'] = elixir
+		else:
+			self._infoboard[0]['text'] = self.lang['recog_error']
 
+		#--------------dart Elixir---------------------------------
 		dart_elixir_Area = self.Area["d_elixir"]
 		dart_elixir = orc(screen, dart_elixir_Area)
-		
-		#check 9 pixel around (208, 236, 120)
-		gem_x,gem_y = self.buttons['gem_color']
-		gem_color = (208, 236, 120)
-		flag = False
-		for i in range(3):
-			for j in range(3):
-				pos = (gem_x + i,gem_y + j)
-				if not U.isColor(screen,pos,gem_color,diff = 10):
-					flag = True
-					break
-		if flag:
-			self.Image_to_homebase()
+		if dart_elixir.isdigit():
+			self._infoboard[2]['text'] = dart_elixir
 		else:
-			self.Image_to_builder()
+			self._infoboard[0]['text'] = self.lang['recog_error']
 
-		U.prt( "Gold " + gold + " Elixir " + elixir + " Dart_elixir/Gem " + dart_elixir,mode = 2)
-		if gold.isdigit() and elixir.isdigit():
-			if dart_elixir.isdigit():
-				return ( int(gold) , int(elixir), int(dart_elixir) )
-			return ( int(gold) , int(elixir), 0 )
-		else:
-			return (-1,-1,-1)
 
 	def place_image(self,frame,image,x,y):
 		img =PIL.Image.open(image)
@@ -224,33 +203,26 @@ class General:
 		if tag:
 			U.prt("Didn't find any removable obstacle",mode = 3)
 
-#------------------------------Donation-------------------------------#
 
-	def set_donation(self,window):
-		set_window = Toplevel(window)
-		set_window.geometry("500x600")
-		w = Canvas(set_window, width=120, height=132)
-		self.place_image(w,"COC/res/electron_dragon.png",0,0)
-		w.place( x = 300, y = 300)	
-		for troop_name in self.config['donation']['troops'].keys():
-			self._select_troops[troop_name] = tkinter.BooleanVar(value = self.config['donation']['troops'][troop_name][2])
-			donate = Checkbutton(set_window, text = self.lang['donation']['troops'][troop_name],
-				variable = self._select_troops[troop_name],bg="white", height = 1, width = 10)
-			donate.place(x = 10, y = 0 + self.config['donation']['troops'][troop_name][0]*30-20)
-
-		for spell_name in self.config['donation']['spell'].keys():
-			self._select_spell[spell_name] = tkinter.BooleanVar(value = self.config['donation']['spell'][spell_name][2])
-			donate = Checkbutton(set_window, text = self.lang['donation']['spell'][spell_name],
-				variable = self._select_spell[spell_name],bg="white", height = 1, width = 10)
-			donate.place(x = 110, y = 0 + self.config['donation']['spell'][spell_name][0]*30-20)
-
-		for siege_name in self.config['donation']['siege'].keys():
-			self._select_siege[siege_name] = tkinter.BooleanVar(value = self.config['donation']['siege'][siege_name][2])
-			donate = Checkbutton(set_window, text = self.lang['donation']['siege'][siege_name],
-				variable = self._select_siege[siege_name],bg="white", height = 1, width = 10)
-			donate.place(x = 210, y = 0 + self.config['donation']['siege'][siege_name][0]*30-20)
-
-		set_close(set_window, func = self.SAVE)
-
-	def donate(self):
-		tag = True
+	def init_config(self):
+		self.config = {
+					"GUI_path" : "COC/res/obstacle",
+					"obstacle" : {
+									"gem_box" :  [1,"Gem_10x9.png",True],
+									"mushroom": [2,"Mushroom_9x9.png",True],
+									"stone_s" : [3,"Stone_9x7.png",True],
+									"stone_m" : [4,"Stone_11x9.png",True],
+									"stone_l" : [5,"Stone_14x15.png",True],
+									"tree_s"  : [6,"Tree_12x9.png",True],
+									"tree_m"  : [7,"Tree1_16x14.png",True],
+									"tree_l"  : [8,"Tree2_16x18.png",True],
+									"trunk_ver": [9,"Trunk_7x14.png",True],
+									"trunk_hor": [10,"Trunk_11x9.png",True]
+								  },
+					"elixir" : "elixir_19x19.png",
+					"gold"	 : "gold_18x18.png",
+					"dart_elixir" : "dart_elixir_19x19.png",
+					"b_elixir": "b_elixir_18x18.png",
+					"b_gold": "b_gold_19x18.png",
+					"gem" : "b_gem_18x17.png"
+			}

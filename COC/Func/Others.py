@@ -245,8 +245,7 @@ class Utils:
 			text = pytesseract.image_to_string(recogize, lang=lang)
 		
 		#os.remove("cropped.png")
-
-		print("tesseract :", text)
+		#print("tesseract :", text)
 		return text
 
 	"""
@@ -262,7 +261,7 @@ class Utils:
 		return pixel[2],pixel[1],pixel[0]
 
 	@staticmethod
-	def r_color(c1,c2,diff = 8):
+	def r_color(c1,c2,diff = 8, Debug = False):
 		is_color = False
 		if type(c1) is tuple and type(c2) is tuple :
 		  is_color = abs(c1[0] - c2[0]) <= diff and abs(c1[1] - c2[1])  <= diff and abs(c1[1] - c2[1]) <= diff
@@ -270,22 +269,22 @@ class Utils:
 		  is_color = abs(c1 - c2) <= diff
 		elif len(c1) == 3 and len(c2) == 3:
 		  is_color = abs(c1[0] - c2[0]) <= diff and abs(c1[1] - c2[1])  <= diff and abs(c1[1] - c2[1]) <= diff
-		if not is_color:
+		if not is_color and Debug:
 			print("Color1 ", c1, "Color2 ", c2 )
 		return is_color
 
 	@staticmethod
-	def isColor(screen,pos,color,diff = 8):
+	def isColor(screen,pos,color,diff = 8, Debug = False):
 		if type(screen) == uiautomator2.Device:
 			screen = screen.screenshot(format="opencv")
 		else:
 			screen = screen
 		x,y = pos
 		pixel = Utils.getPixel(screen,x,y)
-		return Utils.r_color(pixel,color,diff)
+		return Utils.r_color(pixel,color,diff, Debug)
 
 	@staticmethod
-	def find_position(d,target,confidence = 0.7):
+	def find_position(d,target,confidence = 0.7, Debug = False):
 		if type(d) is uiautomator2.Device:
 			imsrc = d.screenshot(format="opencv")
 		elif type(d) is np.ndarray:
@@ -310,18 +309,20 @@ class Utils:
 		if result['confidence'] > confidence:
 			return (int(result['result'][0]),int(result['result'][1]))
 			
-		print(result)
+		if Debug:
+			print(result)
+
 		return (-1,-1)
 
 	@staticmethod
-	def find_PosbyArea(d,Area,target,confidence = 0.7):
+	def find_PosbyArea(d,Area,target,confidence = 0.7,Debug = False ):
 		if type(d) is uiautomator2.Device:
 			imsrc = d.screenshot(format="opencv")
 		else:
 			Utils.prt("Error (uiautomator2)",mode = 4)
 			return
 		imsrc = Utils.crop_screen(imsrc,Area)
-		return Utils.find_position(imsrc,target,confidence)
+		return Utils.find_position(imsrc,target,confidence,Debug = Debug)
 
 
 	@staticmethod

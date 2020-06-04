@@ -17,7 +17,7 @@ class Donation:
 		train_path = 'COC/recognition/' + resolution + "/train/"
 		self.d = GUI._config['d']
 		self.lang = GUI.lang
-		self.donation_list = GUI.config['General']['donation']
+
 		self.close_donation = path + "close_donation.png"
 		self.trainer = trainer_path + "13.png"
 		
@@ -45,15 +45,91 @@ class Donation:
 		}
 		self.buttons = buttons[resolution]
 
+		self._select_troops = dict()
+		self._select_spell = dict()
+		self._select_siege = dict()
 
 		if 'Donation' not in GUI.config:
 			self.config = {
-
+				"donation": {
+					"siege": {
+						"barracks": [4,"undefined",1],
+						"blimp": 	[2,"undefined",1],
+						"slammer": 	[3,"undefined",1],
+						"wall_wrecker": [1,"undefined",1]
+					},
+					"spell": {
+						"bat": [11,"undefined",1],
+						"clone": [6,"undefined",1],
+						"earthquake": [8,"undefined",1],
+						"freeze": [5,"undefined",1],
+						"haste": [9,"undefined",1],
+						"healing": [2,"undefined",1],
+						"jump": [4,"undefined",1],
+						"lightning": [1,"undefined",1],
+						"poison": [7,"undefined",1],
+						"rage": [3,"undefined",1],
+						"skeleton": [10,"undefined",1]
+					},
+					"troops": {
+						"baby_dragon": [7,"undefined",1],
+						"balloon": [2,"undefined",1],
+						"bowler": [17,"undefined",1],
+						"dragon": [5,"undefined",1],
+						"electro": [9,"undefined",1],
+						"giant": [1,"undefined",1],
+						"golem": [14,"undefined",1],
+						"healer": [4,"undefined",1],
+						"hog_rider": [12,"undefined",1],
+						"ice_golem": [18,"undefined",1],
+						"lava": [16,"undefined",1],
+						"miner": [8,"undefined",1],
+						"minion": [11,"undefined",1],
+						"pekka": [6,"undefined",1],
+						"valkyrie": [13,"undefined",1],
+						"witch": [15,"undefined",1],
+						"wizard": [3,"undefined",1],
+						"yeti": [10,"undefined",1]
+					}
+				}
 			}
 		else:
 			self.config = GUI.config['Donation']
 
+
+
+
+		self.donation_list = self.config["donation"]
 		self.train_list = list()
+
+
+#------------------------------Donation-------------------------------#
+
+	def set_donation(self,window):
+		set_window = Toplevel(window)
+		set_window.geometry("500x600")
+		w = Canvas(set_window, width=120, height=132)
+		w.place( x = 300, y = 300)	
+		for troop_name in self.config['donation']['troops'].keys():
+			self._select_troops[troop_name] = tkinter.BooleanVar(value = self.config['donation']['troops'][troop_name][2])
+			donate = Checkbutton(set_window, text = self.lang['donation']['troops'][troop_name],
+				variable = self._select_troops[troop_name],bg="white", height = 1, width = 10)
+			donate.place(x = 10, y = 0 + self.config['donation']['troops'][troop_name][0]*30-20)
+
+		for spell_name in self.config['donation']['spell'].keys():
+			self._select_spell[spell_name] = tkinter.BooleanVar(value = self.config['donation']['spell'][spell_name][2])
+			donate = Checkbutton(set_window, text = self.lang['donation']['spell'][spell_name],
+				variable = self._select_spell[spell_name],bg="white", height = 1, width = 10)
+			donate.place(x = 110, y = 0 + self.config['donation']['spell'][spell_name][0]*30-20)
+
+		for siege_name in self.config['donation']['siege'].keys():
+			self._select_siege[siege_name] = tkinter.BooleanVar(value = self.config['donation']['siege'][siege_name][2])
+			donate = Checkbutton(set_window, text = self.lang['donation']['siege'][siege_name],
+				variable = self._select_siege[siege_name],bg="white", height = 1, width = 10)
+			donate.place(x = 210, y = 0 + self.config['donation']['siege'][siege_name][0]*30-20)
+
+		set_close(set_window, func = self.SAVE)
+
 
 	def donateOnce(self):
 		#pass

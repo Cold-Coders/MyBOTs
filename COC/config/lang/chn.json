@@ -1,9 +1,11 @@
 {
 	"log" : "日志",
 	"Test_Area":"测试区",
-	"func_name":["自动捐兵",
-				"自动掉杯",
-				"自动打鱼"
+	"func_Area":"功能区",
+	"func_name":[
+				"自动更新状态",
+				"自动收集资源",
+				"自动移除障碍"
 				],
 	"test_name":["界面缩小",
 				"游戏截图",
@@ -33,7 +35,8 @@
 		"full": "全屏幕",
 		"HomeVillage": "家乡基地",
 		"BuilderBase" : "建筑大师基地",
-		"Cumulative" : "累计获得"
+		"Cumulative" : "累计获得",
+		"Others": "其他信息"
 	},
 	"menu" :{
 		"Exit" : "退出",
@@ -46,93 +49,60 @@
 		"collect" : "收集设置"
 	},
 	"General":{
-		"s":"测试",
+		"recog_error":"无法识别",
 		"obstacle_name" : {
-                        "gem_box": "宝石盒",
-                        "mushroom"  : "蘑菇",
-                        "stone_s" : "石头（小）",
-                        "stone_m" : "石头（中）",
-                        "stone_l" : "石头（大）",
-                        "tree_s": "树（小）",
-                        "tree_m" : "灌木丛",
-                        "tree_l": "树（大）",
-                        "trunk_ver":"树桩（直立）",
-                        "trunk_hor":"树桩（卧倒）"
-                      },
-         "donation":{
-            "troops":{
-                "giant": "巨人",
-
-                "balloon":"气球",
-
-                "wizard": "法师",
-
-                "healer": "天使",
-
-                "dragon": "飞龙",
-
-                "pekka": "皮卡",
-
-                "baby_dragon": "龙宝",  
-
-                "miner": "矿工",
-
-                "electro":"电龙",
-
-                "yeti": "雪怪",
-
-                "minion": "亡灵",
-
-                "hog_rider": "野猪骑士",
-
-                "valkyrie": "女武神",
-
-                "golem": "石人",
-
-                "witch": "巫师",
-
-                "lava": "熔岩巨兽",
-
-                "bowler": "蓝胖",
-
-                "ice_golem": "冰人"
-
-            },
-            "spell":{
-                "lightning": "雷电",
-
-                "healing":"治疗",
-
-                "rage": "狂暴",
-
-                "jump": "弹跳",
-
-                "freeze": "弹跳",
-
-                "clone": "镜像",
-
-                "poison": "毒药",  
-
-                "earthquake": "地震",
-
-                "haste":"急速",
-
-                "skeleton": "骷髅",
-
-                "bat": "蝙蝠"
-            },
-
-            "siege":{
-                "wall_wrecker": "攻城车",
-
-                "blimp":"攻城飞艇",
-
-                "slammer": "攻城气球",
-
-                "barracks": "攻城训练营"
-
-            }
-        }
-	}
-
+						"gem_box": "宝石盒",
+						"mushroom"  : "蘑菇",
+						"stone_s" : "石头（小）",
+						"stone_m" : "石头（中）",
+						"stone_l" : "石头（大）",
+						"tree_s": "树（小）",
+						"tree_m" : "灌木丛",
+						"tree_l": "树（大）",
+						"trunk_ver":"树桩（直立）",
+						"trunk_hor":"树桩（卧倒）"
+					  },
+		"msgs": ["完成收集圣水","完成收集金币","完成收集黑水","完成收集宝石","没有找到相应资源"]
+	},
+	"Donation":{
+			"troops":{
+				"giant": "巨人",
+				"balloon":"气球",
+				"wizard": "法师",
+				"healer": "天使",
+				"dragon": "飞龙",
+				"pekka": "皮卡",
+				"baby_dragon": "龙宝",  
+				"miner": "矿工",
+				"electro":"电龙",
+				"yeti": "雪怪",
+				"minion": "亡灵",
+				"hog_rider": "野猪骑士",
+				"valkyrie": "女武神",
+				"golem": "石人",
+				"witch": "巫师",
+				"lava": "熔岩巨兽",
+				"bowler": "蓝胖",
+				"ice_golem": "冰人"
+			},
+			"spell":{
+				"lightning": "雷电",
+				"healing":"治疗",
+				"rage": "狂暴",
+				"jump": "弹跳",
+				"freeze": "弹跳",
+				"clone": "镜像",
+				"poison": "毒药",  
+				"earthquake": "地震",
+				"haste":"急速",
+				"skeleton": "骷髅",
+				"bat": "蝙蝠"
+			},
+			"siege":{
+				"wall_wrecker": "攻城车",
+				"blimp":"攻城飞艇",
+				"slammer": "攻城气球",
+				"barracks": "攻城训练营"
+			}
+		}
 }

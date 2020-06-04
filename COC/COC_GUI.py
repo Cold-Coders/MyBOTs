@@ -13,9 +13,11 @@ from tkinter import ttk
 from util import *
 
 from GUI.GUI_logs import *
+from GUI.GUI_utils import *
 
 from COC.COC_Bot import COC_BOT
 from COC.Func.Others import Utils as U
+from COC.Func.Common import Scenario
 from COC.Func.General import General
 from COC.Func.Upgrade import Upgrade
 from COC.Func.Donation import Donation
@@ -38,24 +40,25 @@ class COC_BOT_GUI(tk.Frame):
 		self.window = tk.Tk()
 		tk.Frame.__init__(self, self.window, *args, **kwargs)
 
-		#-------------------Initialize function--------------------------------------
-		self.check_resolution()
-		self.init_Func()
-
 		#-------------------Initialize widget--------------------------------------
 		self.build_basic_window()
 		self.build_left_part()
 		self.build_right_part()
 		self.build_menu()
+		set_close(self.window, func = self.save_config)
+		#-------------------Initialize function--------------------------------------
+		self.check_resolution()
+		self.init_Func()
+		
 
 	def start(self):
-		def update():
+		def BotRun():
 			MyBot = COC_BOT(self._config,self.lang,self)
 			MyBot.run()
 			#while True:
 			#	time.sleep(1)
 
-		info_update = threading.Thread(target=update, args=[])
+		info_update = threading.Thread(target=BotRun, args=[])
 		info_update.daemon = True
 		info_update.start()
 
@@ -64,7 +67,9 @@ class COC_BOT_GUI(tk.Frame):
 	def init_Func(self):
 		h,w = self.d.window_size()
 		resolution = str(w) + "x" + str(h)
-		self._config["General"] = General(self,resolution)
+		coord = load_configure("COC/config/" + resolution + ".json")
+		self._config["Common"] = Scenario(coord)
+		self._config["General"] = General(self,resolution,coord)
 		self._config["Upgrade"] = Upgrade(self,resolution)
 		self._config["Donation"] = Donation(self,resolution)
 
@@ -112,7 +117,8 @@ class COC_BOT_GUI(tk.Frame):
 		GenMenu = Menu(menubar, tearoff=0)
 		GenMenu.add_command(label=text["obstacle"],
 				command=lambda : self._config["General"].set_obstacle(self.window))
-		GenMenu.add_command(label=text["donation"], command=lambda : self._config["General"].set_donation(self.window))
+		GenMenu.add_command(label=text["donation"], 
+				command=lambda : self._config["Donation"].set_donation(self.window))
 		GenMenu.add_command(label=text["collect"], command=donothing)
 		
 		
@@ -188,6 +194,7 @@ class COC_BOT_GUI(tk.Frame):
 					num = int(num)
 				except Exception as e:
 					U.prt(self.lang['tips']['coordinate_error'],mode = 3)
+					return
 					#raise e
 				cord.append(num)
 
@@ -211,12 +218,7 @@ class COC_BOT_GUI(tk.Frame):
 
 		self.test_button[1]['command']= lambda: new_shot()
 		#Recognize information
-		def updateinfo():
-			info = self._config["General"].Update_info()
-			for i in range(len(info)):
-				self.info_text[i]['text'] = info[i]
-
-		self.test_button[2]['command']= lambda: updateinfo()
+		self.test_button[2]['command']= lambda: self._config["General"].Update_info()
 		#Collect resourse
 		self.test_button[3]['command']= lambda: self._config["General"].collect_resourse()
 		#Remove obstacle once
@@ -269,12 +271,14 @@ class COC_BOT_GUI(tk.Frame):
 		 				value=1, var=self.shot_mode).place(x = 245, y = 700)
 
 	def set_function(self):
+		self.right_part.create_text(65,200,text = self.lang['func_Area'], fill="darkblue",font="Times 20 italic bold")
+
 		self.func = list()
 		for i in range(len(self.lang['func_name'])):
-			self.func.append(BooleanVar())
+			self.func.append(BooleanVar(value = self.config['Functionality'][i]))
 			donate = Checkbutton(self.right_part, text = self.lang['func_name'][i],
 				variable = self.func[i],bg="white", offvalue = 0, height = 1, width = 10)
-			donate.place(x = 20, y = 330 + i*30)
+			donate.place(x = 20, y = 230 + i*30)
 
 	def set_information(self):
 		#------------------------background-----------------------------------------------
@@ -295,14 +299,14 @@ class COC_BOT_GUI(tk.Frame):
 			#self.right_part.create_text(110,50 + 40*i,text = self.lang['info_name'][i],fill = fill_color[i%len(fill_color)])
 			
 			label = tk.Label(self.right_part, text = "0", relief="flat", background = "white")
-			label.place(x = 60 + 200*int(i//3) , y = 60 + 40*(i%3) )
+			label.place(x = 60 + 155*int(i//3) , y = 60 + 40*(i%3) )
 			self.info_text.append(label)
 
 			image = PIL.Image.open(self.config['HomeVillage_image'][i]).resize((40, 40))
 			image = ImageTk.PhotoImage(image)
 			self.homevillage_img.append(image)
 
-			self.list_info_widget.append( self.right_part.create_image(20 + 180*int(i/3) ,50 + 40 * (i%3),
+			self.list_info_widget.append( self.right_part.create_image(20 + 135*int(i/3) ,50 + 40 * (i%3),
 								 image = self.homevillage_img[i], anchor = NW) )
 		
 		self.builder_img = list()
@@ -313,13 +317,19 @@ class COC_BOT_GUI(tk.Frame):
 
 
 		#改变提示为建筑大师资源 和 家乡基地
-		self.info_title = tk.Label(self.right_part, text = self.lang["titles"]["HomeVillage"],
-					relief="flat", background = "white", fg="blue").place(x = 100, y = 30)
+		self.info_title = StringVar()
+		self.info_title.set(self.lang["titles"]["HomeVillage"])
+		tk.Label(self.right_part, textvariable = self.info_title,
+					relief="flat", background = "white", fg="blue").place(x = 60, y = 30)
 		
 		tk.Label(self.right_part, text = self.lang["titles"]["Cumulative"],
-					relief="flat", background = "white", fg="blue").place(x = 260, y = 30)
+					relief="flat", background = "white", fg="blue").place(x = 200, y = 30)
 
+		tk.Label(self.right_part, text = self.lang["titles"]["Others"],
+					relief="flat", background = "white", fg="blue").place(x = 320, y = 30)
 		#self.right_part.itemconfig(self.list_info_widget[2],image = self.list_info_pic[0])
+
+
 
 	def build_left_part(self):                    
 		# Build Left Part log
@@ -394,8 +404,36 @@ class COC_BOT_GUI(tk.Frame):
 			raise e
 			messagebox.showinfo("Error", "configure error")
 			exit()
+	def init_config(self):
+		self.config = {
+			"BuilderBase_image": 
+			[
+		        "COC/res/gold.png",
+		        "COC/res/elixir.png",
+		        "COC/res/gem.png"
+	    	],
+			"HomeVillage_image": 
+			[
+		        "COC/res/gold.png",
+		        "COC/res/elixir.png",
+		        "COC/res/dark_elixir.png",
+		        "COC/res/gold_storage.png",
+		        "COC/res/elixir_storage.png",
+		        "COC/res/dark_storage.png",
+		        "COC/res/Builder_info.png",
+		        "COC/res/Master_Builder_info.png",
+		        "COC/res/wait.png"
+	    	],
+	    	"coc_icon": "COC/res/coc_icon.png",
+	    	"coc_logo": "COC/res/COC_logo.png",
+	    	"lang": "chn",
+	    	"orc": 2,
+	   		"resource": "COC/res/resource.png"
+    	}
 
 	#Saving the config into the file config.json
 	def save_config(self):
+		for i in range(len(self.func)):
+			self.config['Functionality'][i] = self.func[i].get()
 		with open('COC/config/config.json', 'w',encoding='utf-8') as outfile:
 				json.dump(self.config, outfile, ensure_ascii=False, indent=4, sort_keys=True)
