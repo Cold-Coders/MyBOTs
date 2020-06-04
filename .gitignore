@@ -134,3 +134,4 @@ Orc.py
 .DS_Store
 test.py
 *.tif
+screenshot*.png
