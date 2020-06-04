@@ -1,7 +1,8 @@
 # MyBOTs
 
-## Function
-- [x] 
+## Games
+### [Clash Of Clans](https://supercell.com/en/games/clashofclans/)
+![GUI](./COC/res/GUI.png)
 
 ## Installation
 
