@@ -22,27 +22,27 @@
             "gem_box": [
                 1,
                 "Gem_10x9.png",
-                true
+                false
             ],
             "mushroom": [
                 2,
                 "Mushroom_9x9.png",
-                true
+                false
             ],
             "stone_l": [
                 5,
                 "Stone_14x15.png",
-                true
+                false
             ],
             "stone_m": [
                 4,
                 "Stone_11x9.png",
-                true
+                false
             ],
             "stone_s": [
                 3,
                 "Stone_9x7.png",
-                true
+                false
             ],
             "tree_l": [
                 8,
@@ -57,7 +57,7 @@
             "tree_s": [
                 6,
                 "Tree_12x9.png",
-                true
+                false
             ],
             "trunk_hor": [
                 10,

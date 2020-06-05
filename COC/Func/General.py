@@ -133,19 +133,22 @@ class General:
 			for word in text:
 				if word in "1234567890":
 					new_text += word
+				elif word in "/":
+					break
 			return new_text
 
 	def Update_info(self):
 		#gem_color = (208, 236, 120)
 		
 		screen = self.d.screenshot(format="opencv")
-		if self._Common.Scense(screen,spec = 1):
+		if self._Common.Scense(screen,spec = 1, Debug = True):
 			self.Image_to_homebase()
 			cumulative = True
 		elif self._Common.Scense(screen,spec = 2):
 			self.Image_to_builder()
 			cumulative = False
 		else:
+			print("识别资源 - 不在家乡或者建筑地图")
 			return
 		#--------------Gold---------------------------------
 		gold_Area = self.Area["gold"]
@@ -194,10 +197,7 @@ class General:
 
 #-------------------Remove obstacle-------------------------------#
 	def remove_single_obstacle(self):
-		#判定资源大于1万
-		if self._count['elixir'] < 10000 or self._count['gold'] < 10000:
-			U.prt(self.lang['msgs'][5] ,mode = 1)
-			return
+		
 		
 		#判定地图
 		screen = self.d.screenshot(format="opencv")
@@ -212,6 +212,12 @@ class General:
 		#判定是否有工人
 		if self._count['labor'] < 1:
 			U.prt(self.lang['msgs'][7] ,mode = 1)
+			return
+
+
+		#判定资源大于1万
+		if self._count['elixir'] < 10000 or self._count['gold'] < 10000:
+			U.prt(self.lang['msgs'][5] ,mode = 1)
 			return
 
 		tag = True
@@ -235,7 +241,7 @@ class General:
 	def labors(self, screen, home = True):
 		if home:
 			labor_Area = self.Area["labor"]
-			labor = self.ORC(screen, labor_Area,Debug = True,lang="num+chi_sim")
+			labor = self.ORC(screen, labor_Area,Debug = True)
 			if labor.isdigit():
 				self._count['labor'] = int(labor)
 				self._infoboard[6]['text'] = self._count['labor']
