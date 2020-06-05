@@ -1,8 +1,22 @@
 from COC.Func.Others import Utils as U
+from datetime import timedelta
+import datetime
 
 class Scenario:
 	def __init__(self, coord):
 		self.common_coord = coord["Common"]
+
+	def time_left(self,time : datetime.datetime):
+		return (time - self.now()).total_seconds()
+
+	def now(self):
+		return datetime.datetime.now()
+
+	def time(self,time):
+		return time.strftime('%H:%M:%S')
+
+	def duration(self, days = 0, minutes = 0, seconds = 0):
+		return (datetime.datetime.now() + timedelta(days = days, minutes = minutes, seconds = seconds))
 
 	def Scense(self, screen, spec = 0, Debug = False):
 		

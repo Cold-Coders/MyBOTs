@@ -13,7 +13,7 @@
     "General": {
         "GUI_path": "COC/res/obstacle",
         "b_elixir": "b_elixir_18x18.png",
-        "b_gold": "b_gold_19x18.png",
+        "b_gold": "b_gold_17x17.png",
         "dart_elixir": "dart_elixir_19x19.png",
         "elixir": "elixir_19x19.png",
         "gem": "b_gem_18x17.png",

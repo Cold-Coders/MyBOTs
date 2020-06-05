@@ -22,8 +22,11 @@ class COC_BOT():
 		self.enable_func = self._gui.func
 		#-------------功能性类-----------------------
 		self.General = self._config["General"]
+		self.Common = self._config["Common"]
+		self.wait = self.Common.now()
+		#-------------GUI 快捷类---------------------
+		self.time_elapse = self._gui.info_text[8]
 		#-------------------------------------------
-	
 		prt(self._config,title = "配置信息")
 		u.prt("机器信息",self.d.info)
 
@@ -34,18 +37,29 @@ class COC_BOT():
 		#配置
 		while True:
 			#如果是果盘COC 点进入游戏
-			self.GPstart()
-
+			#self.GPstart()
+			
 			if self.enable_func[0].get(): # 自动识别资源
 				self.General.Update_info()
+
+			if self.Common.now() < self.wait:
+				#更新剩余等待时间
+				self.time_elapse['text'] = int(self.Common.time_left(self.wait))
+				ss(1)
+				continue
+			else:
+				self.time_elapse['text'] = '0'
 
 			if self.enable_func[1].get(): # 自动收集资源
 				self.General.collect_resourse()
 
+			self.sleep(min = 1)
 			#打印统计
 			#prt(self._count,title = "统计")
 			#ss(10,1, precent = 2)
 
+	def sleep(self, min = 0, sec = 0):
+		self.wait = self.Common.duration( minutes = min, seconds = sec)
 
 	def Launch_app(self):
 		self.d.app_start(self._app)

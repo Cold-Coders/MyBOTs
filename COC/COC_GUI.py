@@ -289,7 +289,7 @@ class COC_BOT_GUI(tk.Frame):
 		fill_color = [
 					  "brown",
 					  "red",
-					  "black"
+					  "Green"
 					 ]
 		self.homevillage_img = list()
 		self.info_text = list()
@@ -298,8 +298,9 @@ class COC_BOT_GUI(tk.Frame):
 		for i in range(len(self.config['HomeVillage_image'])):
 			#self.right_part.create_text(110,50 + 40*i,text = self.lang['info_name'][i],fill = fill_color[i%len(fill_color)])
 			
-			label = tk.Label(self.right_part, text = "0", relief="flat", background = "white")
-			label.place(x = 60 + 155*int(i//3) , y = 60 + 40*(i%3) )
+			label = tk.Label(self.right_part, text = "0", relief="flat", background = "white", \
+						fg = fill_color[i%len(fill_color)])
+			label.place(x = 60 + 140*int(i//3) , y = 60 + 40*(i%3) )
 			self.info_text.append(label)
 
 			image = PIL.Image.open(self.config['HomeVillage_image'][i]).resize((40, 40))

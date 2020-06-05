@@ -223,6 +223,6 @@ class General:
 					"gold"	 : "gold_18x18.png",
 					"dart_elixir" : "dart_elixir_19x19.png",
 					"b_elixir": "b_elixir_18x18.png",
-					"b_gold": "b_gold_19x18.png",
+					"b_gold": "b_gold_17x17.png",
 					"gem" : "b_gem_18x17.png"
 			}
