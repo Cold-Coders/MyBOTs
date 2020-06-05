@@ -36,6 +36,17 @@ class General:
 		self.first = True
 		self.b_first = True
 
+
+		self._count = { 
+				"gold" : 0 ,
+				"elixir" : 0,
+				"dart_elixir" : 0,
+				"c_gold" : 0,
+				"c_elixir": 0,
+				"c_dart_elixir": 0,
+				"labor": 0
+		}
+
 		if 'General' not in GUI.config:
 			self.init_config()
 		else:
@@ -59,7 +70,7 @@ class General:
 			for obs_name in self._select_obstacle.keys():
 				self.config['obstacle'][obs_name][2] = self._select_obstacle[obs_name].get()
 			GUI.save_config()
-			U.prt( "config Saved",mode = 2)
+			U.prt( "General config Saved",mode = 2)
 
 		self.SAVE = lambda: save_selected_value()
 
@@ -110,15 +121,13 @@ class General:
 		
 
 #----更新资源状态-------------------------------------------------------------------------------------
-	def Update_info(self):
-		
-		def orc(screen,area, Accurate = False):
+	def ORC(self, screen,area, Accurate = False, Debug = False, lang = "num"):
 			text = ""
 			#baidu
 			if self.orc == 1:
 				text = U.BdOrc(screen, area , Accurate = Accurate)
 			elif self.orc == 2:
-				text = U.orcbyArea(screen, area )
+				text = U.orcbyArea(screen, area,lang = lang, Debug = Debug)
 			
 			new_text = ""
 			for word in text:
@@ -126,75 +135,95 @@ class General:
 					new_text += word
 			return new_text
 
+	def Update_info(self):
 		#gem_color = (208, 236, 120)
+		
 		screen = self.d.screenshot(format="opencv")
 		if self._Common.Scense(screen,spec = 1):
 			self.Image_to_homebase()
+			cumulative = True
 		elif self._Common.Scense(screen,spec = 2):
 			self.Image_to_builder()
+			cumulative = False
 		else:
 			return
 		#--------------Gold---------------------------------
 		gold_Area = self.Area["gold"]
-		gold = orc(screen, gold_Area)
+		gold = self.ORC(screen, gold_Area)
 		if gold.isdigit():
+			gold = int(gold)
+			if cumulative:
+				self._count['c_gold'] += (gold - self._count['gold']) \
+					if self._count['gold'] != 0 and (gold - self._count['gold']) > 0 else 0
+				self._count['gold'] = gold
 			self._infoboard[0]['text'] = gold
+			self._infoboard[3]['text'] = self._count['c_gold']
+
+
 		else:
 			self._infoboard[0]['text'] = self.lang['recog_error']
 
 		#--------------Elixir---------------------------------
 		elixir_Area = self.Area["elixir"]
-		elixir = orc(screen, elixir_Area)
+		elixir = self.ORC(screen, elixir_Area)
 		if elixir.isdigit():
+			elixir = int(elixir)
+			if cumulative:
+				self._count['c_elixir'] += (elixir - self._count['elixir']) \
+					if self._count['elixir'] != 0 and (elixir - self._count['elixir']) > 0 else 0
+				self._count['elixir'] = elixir
 			self._infoboard[1]['text'] = elixir
+			self._infoboard[4]['text'] = self._count['c_elixir']
 		else:
 			self._infoboard[0]['text'] = self.lang['recog_error']
 
 		#--------------dart Elixir---------------------------------
 		dart_elixir_Area = self.Area["d_elixir"]
-		dart_elixir = orc(screen, dart_elixir_Area)
+		dart_elixir = self.ORC(screen, dart_elixir_Area)
 		if dart_elixir.isdigit():
+			dart_elixir = int(dart_elixir)
+			if cumulative:
+				self._count['c_dart_elixir'] += (dart_elixir - self._count['dart_elixir']) \
+					if self._count['dart_elixir'] != 0 and (dart_elixir - self._count['dart_elixir']) > 0 else 0
+				self._count['dart_elixir'] = dart_elixir
 			self._infoboard[2]['text'] = dart_elixir
+			self._infoboard[5]['text'] = self._count['c_dart_elixir']
+
 		else:
 			self._infoboard[0]['text'] = self.lang['recog_error']
 
-
-	def place_image(self,frame,image,x,y):
-		img =PIL.Image.open(image)
-		self.img = ImageTk.PhotoImage(img)
-		frame.create_image(x,y,image=self.img,anchor = NW)
-
 #-------------------Remove obstacle-------------------------------#
-	def set_obstacle(self,window):
-		set_window = Toplevel(window)
-		set_window.geometry("200x420")	
-		w = Canvas(set_window, width=200, height=110)
-		self.place_image(w,"COC/res/obstacle.png",0,0)
-		w.place( x = 0, y = 310)
-
-		for obs_name in self.config['obstacle'].keys():
-			self._select_obstacle[obs_name] = tkinter.BooleanVar(value = self.config['obstacle'][obs_name][2])
-			donate = Checkbutton(set_window, text = self.lang['obstacle_name'][obs_name],
-				variable = self._select_obstacle[obs_name],bg="white", height = 1, width = 10)
-			donate.place(x = 10, y = 0 + self.config['obstacle'][obs_name][0]*30-20)
-
-		#点关闭后保存配置 set_close(root, func = 函数)
-		set_close(set_window, func = self.SAVE)
-		#Test SAVE configure
-		#self._select_obstacle["gem_box"].set(False)
-		#self.SAVE()
-
 	def remove_single_obstacle(self):
+		#判定资源大于1万
+		if self._count['elixir'] < 10000 or self._count['gold'] < 10000:
+			U.prt(self.lang['msgs'][5] ,mode = 1)
+			return
+		
+		#判定地图
+		screen = self.d.screenshot(format="opencv")
+		if self._Common.Scense(screen,spec = 1):
+			self.labors(screen)
+		elif self._Common.Scense(screen,spec = 2):
+			self.labors(screen, home = False)
+		else:
+			U.prt(self.lang['msgs'][6] ,mode = 1)
+			return
+
+		#判定是否有工人
+		if self._count['labor'] < 1:
+			U.prt(self.lang['msgs'][7] ,mode = 1)
+			return
+
 		tag = True
 		rx,ry = self.buttons["remove_obstacle"]
 
 		for obs in self.config['obstacle']:
 			move_val = self._select_obstacle[obs].get()
 			if move_val == True:
-				x,y = U.find_position(self.d, self.path + self.config['obstacle'][obs][1],confidence = 0.7)
+				x,y = U.find_position(screen, self.path + self.config['obstacle'][obs][1],confidence = 0.7)
 				if x != -1:
 					U.tap(self.d,x,y)
-					U.prt("remove obstacle at (" + str(x) + "," + str(y) + ")" ,mode = 1)
+					U.prt(self.lang['obstacle_name'][obs] + " (" + str(x) + "," + str(y) + ")" ,mode = 1)
 					#if it enough resourse to remove
 					U.tap(self.d,rx,ry)
 					tag = False
@@ -203,7 +232,46 @@ class General:
 		if tag:
 			U.prt("Didn't find any removable obstacle",mode = 3)
 
+	def labors(self, screen, home = True):
+		if home:
+			labor_Area = self.Area["labor"]
+			labor = self.ORC(screen, labor_Area,Debug = True,lang="num+chi_sim")
+			if labor.isdigit():
+				self._count['labor'] = int(labor)
+				self._infoboard[6]['text'] = self._count['labor']
+			else:
+				self._infoboard[6]['text'] = self.lang['recog_error']
+		else:
+			pass
 
+#-------------------General Setting GUI-------------------------------#
+	def set_general(self,window):
+		set_window = Toplevel(window)
+		set_window.geometry("420x420")	
+		set_window.title(self.lang['title'])
+
+		board = Canvas(set_window, width=420, height=420,bg = "white")
+		board.place( x = 0, y = 0)
+
+		#place_image(self,board,"COC/res/dragon.png",0,0)
+		place_label(self,board,10,5,text="勾选移除障碍物:           等待时间设置:",\
+			font='Helvetica 13 bold')
+
+		for obs_name in self.config['obstacle'].keys():
+			self._select_obstacle[obs_name] = tkinter.BooleanVar(value = self.config['obstacle'][obs_name][2])
+			donate = Checkbutton(board, text = self.lang['obstacle_name'][obs_name],
+				variable = self._select_obstacle[obs_name],bg="white", height = 1, width = 10)
+			donate.place(x = 10, y = 20 + self.config['obstacle'][obs_name][0]*30-20)
+			place_image(self,board,self.path + self.config['obstacle'][obs_name][1],110,\
+				25 + self.config['obstacle'][obs_name][0]*30-20,resize = (20,20))
+			#place_label(self,board,130,y = 20 + self.config['obstacle'][obs_name][0]*30-20,text=self.config['obstacle'][obs_name][1])
+
+		#点关闭后保存配置 set_close(root, func = 函数)
+		set_close(set_window, func = self.SAVE)
+		#Test SAVE configure
+		#self._select_obstacle["gem_box"].set(False)
+		#self.SAVE()
+		
 	def init_config(self):
 		self.config = {
 					"GUI_path" : "COC/res/obstacle",

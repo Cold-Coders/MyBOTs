@@ -6,6 +6,7 @@ from tkinter import messagebox
 from tkinter import ttk
 
 from GUI.GUI_logs import *
+from GUI.GUI_utils import *
 from COC.Func.Others import Utils as U
 
 from util import *
@@ -15,12 +16,14 @@ class Donation:
 		path = 'COC/recognition/' + resolution + "/Donation/"
 		trainer_path  = 'COC/recognition/' + resolution + "/train/trainer/"
 		train_path = 'COC/recognition/' + resolution + "/train/"
+
 		self.d = GUI._config['d']
 		self.lang = GUI.lang
 
+
+
 		self.close_donation = path + "close_donation.png"
 		self.trainer = trainer_path + "13.png"
-		
 		
 		self.req_btn = path + "request_" + GUI.config['lang'] + ".png"
 		self.req2_btn = path + "request2_" + GUI.config['lang'] + ".png"
@@ -50,7 +53,53 @@ class Donation:
 		self._select_siege = dict()
 
 		if 'Donation' not in GUI.config:
-			self.config = {
+			self.init_config()
+		else:
+			self.config = GUI.config['Donation']
+
+
+		#def save_selected_value():
+		#	for obs_name in self._select_obstacle.keys():
+		#		self.config['obstacle'][obs_name][2] = self._select_obstacle[obs_name].get()
+		#	GUI.save_config()
+		#	U.prt( "General config Saved",mode = 2)
+
+		#self.SAVE = lambda: save_selected_value()
+
+
+		self.donation_list = self.config["donation"]
+		self.train_list = list()
+
+
+#------------------------------Donation-------------------------------#
+
+	def set_donation(self,window):
+		set_window = Toplevel(window)
+		set_window.geometry("500x600")
+		w = Canvas(set_window, width=120, height=132)
+		w.place( x = 300, y = 300)	
+		for troop_name in self.config['donation']['troops'].keys():
+			self._select_troops[troop_name] = BooleanVar(value = self.config['donation']['troops'][troop_name][2])
+			donate = Checkbutton(set_window, text = self.lang['Donation']['troops'][troop_name],
+				variable = self._select_troops[troop_name],bg="white", height = 1, width = 10)
+			donate.place(x = 10, y = 0 + self.config['donation']['troops'][troop_name][0]*30-20)
+
+		for spell_name in self.config['donation']['spell'].keys():
+			self._select_spell[spell_name] = BooleanVar(value = self.config['donation']['spell'][spell_name][2])
+			donate = Checkbutton(set_window, text = self.lang['Donation']['spell'][spell_name],
+				variable = self._select_spell[spell_name],bg="white", height = 1, width = 10)
+			donate.place(x = 110, y = 0 + self.config['donation']['spell'][spell_name][0]*30-20)
+
+		for siege_name in self.config['donation']['siege'].keys():
+			self._select_siege[siege_name] = BooleanVar(value = self.config['donation']['siege'][siege_name][2])
+			donate = Checkbutton(set_window, text = self.lang['Donation']['siege'][siege_name],
+				variable = self._select_siege[siege_name],bg="white", height = 1, width = 10)
+			donate.place(x = 210, y = 0 + self.config['donation']['siege'][siege_name][0]*30-20)
+
+		#set_close(set_window, func = self.SAVE)
+
+	def init_config(self):
+		self.config = {
 				"donation": {
 					"siege": {
 						"barracks": [4,"undefined",1],
@@ -93,43 +142,6 @@ class Donation:
 					}
 				}
 			}
-		else:
-			self.config = GUI.config['Donation']
-
-
-
-
-		self.donation_list = self.config["donation"]
-		self.train_list = list()
-
-
-#------------------------------Donation-------------------------------#
-
-	def set_donation(self,window):
-		set_window = Toplevel(window)
-		set_window.geometry("500x600")
-		w = Canvas(set_window, width=120, height=132)
-		w.place( x = 300, y = 300)	
-		for troop_name in self.config['donation']['troops'].keys():
-			self._select_troops[troop_name] = tkinter.BooleanVar(value = self.config['donation']['troops'][troop_name][2])
-			donate = Checkbutton(set_window, text = self.lang['donation']['troops'][troop_name],
-				variable = self._select_troops[troop_name],bg="white", height = 1, width = 10)
-			donate.place(x = 10, y = 0 + self.config['donation']['troops'][troop_name][0]*30-20)
-
-		for spell_name in self.config['donation']['spell'].keys():
-			self._select_spell[spell_name] = tkinter.BooleanVar(value = self.config['donation']['spell'][spell_name][2])
-			donate = Checkbutton(set_window, text = self.lang['donation']['spell'][spell_name],
-				variable = self._select_spell[spell_name],bg="white", height = 1, width = 10)
-			donate.place(x = 110, y = 0 + self.config['donation']['spell'][spell_name][0]*30-20)
-
-		for siege_name in self.config['donation']['siege'].keys():
-			self._select_siege[siege_name] = tkinter.BooleanVar(value = self.config['donation']['siege'][siege_name][2])
-			donate = Checkbutton(set_window, text = self.lang['donation']['siege'][siege_name],
-				variable = self._select_siege[siege_name],bg="white", height = 1, width = 10)
-			donate.place(x = 210, y = 0 + self.config['donation']['siege'][siege_name][0]*30-20)
-
-		set_close(set_window, func = self.SAVE)
-
 
 	def donateOnce(self):
 		#pass

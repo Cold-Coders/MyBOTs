@@ -31,7 +31,7 @@ class COC_BOT():
 		u.prt("机器信息",self.d.info)
 
 		self._app = config['game']
-		self._count = dict()
+
 
 	def run(self):
 		#配置
@@ -42,9 +42,8 @@ class COC_BOT():
 			if self.enable_func[0].get(): # 自动识别资源
 				self.General.Update_info()
 
-			if self.Common.now() < self.wait:
-				#更新剩余等待时间
-				self.time_elapse['text'] = int(self.Common.time_left(self.wait))
+			if self.Common.now() < self.wait:#更新剩余等待时间
+				self.time_elapse['text'] = str(int(self.Common.time_left(self.wait))) + ' s'
 				ss(1)
 				continue
 			else:
@@ -54,8 +53,6 @@ class COC_BOT():
 				self.General.collect_resourse()
 
 			self.sleep(min = 1)
-			#打印统计
-			#prt(self._count,title = "统计")
 			#ss(10,1, precent = 2)
 
 	def sleep(self, min = 0, sec = 0):

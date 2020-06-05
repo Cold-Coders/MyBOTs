@@ -224,7 +224,7 @@ class Utils:
 	Orc by tesseract
 	'''
 	@staticmethod
-	def orcbyArea(screen,area,lang = "num"):
+	def orcbyArea(screen,area,lang = "num", Debug = False):
 		#x1,y1,x2,y2 = area
 		#cropped = screen[y1:y2, x1:x2]
 		cropped = Utils.crop_screen(screen,area)
@@ -245,7 +245,9 @@ class Utils:
 			text = pytesseract.image_to_string(recogize, lang=lang)
 		
 		#os.remove("cropped.png")
-		#print("tesseract :", text)
+		if Debug:
+			cv2.imwrite('cropped.png', gray)
+			print("tesseract:", text)
 		return text
 
 	"""

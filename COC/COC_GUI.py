@@ -3,8 +3,7 @@ import tkinter as tk # note that module name has changed from Tkinter in Python 
 import json,os,time,threading,logging
 import uiautomator2 as u2
 
-from PIL import ImageTk
-import PIL.Image
+
 
 from tkinter import *
 from tkinter import messagebox
@@ -115,11 +114,12 @@ class COC_BOT_GUI(tk.Frame):
 
 		#-------------------General Setting--------------------------------------
 		GenMenu = Menu(menubar, tearoff=0)
-		GenMenu.add_command(label=text["obstacle"],
-				command=lambda : self._config["General"].set_obstacle(self.window))
+
+		GenMenu.add_command(label=text["common"],
+				command=lambda : self._config["General"].set_general(self.window))
 		GenMenu.add_command(label=text["donation"], 
 				command=lambda : self._config["Donation"].set_donation(self.window))
-		GenMenu.add_command(label=text["collect"], command=donothing)
+		#GenMenu.add_command(label=text["common"], command=donothing)
 		
 		
 
@@ -136,14 +136,7 @@ class COC_BOT_GUI(tk.Frame):
 		self.set_function()
 		self.test_area()
 
-		self.place_image(self.right_part,"COC/res/dragon.png",150,300)
-
-
-	def place_image(self,frame,image,x,y):
-		img =PIL.Image.open(image)
-		self.img = ImageTk.PhotoImage(img)
-		frame.create_image(x,y,image=self.img,anchor = NW)
-
+		place_image(self,self.right_part,"COC/res/dragon.png",150,300)
 
 	def test_area(self):
 		self.right_part.create_text(75,530,text = self.lang['Test_Area'], fill="darkblue",font="Times 20 italic bold")
