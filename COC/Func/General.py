@@ -141,7 +141,7 @@ class General:
 		#gem_color = (208, 236, 120)
 		
 		screen = self.d.screenshot(format="opencv")
-		if self._Common.Scense(screen,spec = 1, Debug = True):
+		if self._Common.Scense(screen,spec = 1):#, Debug = True
 			self.Image_to_homebase()
 			cumulative = True
 		elif self._Common.Scense(screen,spec = 2):
