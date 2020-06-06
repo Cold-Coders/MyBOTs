@@ -38,9 +38,9 @@ class General:
 
 
 		self._count = { 
-				"gold" : 0 ,
-				"elixir" : 0,
-				"dart_elixir" : 0,
+				"gold" : -1 ,
+				"elixir" : -1,
+				"dart_elixir" : -1,
 				"c_gold" : 0,
 				"c_elixir": 0,
 				"c_dart_elixir": 0,
@@ -75,6 +75,7 @@ class General:
 		self.SAVE = lambda: save_selected_value()
 
 
+
 #----收集资源-------------------------------------------------------------------------------------
 	def collect_resourse(self):
 
@@ -95,11 +96,13 @@ class General:
 					self.first = False
 
 				tap(U.find_position(screen, self.path + self.config['elixir'],\
-				 confidence = 0.85),self.lang['msgs'][0])
+				 confidence = 0.90),self.lang['msgs'][0]) #0.99205
+
 				tap(U.find_position(screen, self.path + self.config['gold'],\
-				 confidence = 0.85),self.lang['msgs'][1])
+				 confidence = 0.90),self.lang['msgs'][1])
+
 				tap(U.find_position(screen, self.path + self.config['dart_elixir'],\
-				 confidence = 0.85),self.lang['msgs'][2])
+				 confidence = 0.90),self.lang['msgs'][2])
 
 			elif self._Common.Scense(screen,spec = 2):
 
@@ -116,10 +119,38 @@ class General:
 			else:
 				return
 
+			self.update_cum_resourse()
+
 		except Exception as e:
 			self.init_config()
-		
 
+#----统计增加资源---------------------------------------------------------------------------------
+	def update_cum_resourse(self):
+		if self._count['gold'] == -1 or self._count['elixir'] == -1 or self._count['dart_elixir'] == -1:
+			return
+
+		gold =  self._count['gold']
+		elixir = self._count['elixir']
+		dart_elixir =  self._count['dart_elixir']
+
+		self.Update_info(self)
+
+		dif_gold = (self._count['gold'] - gold)
+		dif_elixir = (self._count['elixir'] - elixir)
+		dif_d_elixir = (self._count['dart_elixir'] - dart_elixir)
+
+		if dif_gold > 0:
+			self._count['c_gold'] +=  d_gold 
+			self._infoboard[3]['text'] = self._count['c_gold']
+
+		if dif_elixir > 0:
+			self._count['c_elixir'] += dif_elixir
+			self._infoboard[4]['text'] = self._count['c_elixir']
+
+		if dif_d_elixir > 0:
+			self._count['c_dart_elixir'] += dif_d_elixir
+			self._infoboard[5]['text'] = self._count['c_dart_elixir']
+		
 #----更新资源状态-------------------------------------------------------------------------------------
 	def ORC(self, screen,area, Accurate = False, Debug = False, lang = "num"):
 			text = ""
@@ -143,10 +174,8 @@ class General:
 		screen = self.d.screenshot(format="opencv")
 		if self._Common.Scense(screen,spec = 1):#, Debug = True
 			self.Image_to_homebase()
-			cumulative = True
 		elif self._Common.Scense(screen,spec = 2):
 			self.Image_to_builder()
-			cumulative = False
 		else:
 			print("识别资源 - 不在家乡或者建筑地图")
 			return
@@ -155,14 +184,8 @@ class General:
 		gold = self.ORC(screen, gold_Area)
 		if gold.isdigit():
 			gold = int(gold)
-			if cumulative:
-				self._count['c_gold'] += (gold - self._count['gold']) \
-					if self._count['gold'] != 0 and (gold - self._count['gold']) > 0 else 0
-				self._count['gold'] = gold
+			self._count['gold'] = gold
 			self._infoboard[0]['text'] = gold
-			self._infoboard[3]['text'] = self._count['c_gold']
-
-
 		else:
 			self._infoboard[0]['text'] = self.lang['recog_error']
 
@@ -171,12 +194,8 @@ class General:
 		elixir = self.ORC(screen, elixir_Area)
 		if elixir.isdigit():
 			elixir = int(elixir)
-			if cumulative:
-				self._count['c_elixir'] += (elixir - self._count['elixir']) \
-					if self._count['elixir'] != 0 and (elixir - self._count['elixir']) > 0 else 0
-				self._count['elixir'] = elixir
+			self._count['elixir'] = elixir
 			self._infoboard[1]['text'] = elixir
-			self._infoboard[4]['text'] = self._count['c_elixir']
 		else:
 			self._infoboard[0]['text'] = self.lang['recog_error']
 
@@ -185,20 +204,19 @@ class General:
 		dart_elixir = self.ORC(screen, dart_elixir_Area)
 		if dart_elixir.isdigit():
 			dart_elixir = int(dart_elixir)
-			if cumulative:
-				self._count['c_dart_elixir'] += (dart_elixir - self._count['dart_elixir']) \
-					if self._count['dart_elixir'] != 0 and (dart_elixir - self._count['dart_elixir']) > 0 else 0
-				self._count['dart_elixir'] = dart_elixir
+			self._count['dart_elixir'] = dart_elixir
 			self._infoboard[2]['text'] = dart_elixir
-			self._infoboard[5]['text'] = self._count['c_dart_elixir']
-
 		else:
 			self._infoboard[0]['text'] = self.lang['recog_error']
 
 #-------------------Remove obstacle-------------------------------#
 	def remove_single_obstacle(self):
 		
-		
+		#判定资源大于1万
+		if self._count['elixir'] < 10000 or self._count['gold'] < 10000:
+			U.prt(self.lang['msgs'][5] ,mode = 1)
+			return
+
 		#判定地图
 		screen = self.d.screenshot(format="opencv")
 		if self._Common.Scense(screen,spec = 1):
@@ -215,18 +233,13 @@ class General:
 			return
 
 
-		#判定资源大于1万
-		if self._count['elixir'] < 10000 or self._count['gold'] < 10000:
-			U.prt(self.lang['msgs'][5] ,mode = 1)
-			return
-
 		tag = True
 		rx,ry = self.buttons["remove_obstacle"]
 
 		for obs in self.config['obstacle']:
 			move_val = self._select_obstacle[obs].get()
 			if move_val == True:
-				x,y = U.find_position(screen, self.path + self.config['obstacle'][obs][1],confidence = 0.7)
+				x,y = U.find_position(screen, self.path + self.config['obstacle'][obs][1],confidence = 0.75)
 				if x != -1:
 					U.tap(self.d,x,y)
 					U.prt(self.lang['obstacle_name'][obs] + " (" + str(x) + "," + str(y) + ")" ,mode = 1)
@@ -241,7 +254,7 @@ class General:
 	def labors(self, screen, home = True):
 		if home:
 			labor_Area = self.Area["labor"]
-			labor = self.ORC(screen, labor_Area,Debug = True)
+			labor = self.ORC(screen, labor_Area)
 			if labor.isdigit():
 				self._count['labor'] = int(labor)
 				self._infoboard[6]['text'] = self._count['labor']

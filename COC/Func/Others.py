@@ -175,7 +175,7 @@ class Utils:
 	@staticmethod
 	def revert_test():
 		count = 1
-		filename = 'screenshot_g'
+		filename = 'screenshot'
 		while os.path.isfile(filename + str(count) + ".png"):
 			img = cv2.imread(filename + str(count) + ".png")
 			gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -196,11 +196,11 @@ class Utils:
 				else:
 					dst[i,j] = 255
 
-		if False:		
-			count = 1
-			while os.path.isfile('cropped' + str(count) + ".tif"):
-				count += 1
-			cv2.imwrite('cropped' + str(count) + ".tif", dst)
+		#if False:		
+		#	count = 1
+		#	while os.path.isfile('cropped' + str(count) + ".tif"):
+		#		count += 1
+		#	cv2.imwrite('cropped' + str(count) + ".tif", dst)
 
 		return dst
 
@@ -232,7 +232,8 @@ class Utils:
 		
 		gray = cv2.cvtColor(cropped, cv2.COLOR_BGR2GRAY)
 
-		recogize = Image.fromarray(Utils.revert_white_to_black(gray))
+		revert = Utils.revert_white_to_black(gray)
+		recogize = Image.fromarray(revert)
 		
 		#Image.open("cropped2.png")
 		#Image.fromarray(gray)
@@ -245,8 +246,11 @@ class Utils:
 			text = pytesseract.image_to_string(recogize, lang=lang)
 		
 		#os.remove("cropped.png")
+		count = 1
 		if Debug:
-			cv2.imwrite('cropped.png', gray)
+			while os.path.isfile('cropped' + str(count) + ".tif"):
+				count += 1
+			cv2.imwrite('cropped' + str(count) + ".tif", revert)
 			print("tesseract:", text)
 		return text
 
@@ -309,6 +313,7 @@ class Utils:
 			return (-1,-1)
 
 		if result['confidence'] > confidence:
+			print ('找到', target,'阈值:' , result['confidence'])
 			return (int(result['result'][0]),int(result['result'][1]))
 			
 		if Debug:

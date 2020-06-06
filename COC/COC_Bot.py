@@ -39,6 +39,10 @@ class COC_BOT():
 			#如果是果盘COC 点进入游戏
 			#self.GPstart()
 			
+			#不在游戏中无限睡眠
+			while u.current_app(self.d) != self._app:
+				ss()
+
 			if self.enable_func[0].get(): # 自动识别资源
 				self.General.Update_info()
 
@@ -52,6 +56,7 @@ class COC_BOT():
 			if self.enable_func[1].get(): # 自动收集资源
 				self.General.collect_resourse()
 
+
 			self.sleep(min = 1)
 			#ss(10,1, precent = 2)
 
@@ -63,6 +68,7 @@ class COC_BOT():
 
 	def Stop_app(d):
 		self.d.app_stop(self._app)
+
 
 	def GPstart(self):
 		EXISTS = lambda a,b: self.d(text=a, className=b).exists()
