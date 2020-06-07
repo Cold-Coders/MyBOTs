@@ -35,9 +35,9 @@ class Scenario:
 				]
 		# 2 builder
 		colors[2] = [ 
-					(255, 234, 198), #等级下面的降杯浅色部分
+					(255, 234, 199), #等级下面的降杯浅色部分
 					(45, 113, 182), #Builder蓝色i
-					(207, 130, 42), #进攻地图斧头的颜色
+					(119, 133, 149), #进攻地图斧头的颜色
 					(207, 238, 120) #宝石的颜色
 				] 
 
@@ -55,6 +55,6 @@ class Scenario:
 			for i in range(len(pos[spec])):
 				if not U.isColor(screen, pos[spec][i], colors[spec][i] ,diff = 10, Debug = Debug):
 					if Debug:
-						continue
+						print("->->->spec ",spec,end =" ")
 					return False
 			return True

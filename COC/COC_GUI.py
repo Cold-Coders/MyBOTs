@@ -222,7 +222,10 @@ class COC_BOT_GUI(tk.Frame):
 		#Test donation
 		self.test_button[6]['command']= lambda: self._config["Donation"].donateOnce()
 		#Test IMAGE
-		self.test_button[7]['command']= lambda: U.Image_Test(self.d)
+		self.corps = [tk.Entry(width = 5),tk.Entry(width = 5),tk.Entry(width = 5),tk.Entry(width = 5)]
+		self.binarybound = [tk.Entry(width = 8),tk.Entry(width = 8)]
+		self.test_button[7]['command']= lambda: U.Image_Test(self.d,lower = self.binarybound[0].get().split(" "),\
+			morph = self.corps[0].get() ,upper = self.binarybound[1].get().split(" "))
 		#Find test
 		search_imgs()
 		#self.testfind = ttk.Combobox(self.right_part,values=self.img_list)
@@ -250,19 +253,23 @@ class COC_BOT_GUI(tk.Frame):
 		tk.Label(self.right_part,text = "y1", relief="flat", background = "white").place(x = 30, y = 700)
 		tk.Label(self.right_part,text = "x2", relief="flat", background = "white").place(x = 100, y = 680)
 		tk.Label(self.right_part,text = "y2", relief="flat", background = "white").place(x = 100, y = 700)
-		self.corps = [tk.Entry(width = 5),tk.Entry(width = 5),tk.Entry(width = 5),tk.Entry(width = 5)]
+		
 		self.right_part.create_window(50 , 680, anchor= NW , window=self.corps[0])
 		self.right_part.create_window(50 , 680 + 20, anchor= NW , window=self.corps[1])
 		self.right_part.create_window(120 , 680, anchor= NW , window=self.corps[2])
 		self.right_part.create_window(120 , 680  + 20, anchor= NW , window=self.corps[3])
 		tk.Radiobutton(self.right_part,text = 'Color', relief="flat", background = "white",
-						value=0, var=self.shot_color).place(x = 175, y = 680)
+						value=0, var=self.shot_color).place(x = 170, y = 680)
 		tk.Radiobutton(self.right_part,text = 'Gray', relief="flat", background = "white" ,
-						value=1, var=self.shot_color).place(x = 175, y = 700)
+						value=1, var=self.shot_color).place(x = 170, y = 700)
 		tk.Radiobutton(self.right_part,text = self.lang['titles']['full'], relief="flat", background = "white",
-						value=0, var=self.shot_mode).place(x = 245, y = 680)
+						value=0, var=self.shot_mode).place(x = 235, y = 680)
 		tk.Radiobutton(self.right_part,text = self.lang['titles']['partial'], relief="flat", background = "white" ,
-						value=1, var=self.shot_mode).place(x = 245, y = 700)
+						value=1, var=self.shot_mode).place(x = 235, y = 700)
+
+		
+		self.right_part.create_window(325 , 680, anchor= NW , window=self.binarybound[0])
+		self.right_part.create_window(325 , 700, anchor= NW , window=self.binarybound[1])
 
 	def set_function(self):
 		self.right_part.create_text(65,200,text = self.lang['func_Area'], fill="darkblue",font="Times 20 italic bold")

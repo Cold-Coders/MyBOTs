@@ -333,7 +333,25 @@ class Utils:
 
 
 	@staticmethod
-	def Image_Test(d):
+	def Image_Test(d, upper = [],lower = [], morph = 3):
+		if morph == "":
+			morph = 1
+		elif not morph.isdigit():
+			return 
+		morph = int(morph)
+
+		if type(upper) is not list or type(lower) is not list:
+			return
+		elif upper == [''] or len(lower) == ['']:
+			upper = [77, 165 , 145]
+			lower = [70, 120 , 45]
+		else:
+			try:
+				upper = [int(i) for i in upper]
+				lower = [int(i) for i in lower]
+			except Exception as e:
+				raise e
+
 
 		def getposHsv(event,x,y,flags,param):
 			if event==cv2.EVENT_LBUTTONDOWN:
@@ -350,11 +368,11 @@ class Utils:
 			hsv = cv2.cvtColor(screen, cv2.COLOR_BGR2HSV);
 
 			#print(hsv[325][271]) #(325,271)
-			lower_hsv = np.array([70, 120 , 45])#[57, 43, 46]
-			high_hsv = np.array([77, 165 , 145]) #[67, 255, 255]
+			lower_hsv = np.array(lower)#[57, 43, 46]
+			high_hsv = np.array(upper) #[67, 255, 255]
 
 			img = cv2.inRange(hsv, lowerb = lower_hsv, upperb = high_hsv)
-			kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2))
+			kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (morph, morph))
 			img = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
 			dstPoints = []
 			#cv2.circle(img, (325, 271), 1, (255, 255, 255), 1)
@@ -397,11 +415,11 @@ class Utils:
 					dstPoints.append((cX,cY))
 
 					# 画出轮廓和中点
-					cv2.drawContours(img, [c], -1, (0, 255, 0), 2)
-					cv2.circle(img, (cX, cY), 20, (255, 255, 255), 1)
-					cv2.putText(img, "center", (cX - 20, cY - 20),
-					cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
-				cv2.imshow("inRange2", img)
+					cv2.drawContours(screen, [c], -1, (0, 255, 0), 2)
+					cv2.circle(screen, (cX, cY), 20, (0, 0, 255), 1)
+					cv2.putText(screen, "center", (cX - 20, cY - 20),
+					cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 0, 255), 2)
+				cv2.imshow("inRange2", screen)
 				cv2.waitKey(0)
 			#return dstPoints
 		else:

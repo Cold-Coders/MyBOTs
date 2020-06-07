@@ -174,9 +174,10 @@ class General:
 
 	def Update_info(self):
 		#gem_color = (208, 236, 120)
-
-		home = False
+		#
 		screen = self.d.screenshot(format="opencv")
+		
+		home = True 
 		if self._Common.Scense(screen,spec = 1):#, Debug = True
 			self.Image_to_homebase()
 			home = True
@@ -241,7 +242,13 @@ class General:
 
 		else:
 			U.prt(self.lang['msgs'][6] ,mode = 1)
+
 			return
+
+		#灌木
+		#35 180 190
+		#43 220 255
+		#4
 
 		tag = True
 		rx,ry = self.buttons["remove_obstacle"]
