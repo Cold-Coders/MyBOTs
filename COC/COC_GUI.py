@@ -3,7 +3,8 @@ import tkinter as tk # note that module name has changed from Tkinter in Python 
 import json,os,time,threading,logging
 import uiautomator2 as u2
 
-
+from PIL import ImageTk
+import PIL.Image
 
 from tkinter import *
 from tkinter import messagebox
@@ -255,13 +256,13 @@ class COC_BOT_GUI(tk.Frame):
 		self.right_part.create_window(120 , 680, anchor= NW , window=self.corps[2])
 		self.right_part.create_window(120 , 680  + 20, anchor= NW , window=self.corps[3])
 		tk.Radiobutton(self.right_part,text = 'Color', relief="flat", background = "white",
-		 				value=0, var=self.shot_color).place(x = 175, y = 680)
+						value=0, var=self.shot_color).place(x = 175, y = 680)
 		tk.Radiobutton(self.right_part,text = 'Gray', relief="flat", background = "white" ,
-		 				value=1, var=self.shot_color).place(x = 175, y = 700)
+						value=1, var=self.shot_color).place(x = 175, y = 700)
 		tk.Radiobutton(self.right_part,text = self.lang['titles']['full'], relief="flat", background = "white",
-		 				value=0, var=self.shot_mode).place(x = 245, y = 680)
+						value=0, var=self.shot_mode).place(x = 245, y = 680)
 		tk.Radiobutton(self.right_part,text = self.lang['titles']['partial'], relief="flat", background = "white" ,
-		 				value=1, var=self.shot_mode).place(x = 245, y = 700)
+						value=1, var=self.shot_mode).place(x = 245, y = 700)
 
 	def set_function(self):
 		self.right_part.create_text(65,200,text = self.lang['func_Area'], fill="darkblue",font="Times 20 italic bold")
@@ -400,30 +401,34 @@ class COC_BOT_GUI(tk.Frame):
 			exit()
 	def init_config(self):
 		self.config = {
-			"BuilderBase_image": 
-			[
-		        "COC/res/gold.png",
-		        "COC/res/elixir.png",
-		        "COC/res/gem.png"
-	    	],
-			"HomeVillage_image": 
-			[
-		        "COC/res/gold.png",
-		        "COC/res/elixir.png",
-		        "COC/res/dark_elixir.png",
-		        "COC/res/gold_storage.png",
-		        "COC/res/elixir_storage.png",
-		        "COC/res/dark_storage.png",
-		        "COC/res/Builder_info.png",
-		        "COC/res/Master_Builder_info.png",
-		        "COC/res/wait.png"
-	    	],
-	    	"coc_icon": "COC/res/coc_icon.png",
-	    	"coc_logo": "COC/res/COC_logo.png",
-	    	"lang": "chn",
-	    	"orc": 2,
-	   		"resource": "COC/res/resource.png"
-    	}
+			"BuilderBase_image": [
+				"COC/res/gold.png",
+				"COC/res/elixir.png",
+				"COC/res/gem.png"
+			],
+			"Functionality": [
+				False,
+				False,
+				False,
+				False
+			],
+			"HomeVillage_image": [
+				"COC/res/gold.png",
+				"COC/res/elixir.png",
+				"COC/res/dark_elixir.png",
+				"COC/res/gold_storage.png",
+				"COC/res/elixir_storage.png",
+				"COC/res/dark_storage.png",
+				"COC/res/Builder_info.png",
+				"COC/res/Master_Builder_info.png",
+				"COC/res/wait.png"
+			],
+			"coc_icon": "COC/res/coc_icon.png",
+			"coc_logo": "COC/res/COC_logo.png",
+			"lang": "chn",
+			"orc": 2,
+			"resource": "COC/res/resource.png"
+		}
 
 	#Saving the config into the file config.json
 	def save_config(self):

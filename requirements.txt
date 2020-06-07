@@ -1,8 +1,8 @@
-psutil==5.7.0
-uiautomator2==2.7.1
-opencv-python==4.2.0.32
-Pillow==7.0.0
-matplotlib==3.2.1
-aircv==1.4.6
+psutil
+uiautomator2
+opencv-python
+Pillow
+matplotlib
+aircv
 baidu-aip
 pytesseract

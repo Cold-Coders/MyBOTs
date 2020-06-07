@@ -337,30 +337,37 @@ class Utils:
 		# 增加判断screen，也就是截图是否成功的判断
 		screen = d.screenshot(format="opencv")
 		if screen.size:
+
+			hsv = cv2.cvtColor(screen, cv2.COLOR_BGR2HSV);
+			lower_hsv = np.array([57, 43, 46])
+			high_hsv = np.array([67, 255, 255]) 
+			img = cv2.inRange(hsv, lowerb = lower_hsv, upperb = high_hsv)
+			kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
+			img = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
 			dstPoints = []
 
-			h = screen.shape[0]
-			w = screen.shape[1]
-			for i in range(0,h):
-				for j in range(0,w):
-					pixel = screen[i, j]
-					black = np.array([0,0,0])
-					white = np.array([255,255,255])
-					R = pixel[2]
-					G = pixel[1]
-					B = pixel[0]
-					if R == 61 and G == 121 and B == 181:
-						screen[i,j] = white
-						continue
-					screen[i,j] = black
+			#h = screen.shape[0]
+			#w = screen.shape[1]
+			#for i in range(0,h):
+			#	for j in range(0,w):
+			#		pixel = screen[i, j]
+			##		black = np.array([0,0,0])
+			#		white = np.array([255,255,255])
+			#		R = pixel[2]
+			#		G = pixel[1]
+			#		B = pixel[0]
+			#		if R == 61 and G == 121 and B == 181:
+			#			screen[i,j] = white
+			#			continue
+			#		screen[i,j] = black
 					#print(pixel,type(pixel))
 			
-			img2 = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
+			#img2 = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
 
-			cv2.imshow("inRange", img2)
+			cv2.imshow("Green", img)
 			cv2.waitKey(0)
 			# 找轮廓
-			cnts = cv2.findContours(img2, cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
+			cnts = cv2.findContours(img, cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
 			cnts = cnts[1] if imutils.is_cv3() else cnts[0]
 
 			if len(cnts):
@@ -376,11 +383,11 @@ class Utils:
 					dstPoints.append((cX,cY))
 
 					# 画出轮廓和中点
-					cv2.drawContours(img2, [c], -1, (0, 255, 0), 2)
-					cv2.circle(img2, (cX, cY), 20, (255, 255, 255), 1)
-					cv2.putText(img2, "center", (cX - 20, cY - 20),
+					cv2.drawContours(img, [c], -1, (0, 255, 0), 2)
+					cv2.circle(img, (cX, cY), 20, (255, 255, 255), 1)
+					cv2.putText(img, "center", (cX - 20, cY - 20),
 					cv2.FONT_HERSHEY_SIMPLEX, 0.5, (255, 255, 255), 2)
-				cv2.imshow("inRange2", img2)
+				cv2.imshow("inRange2", img)
 				cv2.waitKey(0)
 			#return dstPoints
 		else:

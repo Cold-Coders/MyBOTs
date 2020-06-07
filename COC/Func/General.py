@@ -13,6 +13,7 @@ from util import *
 
 from PIL import ImageTk
 import PIL.Image
+import re
 
 class General:
 	def __init__(self, GUI , resolution, coord):
@@ -44,7 +45,8 @@ class General:
 				"c_gold" : 0,
 				"c_elixir": 0,
 				"c_dart_elixir": 0,
-				"labor": 0
+				"labor": 0,
+				"builder": 0
 		}
 
 		if 'General' not in GUI.config:
@@ -104,6 +106,8 @@ class General:
 				tap(U.find_position(screen, self.path + self.config['dart_elixir'],\
 				 confidence = 0.90),self.lang['msgs'][2])
 
+				self.update_cum_resourse()
+
 			elif self._Common.Scense(screen,spec = 2):
 
 				if self.b_first:
@@ -111,15 +115,15 @@ class General:
 					self.b_first = False
 
 				tap(U.find_position(screen, self.path + self.config['b_elixir'],\
-				 confidence = 0.85),self.lang['msgs'][0])
+				 confidence = 0.90),self.lang['msgs'][0])
 				tap(U.find_position(screen, self.path + self.config['b_gold'],\
-				 confidence = 0.85),self.lang['msgs'][1])
+				 confidence = 0.90),self.lang['msgs'][1])
 				tap(U.find_position(screen, self.path + self.config['gem'],\
-				 confidence = 0.85),self.lang['msgs'][3])
+				 confidence = 0.90),self.lang['msgs'][3])
 			else:
 				return
 
-			self.update_cum_resourse()
+			
 
 		except Exception as e:
 			self.init_config()
@@ -160,54 +164,58 @@ class General:
 			elif self.orc == 2:
 				text = U.orcbyArea(screen, area,lang = lang, Debug = Debug)
 			
-			new_text = ""
-			for word in text:
-				if word in "1234567890":
-					new_text += word
-				elif word in "/":
-					break
-			return new_text
+			#new_text = ""
+			#for word in text:
+			#	if word in "1234567890":
+			#		new_text += word
+			#	elif word in "/":
+			#		break
+			return re.sub('[^A-Za-z0-9/]+', '', text)
 
 	def Update_info(self):
 		#gem_color = (208, 236, 120)
-		
+
+		home = False
 		screen = self.d.screenshot(format="opencv")
 		if self._Common.Scense(screen,spec = 1):#, Debug = True
 			self.Image_to_homebase()
+			home = True
 		elif self._Common.Scense(screen,spec = 2):
 			self.Image_to_builder()
 		else:
 			print("识别资源 - 不在家乡或者建筑地图")
 			return
 		#--------------Gold---------------------------------
-		gold_Area = self.Area["gold"]
-		gold = self.ORC(screen, gold_Area)
+		gold = self.ORC(screen, self.Area["gold"])
 		if gold.isdigit():
 			gold = int(gold)
-			self._count['gold'] = gold
 			self._infoboard[0]['text'] = gold
 		else:
 			self._infoboard[0]['text'] = self.lang['recog_error']
 
 		#--------------Elixir---------------------------------
-		elixir_Area = self.Area["elixir"]
-		elixir = self.ORC(screen, elixir_Area)
+		elixir = self.ORC(screen, self.Area["elixir"])
 		if elixir.isdigit():
 			elixir = int(elixir)
-			self._count['elixir'] = elixir
 			self._infoboard[1]['text'] = elixir
 		else:
 			self._infoboard[0]['text'] = self.lang['recog_error']
 
 		#--------------dart Elixir---------------------------------
-		dart_elixir_Area = self.Area["d_elixir"]
-		dart_elixir = self.ORC(screen, dart_elixir_Area)
+		dart_elixir = self.ORC(screen, self.Area["d_elixir"])
 		if dart_elixir.isdigit():
 			dart_elixir = int(dart_elixir)
-			self._count['dart_elixir'] = dart_elixir
+			
 			self._infoboard[2]['text'] = dart_elixir
 		else:
 			self._infoboard[0]['text'] = self.lang['recog_error']
+
+		if home:
+			self._count['gold'] = gold
+			self._count['elixir'] = elixir
+			self._count['dart_elixir'] = dart_elixir
+
+
 
 #-------------------Remove obstacle-------------------------------#
 	def remove_single_obstacle(self):
@@ -217,26 +225,28 @@ class General:
 			U.prt(self.lang['msgs'][5] ,mode = 1)
 			return
 
-		#判定地图
+		#判定地图 与 判定是否有工人
 		screen = self.d.screenshot(format="opencv")
 		if self._Common.Scense(screen,spec = 1):
 			self.labors(screen)
+			if self._count['labor'] < 1:
+				U.prt(self.lang['msgs'][7] ,mode = 1)
+				return
+
 		elif self._Common.Scense(screen,spec = 2):
 			self.labors(screen, home = False)
+			if self._count["builder"] < 1:
+				U.prt(self.lang['msgs'][7] ,mode = 1)
+				return
+
 		else:
 			U.prt(self.lang['msgs'][6] ,mode = 1)
 			return
 
-		#判定是否有工人
-		if self._count['labor'] < 1:
-			U.prt(self.lang['msgs'][7] ,mode = 1)
-			return
-
-
 		tag = True
 		rx,ry = self.buttons["remove_obstacle"]
 
-		for obs in self.config['obstacle']:
+		for obs in self._select_obstacle.keys():
 			move_val = self._select_obstacle[obs].get()
 			if move_val == True:
 				x,y = U.find_position(screen, self.path + self.config['obstacle'][obs][1],confidence = 0.75)
@@ -252,17 +262,17 @@ class General:
 			U.prt("Didn't find any removable obstacle",mode = 3)
 
 	def labors(self, screen, home = True):
-		if home:
-			labor_Area = self.Area["labor"]
-			labor = self.ORC(screen, labor_Area)
-			if labor.isdigit():
-				self._count['labor'] = int(labor)
-				self._infoboard[6]['text'] = self._count['labor']
-			else:
-				self._infoboard[6]['text'] = self.lang['recog_error']
-		else:
-			pass
 
+		labor = self.ORC(screen, self.Area["labor"]) if home else self.ORC(screen, self.Area["builder"])
+		
+		if home:
+			self._count['labor'] = int(labor[0]) if labor[0].isdigit() else -1
+			self._infoboard[6]['text'] = labor
+		else:
+			self._count['builder'] = int(labor[0]) if labor[0].isdigit() else -1
+			self._infoboard[7]['text'] = labor
+
+			#self._infoboard[6]['text'] = self.lang['recog_error']
 #-------------------General Setting GUI-------------------------------#
 	def set_general(self,window):
 		set_window = Toplevel(window)
@@ -276,15 +286,16 @@ class General:
 		place_label(self,board,10,5,text="勾选移除障碍物:           等待时间设置:",\
 			font='Helvetica 13 bold')
 
+		count = 1
 		for obs_name in self.config['obstacle'].keys():
-			self._select_obstacle[obs_name] = tkinter.BooleanVar(value = self.config['obstacle'][obs_name][2])
+			self._select_obstacle[obs_name] = tkinter.BooleanVar(value = self.config['obstacle'][obs_name][1])
 			donate = Checkbutton(board, text = self.lang['obstacle_name'][obs_name],
 				variable = self._select_obstacle[obs_name],bg="white", height = 1, width = 10)
-			donate.place(x = 10, y = 20 + self.config['obstacle'][obs_name][0]*30-20)
-			place_image(self,board,self.path + self.config['obstacle'][obs_name][1],110,\
-				25 + self.config['obstacle'][obs_name][0]*30-20,resize = (20,20))
+			donate.place(x = 10, y = 20 + count*30-20)
+			place_image(self,board,self.path + self.config['obstacle'][obs_name][0],110,\
+				25 + count*30-20,resize = (20,20))
 			#place_label(self,board,130,y = 20 + self.config['obstacle'][obs_name][0]*30-20,text=self.config['obstacle'][obs_name][1])
-
+			count += 1
 		#点关闭后保存配置 set_close(root, func = 函数)
 		set_close(set_window, func = self.SAVE)
 		#Test SAVE configure
@@ -295,21 +306,21 @@ class General:
 		self.config = {
 					"GUI_path" : "COC/res/obstacle",
 					"obstacle" : {
-									"gem_box" :  [1,"Gem_10x9.png",True],
-									"mushroom": [2,"Mushroom_9x9.png",True],
-									"stone_s" : [3,"Stone_9x7.png",True],
-									"stone_m" : [4,"Stone_11x9.png",True],
-									"stone_l" : [5,"Stone_14x15.png",True],
-									"tree_s"  : [6,"Tree_12x9.png",True],
-									"tree_m"  : [7,"Tree1_16x14.png",True],
-									"tree_l"  : [8,"Tree2_16x18.png",True],
-									"trunk_ver": [9,"Trunk_7x14.png",True],
-									"trunk_hor": [10,"Trunk_11x9.png",True]
+									"gem_box" :  ["Gem_10x9.png",True,0.8],
+									"mushroom": ["Mushroom_9x9.png",True,0.8],
+									"stone_s" : ["Stone_9x7.png",True,0.8],
+									"stone_m" : ["Stone_11x9.png",True,0.8],
+									"stone_l" : ["Stone_14x15.png",True,0.8],
+									"tree_s"  : ["Tree_12x9.png",True,0.8],
+									"tree_m"  : ["Tree1_16x14.png",True,0.8],
+									"tree_l"  : ["Tree2_16x18.png",True,0.8],
+									"trunk_ver": ["Trunk_7x14.png",True,0.8],
+									"trunk_hor": ["Trunk_11x9.png",True,0.8]
 								  },
 					"elixir" : "elixir_19x19.png",
 					"gold"	 : "gold_18x18.png",
 					"dart_elixir" : "dart_elixir_19x19.png",
 					"b_elixir": "b_elixir_18x18.png",
-					"b_gold": "b_gold_17x17.png",
+					"b_gold": "b_gold_16x16.png",
 					"gem" : "b_gem_18x17.png"
 			}

@@ -6,71 +6,10 @@
     ],
     "Functionality": [
         true,
-        true,
+        false,
         false,
         false
     ],
-    "General": {
-        "GUI_path": "COC/res/obstacle",
-        "b_elixir": "b_elixir_18x18.png",
-        "b_gold": "b_gold_19x18.png",
-        "dart_elixir": "dart_elixir_19x19.png",
-        "elixir": "elixir_19x19.png",
-        "gem": "b_gem_18x17.png",
-        "gold": "gold_18x18.png",
-        "obstacle": {
-            "gem_box": [
-                1,
-                "Gem_10x9.png",
-                false
-            ],
-            "mushroom": [
-                2,
-                "Mushroom_9x9.png",
-                false
-            ],
-            "stone_l": [
-                5,
-                "Stone_14x15.png",
-                false
-            ],
-            "stone_m": [
-                4,
-                "Stone_11x9.png",
-                false
-            ],
-            "stone_s": [
-                3,
-                "Stone_9x7.png",
-                false
-            ],
-            "tree_l": [
-                8,
-                "Tree2_16x18.png",
-                true
-            ],
-            "tree_m": [
-                7,
-                "Tree1_16x14.png",
-                true
-            ],
-            "tree_s": [
-                6,
-                "Tree_12x9.png",
-                false
-            ],
-            "trunk_hor": [
-                10,
-                "Trunk_11x9.png",
-                true
-            ],
-            "trunk_ver": [
-                9,
-                "Trunk_7x14.png",
-                true
-            ]
-        }
-    },
     "HomeVillage_image": [
         "COC/res/gold.png",
         "COC/res/elixir.png",
