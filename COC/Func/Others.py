@@ -334,18 +334,30 @@ class Utils:
 
 	@staticmethod
 	def Image_Test(d):
+
+		def getposHsv(event,x,y,flags,param):
+			if event==cv2.EVENT_LBUTTONDOWN:
+				print("(",x,",",y,")","HSV is",hsv[y,x])
+
+		def getposBgr(event,x,y,flags,param):
+			if event==cv2.EVENT_LBUTTONDOWN:
+				print("Bgr is",screen[y,x])
+
 		# 增加判断screen，也就是截图是否成功的判断
 		screen = d.screenshot(format="opencv")
 		if screen.size:
 
 			hsv = cv2.cvtColor(screen, cv2.COLOR_BGR2HSV);
-			lower_hsv = np.array([57, 43, 46])
-			high_hsv = np.array([67, 255, 255]) 
+
+			#print(hsv[325][271]) #(325,271)
+			lower_hsv = np.array([70, 120 , 45])#[57, 43, 46]
+			high_hsv = np.array([77, 165 , 145]) #[67, 255, 255]
+
 			img = cv2.inRange(hsv, lowerb = lower_hsv, upperb = high_hsv)
-			kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (3, 3))
+			kernel = cv2.getStructuringElement(cv2.MORPH_RECT, (2, 2))
 			img = cv2.morphologyEx(img, cv2.MORPH_OPEN, kernel)
 			dstPoints = []
-
+			#cv2.circle(img, (325, 271), 1, (255, 255, 255), 1)
 			#h = screen.shape[0]
 			#w = screen.shape[1]
 			#for i in range(0,h):
@@ -365,6 +377,8 @@ class Utils:
 			#img2 = cv2.cvtColor(screen, cv2.COLOR_BGR2GRAY)
 
 			cv2.imshow("Green", img)
+			cv2.imshow("Origin", hsv)
+			cv2.setMouseCallback("Origin",getposHsv)
 			cv2.waitKey(0)
 			# 找轮廓
 			cnts = cv2.findContours(img, cv2.RETR_EXTERNAL,cv2.CHAIN_APPROX_SIMPLE)
