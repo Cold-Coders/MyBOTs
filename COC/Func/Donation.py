@@ -52,6 +52,10 @@ class Donation:
 		self._select_spell = dict()
 		self._select_siege = dict()
 
+		self._amount_troops = dict()
+		self._amount_spell = dict()
+		self._amount_siege = dict()
+
 		if 'Donation' not in GUI.config:
 			self.init_config()
 		else:
@@ -75,70 +79,86 @@ class Donation:
 
 	def set_donation(self,window):
 		set_window = Toplevel(window)
-		set_window.geometry("500x600")
-		w = Canvas(set_window, width=120, height=132)
-		w.place( x = 300, y = 300)	
+		set_window.geometry("600x600")
+		amt1 = Label(set_window, text = "数量")
+		amt2 = Label(set_window, text = "数量")
+		amt3 = Label(set_window, text = "数量")
+		amt1.place(x = 115, y = 0)
+		amt2.place(x = 315, y = 0)
+		amt3.place(x = 515, y = 0)
+		#w = Canvas(set_window, width=120, height=132)
+		#w.place( x = 300, y = 300)	
 		for troop_name in self.config['donation']['troops'].keys():
 			self._select_troops[troop_name] = BooleanVar(value = self.config['donation']['troops'][troop_name][2])
 			donate = Checkbutton(set_window, text = self.lang['Donation']['troops'][troop_name],
 				variable = self._select_troops[troop_name],bg="white", height = 1, width = 10)
-			donate.place(x = 10, y = 0 + self.config['donation']['troops'][troop_name][0]*30-20)
+			donate.place(x = 0, y = 20 + self.config['donation']['troops'][troop_name][0]*30-20)
+			self._amount_troops[troop_name] = IntVar(value = self.config['donation']['troops'][troop_name][3])
+			amount = Entry(set_window, textvariable = self._amount_troops[troop_name],width = 5)
+			amount.place(x = 115, y = 20 + self.config['donation']['troops'][troop_name][0]*30-20)
 
 		for spell_name in self.config['donation']['spell'].keys():
 			self._select_spell[spell_name] = BooleanVar(value = self.config['donation']['spell'][spell_name][2])
 			donate = Checkbutton(set_window, text = self.lang['Donation']['spell'][spell_name],
 				variable = self._select_spell[spell_name],bg="white", height = 1, width = 10)
-			donate.place(x = 110, y = 0 + self.config['donation']['spell'][spell_name][0]*30-20)
+			donate.place(x = 200, y = 20 + self.config['donation']['spell'][spell_name][0]*30-20)
+			self._amount_spell[spell_name] = IntVar(value = self.config['donation']['spell'][spell_name][3])
+			amount = Entry(set_window, textvariable = self._amount_spell[spell_name],width = 5)
+			amount.place(x = 315, y = 20 + self.config['donation']['spell'][spell_name][0]*30-20)
 
 		for siege_name in self.config['donation']['siege'].keys():
 			self._select_siege[siege_name] = BooleanVar(value = self.config['donation']['siege'][siege_name][2])
 			donate = Checkbutton(set_window, text = self.lang['Donation']['siege'][siege_name],
 				variable = self._select_siege[siege_name],bg="white", height = 1, width = 10)
-			donate.place(x = 210, y = 0 + self.config['donation']['siege'][siege_name][0]*30-20)
+			donate.place(x = 400, y = 20 + self.config['donation']['siege'][siege_name][0]*30-20)
+			self._amount_siege[siege_name] = IntVar(value = self.config['donation']['siege'][siege_name][3])
+			amount = Entry(set_window, textvariable = self._amount_siege[siege_name],width = 5
+				 )
+			amount.place(x = 515, y = 20 + self.config['donation']['siege'][siege_name][0]*30-20)
 
-		#set_close(set_window, func = self.SAVE)
+		set_close(set_window, func = self.SAVE)
 
 	def init_config(self):
 		self.config = {
 				"donation": {
 					"siege": {
-						"barracks": [4,"undefined",1],
-						"blimp": 	[2,"undefined",1],
-						"slammer": 	[3,"undefined",1],
-						"wall_wrecker": [1,"undefined",1]
+						"barracks": [4,"undefined",0,1],
+						"blimp": 	[2,"undefined",0,1],
+						"slammer": 	[3,"undefined",0,1],
+						"wall_wrecker": [1,"undefined",0,1]
 					},
 					"spell": {
-						"bat": [11,"undefined",1],
-						"clone": [6,"undefined",1],
-						"earthquake": [8,"undefined",1],
-						"freeze": [5,"undefined",1],
-						"haste": [9,"undefined",1],
-						"healing": [2,"undefined",1],
-						"jump": [4,"undefined",1],
-						"lightning": [1,"undefined",1],
-						"poison": [7,"undefined",1],
-						"rage": [3,"undefined",1],
-						"skeleton": [10,"undefined",1]
+						"bat": [11,"undefined",0,1],
+						"clone": [6,"undefined",0,1],
+						"earthquake": [8,"undefined",0,1],
+						"freeze": [5,"undefined",0,1],
+						"haste": [9,"undefined",0,1],
+						"healing": [2,"undefined",0,1],
+						"jump": [4,"undefined",0,1],
+						"lightning": [1,"undefined",0,1],
+						"poison": [7,"undefined",0,1],
+						"rage": [3,"undefined",0,1],
+						"skeleton": [10,"undefined",0,1]
 					},
 					"troops": {
-						"baby_dragon": [7,"undefined",1],
-						"balloon": [2,"undefined",1],
-						"bowler": [17,"undefined",1],
-						"dragon": [5,"undefined",1],
-						"electro": [9,"undefined",1],
-						"giant": [1,"undefined",1],
-						"golem": [14,"undefined",1],
-						"healer": [4,"undefined",1],
-						"hog_rider": [12,"undefined",1],
-						"ice_golem": [18,"undefined",1],
-						"lava": [16,"undefined",1],
-						"miner": [8,"undefined",1],
-						"minion": [11,"undefined",1],
-						"pekka": [6,"undefined",1],
-						"valkyrie": [13,"undefined",1],
-						"witch": [15,"undefined",1],
-						"wizard": [3,"undefined",1],
-						"yeti": [10,"undefined",1]
+						"baby_dragon": [7,"undefined",0,1],
+						"balloon": [2,"undefined",0,1],
+						"bowler": [17,"undefined",0,1],
+						"dragon": [5,"undefined",0,1],
+						"electro": [9,"undefined",0,1],
+						"giant": [1,"undefined",0,1],
+						"golem": [14,"undefined",0,1],
+						"healer": [4,"undefined",0,1],
+						"hog_rider": [12,"undefined",0,1],
+						"ice_golem": [18,"undefined",0,1],
+						"lava": [16,"undefined",0,1],
+						"miner": [8,"undefined",0,1],
+						"minion": [11,"undefined",0,1],
+						"pekka": [6,"undefined",0,1],
+						"valkyrie": [13,"undefined",0,1],
+						"witch": [15,"undefined",0,1],
+						"wizard": [3,"undefined",0,1],
+						"yeti": [10,"undefined",0,1]
 					}
 				}
 			}
