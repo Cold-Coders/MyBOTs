@@ -95,7 +95,8 @@ class General:
 					self._count['elixir'],
 					self._count['dart_elixir']
 				]
-
+				
+		where = self._Common.Scense(screen)
 		if where == 1:
 			tap(self.config['elixir'],self.lang['msgs'][0]) #0.99205
 			tap(self.config['gold'], self.lang['msgs'][1])
