@@ -100,18 +100,20 @@ class Utils:
 		
 
 	@staticmethod
-	def zoom_out(d):
+	def zoom_out(d,lower = 1,upper = 2,percent = 60, steps = 10):
 		try:
-			for i in range(r_num(lbound = 3)):
-				d(className= VIEWVIEW).pinch_in(percent=60, steps=10)
+			for i in range(r_num(lbound = lower,ubound = upper)):
+				d(className= VIEWVIEW).pinch_in(percent = percent, steps = steps)
 			Utils.prt("Zoom_out",mode = 2)
 		
 		except Exception as e:
 			#raise e
-			d.toast.show("Hello world")
 			xml = d.dump_hierarchy()
 			prt(xml)
-		
+	
+	@staticmethod
+	def msg(d,msg):
+		d.toast.show(msg)
 
 	@staticmethod
 	def current_app(d):
@@ -325,6 +327,8 @@ class Utils:
 	def find_PosbyArea(d,Area,target,confidence = 0.7,Debug = False ):
 		if type(d) is uiautomator2.Device:
 			imsrc = d.screenshot(format="opencv")
+		elif type(d) is np.ndarray:
+			imsrc = d
 		else:
 			Utils.prt("Error (uiautomator2)",mode = 4)
 			return

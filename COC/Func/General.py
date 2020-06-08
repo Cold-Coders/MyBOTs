@@ -32,12 +32,6 @@ class General:
 		#self.info_text[i]['text']
 		self._infoboard = GUI.info_text
 
-
-		#第一次收集资源时的缩放
-		self.first = True
-		self.b_first = True
-
-
 		self._count = { 
 				"gold" : -1 ,
 				"elixir" : -1,
@@ -46,7 +40,8 @@ class General:
 				"c_elixir": 0,
 				"c_dart_elixir": 0,
 				"labor": 0,
-				"builder": 0
+				"builder": 0,
+				"zoom_out": 0
 		}
 
 		if 'General' not in GUI.config:
@@ -70,7 +65,8 @@ class General:
 		
 		def save_selected_value():
 			for obs_name in self._select_obstacle.keys():
-				self.config['obstacle'][obs_name][2] = self._select_obstacle[obs_name].get()
+				self.config['obstacle'][obs_name][1] = self._select_obstacle[obs_name].get()
+			GUI.config['General'] = self.config
 			GUI.save_config()
 			U.prt( "General config Saved",mode = 2)
 
@@ -81,67 +77,52 @@ class General:
 #----收集资源-------------------------------------------------------------------------------------
 	def collect_resourse(self):
 
-		def tap(xy,msg):
-			if xy[0] != -1:
-				U.tap(self.d,xy[0],xy[1])
+		def tap(img,msg):
+			x,y = U.find_position(screen, self.path + img, confidence = 0.90)
+			if x != -1:
+				U.tap(self.d,x,y)
 				U.prt(msg,mode = 1)
 			#else:
 				#U.prt(self.lang['msgs'][4],mode = 3)
 
 		screen = self.d.screenshot(format="opencv")
 
-		try:
-			if self._Common.Scense(screen,spec = 1):
+		if self._count['zoom_out'] < 10:
+			U.zoom_out(self.d)
+			self._count['zoom_out'] += 1
 
-				if self.first:
-					U.zoom_out(self.d)
-					self.first = False
+		before = [  self._count['gold'],
+					self._count['elixir'],
+					self._count['dart_elixir']
+				]
 
-				tap(U.find_position(screen, self.path + self.config['elixir'],\
-				 confidence = 0.90),self.lang['msgs'][0]) #0.99205
+		if where == 1:
+			tap(self.config['elixir'],self.lang['msgs'][0]) #0.99205
+			tap(self.config['gold'], self.lang['msgs'][1])
+			tap(self.config['dart_elixir'],self.lang['msgs'][2])
+			self.update_cum_resourse(before)
 
-				tap(U.find_position(screen, self.path + self.config['gold'],\
-				 confidence = 0.90),self.lang['msgs'][1])
+		elif where == 2:
+			tap(self.config['b_elixir'],self.lang['msgs'][0])
+			tap(self.config['b_gold'],self.lang['msgs'][1])
+			tap(self.config['gem'],self.lang['msgs'][3])
+		
+		else:
+			print("搜集资源 - 不在家乡或者建筑地图 Code",where)
 
-				tap(U.find_position(screen, self.path + self.config['dart_elixir'],\
-				 confidence = 0.90),self.lang['msgs'][2])
-
-				self.update_cum_resourse()
-
-			elif self._Common.Scense(screen,spec = 2):
-
-				if self.b_first:
-					U.zoom_out(self.d)
-					self.b_first = False
-
-				tap(U.find_position(screen, self.path + self.config['b_elixir'],\
-				 confidence = 0.90),self.lang['msgs'][0])
-				tap(U.find_position(screen, self.path + self.config['b_gold'],\
-				 confidence = 0.90),self.lang['msgs'][1])
-				tap(U.find_position(screen, self.path + self.config['gem'],\
-				 confidence = 0.90),self.lang['msgs'][3])
-			else:
-				return
-
-			
-
-		except Exception as e:
-			self.init_config()
 
 #----统计增加资源---------------------------------------------------------------------------------
-	def update_cum_resourse(self):
+	def update_cum_resourse(self, before):
 		if self._count['gold'] == -1 or self._count['elixir'] == -1 or self._count['dart_elixir'] == -1:
 			return
+		
+		self.Update_info()
+		
+		ss(1)
 
-		gold =  self._count['gold']
-		elixir = self._count['elixir']
-		dart_elixir =  self._count['dart_elixir']
-
-		self.Update_info(self)
-
-		dif_gold = (self._count['gold'] - gold)
-		dif_elixir = (self._count['elixir'] - elixir)
-		dif_d_elixir = (self._count['dart_elixir'] - dart_elixir)
+		dif_gold = (self._count['gold'] - before[0])
+		dif_elixir = (self._count['elixir'] - before[1])
+		dif_d_elixir = (self._count['dart_elixir'] - before[2])
 
 		if dif_gold > 0:
 			self._count['c_gold'] +=  d_gold 
@@ -177,14 +158,9 @@ class General:
 		#
 		screen = self.d.screenshot(format="opencv")
 		
-		home = True 
-		if self._Common.Scense(screen,spec = 1):#, Debug = True
-			self.Image_to_homebase()
-			home = True
-		elif self._Common.Scense(screen,spec = 2):
-			self.Image_to_builder()
-		else:
-			print("识别资源 - 不在家乡或者建筑地图")
+		where = self._Common.Scense(screen)
+		if where != 1 and where != 2:
+			print("识别资源 - 不在家乡或者建筑地图 Code",where)
 			return
 		#--------------Gold---------------------------------
 		gold = self.ORC(screen, self.Area["gold"])
@@ -206,16 +182,17 @@ class General:
 		dart_elixir = self.ORC(screen, self.Area["d_elixir"])
 		if dart_elixir.isdigit():
 			dart_elixir = int(dart_elixir)
-			
 			self._infoboard[2]['text'] = dart_elixir
 		else:
 			self._infoboard[0]['text'] = self.lang['recog_error']
 
-		if home:
+		if where == 1:
+			self.Image_to_homebase()
 			self._count['gold'] = gold
 			self._count['elixir'] = elixir
 			self._count['dart_elixir'] = dart_elixir
-
+		else:
+			self.Image_to_builder()
 
 
 #-------------------Remove obstacle-------------------------------#

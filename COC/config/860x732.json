@@ -1,7 +1,13 @@
 {
 	"Common":{
-		"homebase": [[38,82],[432,16],[58,656],[269,16]],
-		"builder": [[38,82],[360,16],[50,662],[827,136]]
+		"Map": {
+			"townhall.png": [20,620,110,720],
+			"builder.png": [20,620,110,720],
+			"observe_townhall.png":[20,620,110,720],
+			"search_townhall.png":[580,350,780,470],
+			"search_builder.png":[490,280,690,370],
+			"clan_chat.png": [245,680,312,730]
+		}
 	},
 	"General":{
 		"Area":{

@@ -68,7 +68,7 @@ class COC_BOT_GUI(tk.Frame):
 		h,w = self.d.window_size()
 		resolution = str(w) + "x" + str(h)
 		coord = load_configure("COC/config/" + resolution + ".json")
-		self._config["Common"] = Scenario(coord)
+		self._config["Common"] = Scenario(coord,resolution)
 		self._config["General"] = General(self,resolution,coord)
 		self._config["Upgrade"] = Upgrade(self,resolution)
 		self._config["Donation"] = Donation(self,resolution)

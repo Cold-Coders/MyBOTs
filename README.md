@@ -68,3 +68,12 @@ tesseract coc_emu_num.normal.exp0.tif coc_emu_num.normal.exp0 –l chi_sim batch
 tesseract coc_emu_num.normal.exp0.tif coc_emu_num.normal.exp0 nobatch box.train
 tesseract coc_emu_num.normal.exp0.tif coc_emu_num.normal.exp0 -l chi_sim nobatch box.train
 ```
+
+### Torch
+
+- PyTorch build : Stable (1.5)
+- Your OS : Windows 
+- Package : Pip
+- Language : Python
+- CUDA : 10.1
+- Run this Command: pip install torch==1.5.0+cu101 torchvision==0.6.0+cu101 -f https://download.pytorch.org/whl/torch_stable.html
