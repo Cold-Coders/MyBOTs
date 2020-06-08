@@ -68,10 +68,11 @@ class COC_BOT_GUI(tk.Frame):
 		h,w = self.d.window_size()
 		resolution = str(w) + "x" + str(h)
 		coord = load_configure("COC/config/" + resolution + ".json")
+		self.init_count()
 		self._config["Common"] = Scenario(coord,resolution)
 		self._config["General"] = General(self,resolution,coord)
-		self._config["Upgrade"] = Upgrade(self,resolution)
-		self._config["Donation"] = Donation(self,resolution)
+		self._config["Donation"] = Donation(self,resolution,coord)
+		#self._config["Upgrade"] = Upgrade(self,resolution)
 
 	def check_resolution(self):
 		#If it is not emulator, skip
@@ -406,6 +407,19 @@ class COC_BOT_GUI(tk.Frame):
 			raise e
 			messagebox.showinfo("Error", "configure error")
 			exit()
+	
+	def init_count(self):
+		self._count = { 
+				"gold" : -1 ,
+				"elixir" : -1,
+				"dart_elixir" : -1,
+				"c_gold" : 0,
+				"c_elixir": 0,
+				"c_dart_elixir": 0,
+				"labor": 0,
+				"builder": 0
+		}
+
 	def init_config(self):
 		self.config = {
 			"BuilderBase_image": [

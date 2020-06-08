@@ -22,5 +22,19 @@
 			"gem_color" : [820,131],
 			"remove_red" :[433,605]
 		}
+	},
+	"Donation":{
+		"Area":{
+			"chat_box":   [0,0,310,732],
+			"donation_offset": [30,-145,300,-30],
+			"slot_offset": [45,-75,75,-50],
+			"donation_box": [310,0,860,732],
+			"whole_screen":[0,0,860,732]
+		},
+		"buttons":{
+			"open_chat": [20,380],
+			"close_chat":[331,384],
+			"close_train":[827,121]
+		}
 	}
 }

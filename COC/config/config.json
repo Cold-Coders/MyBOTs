@@ -4,12 +4,281 @@
         "COC/res/elixir.png",
         "COC/res/gem.png"
     ],
+    "Donation": {
+        "donation": {
+            "siege": {
+                "barracks": [
+                    4,
+                    "undefined",
+                    false,
+                    1
+                ],
+                "blimp": [
+                    2,
+                    "undefined",
+                    true,
+                    1
+                ],
+                "slammer": [
+                    3,
+                    "undefined",
+                    true,
+                    1
+                ],
+                "wall_wrecker": [
+                    1,
+                    "undefined",
+                    false,
+                    1
+                ]
+            },
+            "spell": {
+                "bat": [
+                    11,
+                    "undefined",
+                    false,
+                    1
+                ],
+                "clone": [
+                    6,
+                    "undefined",
+                    false,
+                    1
+                ],
+                "earthquake": [
+                    8,
+                    "undefined",
+                    false,
+                    1
+                ],
+                "freeze": [
+                    5,
+                    "undefined",
+                    false,
+                    1
+                ],
+                "haste": [
+                    9,
+                    "undefined",
+                    false,
+                    1
+                ],
+                "healing": [
+                    2,
+                    "undefined",
+                    false,
+                    1
+                ],
+                "jump": [
+                    4,
+                    "undefined",
+                    false,
+                    1
+                ],
+                "lightning": [
+                    1,
+                    "undefined",
+                    false,
+                    1
+                ],
+                "poison": [
+                    7,
+                    "undefined",
+                    false,
+                    1
+                ],
+                "rage": [
+                    3,
+                    "undefined",
+                    false,
+                    1
+                ],
+                "skeleton": [
+                    10,
+                    "undefined",
+                    false,
+                    1
+                ]
+            },
+            "troops": {
+                "baby_dragon": [
+                    7,
+                    "undefined",
+                    false,
+                    1
+                ],
+                "balloon": [
+                    2,
+                    "undefined",
+                    false,
+                    1
+                ],
+                "bowler": [
+                    17,
+                    "undefined",
+                    false,
+                    1
+                ],
+                "dragon": [
+                    5,
+                    "undefined",
+                    false,
+                    1
+                ],
+                "electro": [
+                    9,
+                    "undefined",
+                    false,
+                    1
+                ],
+                "giant": [
+                    1,
+                    "undefined",
+                    false,
+                    1
+                ],
+                "golem": [
+                    14,
+                    "undefined",
+                    false,
+                    1
+                ],
+                "healer": [
+                    4,
+                    "undefined",
+                    false,
+                    1
+                ],
+                "hog_rider": [
+                    12,
+                    "undefined",
+                    false,
+                    1
+                ],
+                "ice_golem": [
+                    18,
+                    "undefined",
+                    false,
+                    1
+                ],
+                "lava": [
+                    16,
+                    "undefined",
+                    false,
+                    1
+                ],
+                "miner": [
+                    8,
+                    "undefined",
+                    false,
+                    1
+                ],
+                "minion": [
+                    11,
+                    "undefined",
+                    false,
+                    1
+                ],
+                "pekka": [
+                    6,
+                    "undefined",
+                    false,
+                    1
+                ],
+                "valkyrie": [
+                    13,
+                    "undefined",
+                    false,
+                    1
+                ],
+                "witch": [
+                    15,
+                    "undefined",
+                    false,
+                    1
+                ],
+                "wizard": [
+                    3,
+                    "undefined",
+                    false,
+                    1
+                ],
+                "yeti": [
+                    10,
+                    "undefined",
+                    false,
+                    1
+                ]
+            }
+        }
+    },
     "Functionality": [
         true,
         true,
         false,
         false
     ],
+    "General": {
+        "GUI_path": "COC/res/obstacle",
+        "b_elixir": "b_elixir_18x18.png",
+        "b_gold": "b_gold_16x16.png",
+        "dart_elixir": "dart_elixir_19x19.png",
+        "elixir": "elixir_19x19.png",
+        "gem": "b_gem_18x17.png",
+        "gold": "gold_18x18.png",
+        "obstacle": {
+            "gem_box": [
+                "Gem_10x9.png",
+                false,
+                0.8
+            ],
+            "mushroom": [
+                "Mushroom_9x9.png",
+                false,
+                0.8
+            ],
+            "stone_l": [
+                "Stone_14x15.png",
+                true,
+                0.8
+            ],
+            "stone_m": [
+                "Stone_11x9.png",
+                true,
+                0.8
+            ],
+            "stone_s": [
+                "Stone_9x7.png",
+                true,
+                0.8
+            ],
+            "tree_l": [
+                "Tree2_16x18.png",
+                true,
+                0.8
+            ],
+            "tree_m": [
+                "Tree1_16x14.png",
+                true,
+                0.8
+            ],
+            "tree_s": [
+                "Tree_12x9.png",
+                true,
+                0.8
+            ],
+            "trunk_hor": [
+                "Trunk_11x9.png",
+                true,
+                0.8
+            ],
+            "trunk_ver": [
+                "Trunk_7x14.png",
+                true,
+                0.8
+            ]
+        }
+    },
     "HomeVillage_image": [
         "COC/res/gold.png",
         "COC/res/elixir.png",

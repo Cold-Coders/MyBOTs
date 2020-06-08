@@ -12,42 +12,28 @@ from COC.Func.Others import Utils as U
 from util import *
 
 class Donation:
-	def __init__(self, GUI , resolution):
-		path = 'COC/recognition/' + resolution + "/Donation/"
-		trainer_path  = 'COC/recognition/' + resolution + "/train/trainer/"
-		train_path = 'COC/recognition/' + resolution + "/train/"
+	def __init__(self, GUI , resolution,coord):
+		self.path = 'COC/recognition/' + resolution + "/Donation/"
+		self.trainer_path  = 'COC/recognition/' + resolution + "/train/trainer/"
+		self.train_path = 'COC/recognition/' + resolution + "/train/"
 
 		self.d = GUI._config['d']
-		self.lang = GUI.lang
 
+		self.lang = GUI.lang['Donation']
+		self.count = GUI._count
 
+		self.coordinator = coord["Donation"]
+		self._Common = GUI._config["Common"]
 
-		self.close_donation = path + "close_donation.png"
-		self.trainer = trainer_path + "13.png"
-		
-		self.req_btn = path + "request_" + GUI.config['lang'] + ".png"
-		self.req2_btn = path + "request2_" + GUI.config['lang'] + ".png"
-		Area = {
-					"860x732":{
-								"chat_box":   (0,0,310,732),
-								"donation_offset": [30,-145,300,-30],
-								"slot_offset": [45,-75,75,-50],
-								"donation_box": (310,0,860,732),
-								"whole_screen":(0,0,860,732)
+		self.Area = self.coordinator['Area']
+		self.buttons = self.coordinator['buttons']
 
-							  }
-		}
-		self.Area = Area[resolution]
+		if 'Donation' not in GUI.config:
+			self.init_config()
+		else:
+			self.config = GUI.config['Donation']
 
-		buttons = {
-					"860x732":{
-								"open_chat": (20,380),
-								"close_chat":(331,384),
-								"close_train":(827,121)
-							  }
-		}
-		self.buttons = buttons[resolution]
-
+#----------------------- GUI ---------------------------------------
 		self._select_troops = dict()
 		self._select_spell = dict()
 		self._select_siege = dict()
@@ -56,68 +42,83 @@ class Donation:
 		self._amount_spell = dict()
 		self._amount_siege = dict()
 
-		if 'Donation' not in GUI.config:
-			self.init_config()
-		else:
-			self.config = GUI.config['Donation']
+		#self.close_donation = path + "close_donation.png"
+		#self.trainer = trainer_path + "13.png"
+		
+		#self.req_btn = path + "request_" + GUI.config['lang'] + ".png"
+		#self.req2_btn = path + "request2_" + GUI.config['lang'] + ".png"
+		#self.donation_list = self.config["donation"]
+		#self.train_list = list()
+#----------------------- Utils ---------------------------------------
+		def save_selected_value():
+			for troop_name in self.config['donation']['troops'].keys():
+				self.config['donation']['troops'][troop_name][2] = self._select_troops[troop_name].get()
+				self.config['donation']['troops'][troop_name][3] = self._amount_troops[troop_name].get()
+			for spell_name in self.config['donation']['spell'].keys():
+				self.config['donation']['spell'][spell_name][2] = self._select_spell[spell_name].get()
+				self.config['donation']['spell'][spell_name][3] = self._amount_spell[spell_name].get()
+			for siege_name in self.config['donation']['siege'].keys():
+				self.config['donation']['siege'][siege_name][2] = self._select_siege[siege_name].get()
+				self.config['donation']['siege'][siege_name][3] = self._amount_siege[siege_name].get()
+			GUI.config['Donation'] = self.config
+			GUI.save_config()
+			U.prt( "Donation config Saved",mode = 2)
 
+		self.SAVE = lambda: save_selected_value()
 
-		#def save_selected_value():
-		#	for obs_name in self._select_obstacle.keys():
-		#		self.config['obstacle'][obs_name][2] = self._select_obstacle[obs_name].get()
-		#	GUI.save_config()
-		#	U.prt( "General config Saved",mode = 2)
-
-		#self.SAVE = lambda: save_selected_value()
-
-
-		self.donation_list = self.config["donation"]
-		self.train_list = list()
-
-
-#------------------------------Donation-------------------------------#
+#------------------------------Set up GUI-------------------------------#
 
 	def set_donation(self,window):
 		set_window = Toplevel(window)
 		set_window.geometry("600x600")
-		amt1 = Label(set_window, text = "数量")
-		amt2 = Label(set_window, text = "数量")
-		amt3 = Label(set_window, text = "数量")
-		amt1.place(x = 115, y = 0)
-		amt2.place(x = 315, y = 0)
-		amt3.place(x = 515, y = 0)
-		#w = Canvas(set_window, width=120, height=132)
-		#w.place( x = 300, y = 300)	
+		set_window.title(self.lang['titles']['window'])
+		board = Canvas(set_window, width=600, height=600, bg = "white")
+		board.place( x = 0, y = 0)
+		
+
+
+
+
+
+
+
+#------------------------------自定义模式-------------------------------#
+		Label(board, text = self.lang['titles']['num'],bg = "white").place(x = 115, y = 425)
+		Label(board, text = self.lang['titles']['num'],bg = "white").place(x = 315, y = 215)
+		Label(board, text = self.lang['titles']['num'],bg = "white").place(x = 515, y = 5)
+		
 		for troop_name in self.config['donation']['troops'].keys():
 			self._select_troops[troop_name] = BooleanVar(value = self.config['donation']['troops'][troop_name][2])
-			donate = Checkbutton(set_window, text = self.lang['Donation']['troops'][troop_name],
+			donate = Checkbutton(board, text = self.lang['troops'][troop_name],
 				variable = self._select_troops[troop_name],bg="white", height = 1, width = 10)
-			donate.place(x = 0, y = 20 + self.config['donation']['troops'][troop_name][0]*30-20)
+			donate.place(x = 400, y = 20 + self.config['donation']['troops'][troop_name][0]*30-20)
 			self._amount_troops[troop_name] = IntVar(value = self.config['donation']['troops'][troop_name][3])
-			amount = Entry(set_window, textvariable = self._amount_troops[troop_name],width = 5)
-			amount.place(x = 115, y = 20 + self.config['donation']['troops'][troop_name][0]*30-20)
+			amount = Entry(board, textvariable = self._amount_troops[troop_name],width = 5)
+			amount.place(x = 515, y = 20 + self.config['donation']['troops'][troop_name][0]*30-20)
 
 		for spell_name in self.config['donation']['spell'].keys():
 			self._select_spell[spell_name] = BooleanVar(value = self.config['donation']['spell'][spell_name][2])
-			donate = Checkbutton(set_window, text = self.lang['Donation']['spell'][spell_name],
+			donate = Checkbutton(board, text = self.lang['spell'][spell_name],
 				variable = self._select_spell[spell_name],bg="white", height = 1, width = 10)
-			donate.place(x = 200, y = 20 + self.config['donation']['spell'][spell_name][0]*30-20)
+			donate.place(x = 200, y = 230 + self.config['donation']['spell'][spell_name][0]*30-20)
 			self._amount_spell[spell_name] = IntVar(value = self.config['donation']['spell'][spell_name][3])
-			amount = Entry(set_window, textvariable = self._amount_spell[spell_name],width = 5)
-			amount.place(x = 315, y = 20 + self.config['donation']['spell'][spell_name][0]*30-20)
+			amount = Entry(board, textvariable = self._amount_spell[spell_name],width = 5)
+			amount.place(x = 315, y = 230 + self.config['donation']['spell'][spell_name][0]*30-20)
 
 		for siege_name in self.config['donation']['siege'].keys():
 			self._select_siege[siege_name] = BooleanVar(value = self.config['donation']['siege'][siege_name][2])
-			donate = Checkbutton(set_window, text = self.lang['Donation']['siege'][siege_name],
+			donate = Checkbutton(board, text = self.lang['siege'][siege_name],
 				variable = self._select_siege[siege_name],bg="white", height = 1, width = 10)
-			donate.place(x = 400, y = 20 + self.config['donation']['siege'][siege_name][0]*30-20)
+			donate.place(x = 0, y = 440 + self.config['donation']['siege'][siege_name][0]*30-20)
 			self._amount_siege[siege_name] = IntVar(value = self.config['donation']['siege'][siege_name][3])
-			amount = Entry(set_window, textvariable = self._amount_siege[siege_name],width = 5
+			amount = Entry(board, textvariable = self._amount_siege[siege_name],width = 5
 				 )
-			amount.place(x = 515, y = 20 + self.config['donation']['siege'][siege_name][0]*30-20)
+			amount.place(x = 115, y = 440 + self.config['donation']['siege'][siege_name][0]*30-20)
 
 		set_close(set_window, func = self.SAVE)
 
+
+#------------------------------Initial configure-------------------------------#
 	def init_config(self):
 		self.config = {
 				"donation": {
@@ -164,7 +165,7 @@ class Donation:
 			}
 
 	def donateOnce(self):
-		#pass
+		pass
 		#不在家乡界面则结束
 		#打开兵营识别已有军队
 		#不在聊天界面则打开聊天界面
@@ -277,9 +278,3 @@ def train(self):
 
 
 '''
-
-
-
-
-
-

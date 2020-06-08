@@ -32,16 +32,7 @@ class General:
 		#self.info_text[i]['text']
 		self._infoboard = GUI.info_text
 
-		self._count = { 
-				"gold" : -1 ,
-				"elixir" : -1,
-				"dart_elixir" : -1,
-				"c_gold" : 0,
-				"c_elixir": 0,
-				"c_dart_elixir": 0,
-				"labor": 0,
-				"builder": 0
-		}
+		self._count = GUI._count
 
 		if 'General' not in GUI.config:
 			self.init_config()
@@ -142,18 +133,10 @@ class General:
 				text = U.BdOrc(screen, area , Accurate = Accurate)
 			elif self.orc == 2:
 				text = U.orcbyArea(screen, area,lang = lang, Debug = Debug)
-			
-			#new_text = ""
-			#for word in text:
-			#	if word in "1234567890":
-			#		new_text += word
-			#	elif word in "/":
-			#		break
+
 			return re.sub('[^A-Za-z0-9/]+', '', text)
 
 	def Update_info(self):
-		#gem_color = (208, 236, 120)
-		#
 		screen = self.d.screenshot(format="opencv")
 		
 		where = self._Common.Scense(screen)
