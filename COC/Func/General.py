@@ -40,8 +40,7 @@ class General:
 				"c_elixir": 0,
 				"c_dart_elixir": 0,
 				"labor": 0,
-				"builder": 0,
-				"zoom_out": 0
+				"builder": 0
 		}
 
 		if 'General' not in GUI.config:
@@ -87,15 +86,13 @@ class General:
 
 		screen = self.d.screenshot(format="opencv")
 
-		if self._count['zoom_out'] < 10:
-			U.zoom_out(self.d)
-			self._count['zoom_out'] += 1
+		U.zoom_out(self.d)
 
 		before = [  self._count['gold'],
 					self._count['elixir'],
 					self._count['dart_elixir']
 				]
-				
+
 		where = self._Common.Scense(screen)
 		if where == 1:
 			tap(self.config['elixir'],self.lang['msgs'][0]) #0.99205
@@ -126,7 +123,7 @@ class General:
 		dif_d_elixir = (self._count['dart_elixir'] - before[2])
 
 		if dif_gold > 0:
-			self._count['c_gold'] +=  d_gold 
+			self._count['c_gold'] +=  dif_gold 
 			self._infoboard[3]['text'] = self._count['c_gold']
 
 		if dif_elixir > 0:
