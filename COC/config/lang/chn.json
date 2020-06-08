@@ -78,9 +78,13 @@
 				"window":"捐兵设置",
 				"num": "数量",
 				"schema": "捐兵方案:",
+				"troops": "部队",
+				"spell" : "法术",
+				"siege" : "攻城机器"
 			},
 			"schema":[
 				"雷龙/气球/冰冻/狂暴/战车",
+				"按下方特定兵种捐兵",
 				"暂未启用 - 智能按需求造兵"
 			],
 			"troops":{
@@ -108,7 +112,7 @@
 				"healing":"治疗",
 				"rage": "狂暴",
 				"jump": "弹跳",
-				"freeze": "弹跳",
+				"freeze": "冰冻",
 				"clone": "镜像",
 				"poison": "毒药",  
 				"earthquake": "地震",

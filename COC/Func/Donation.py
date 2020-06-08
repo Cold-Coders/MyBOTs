@@ -39,9 +39,7 @@ class Donation:
 		self._select_siege = dict()
 
 		self._amount_troops = dict()
-		self._amount_spell = dict()
-		self._amount_siege = dict()
-
+		self._selections = [StringVar() for i in range(5)]
 		#self.close_donation = path + "close_donation.png"
 		#self.trainer = trainer_path + "13.png"
 		
@@ -53,13 +51,16 @@ class Donation:
 		def save_selected_value():
 			for troop_name in self.config['donation']['troops'].keys():
 				self.config['donation']['troops'][troop_name][2] = self._select_troops[troop_name].get()
-				self.config['donation']['troops'][troop_name][3] = self._amount_troops[troop_name].get()
 			for spell_name in self.config['donation']['spell'].keys():
 				self.config['donation']['spell'][spell_name][2] = self._select_spell[spell_name].get()
-				self.config['donation']['spell'][spell_name][3] = self._amount_spell[spell_name].get()
 			for siege_name in self.config['donation']['siege'].keys():
 				self.config['donation']['siege'][siege_name][2] = self._select_siege[siege_name].get()
-				self.config['donation']['siege'][siege_name][3] = self._amount_siege[siege_name].get()
+			for amount in self.config['amounts'].keys():
+				self.config['amounts'][amount] = self._amount_troops[amount].get()
+			
+			for i in range(len(self.config['selections'])):
+				self.config['selections'][i] = self._selections[i].get()
+
 			GUI.config['Donation'] = self.config
 			GUI.save_config()
 			U.prt( "Donation config Saved",mode = 2)
@@ -76,90 +77,109 @@ class Donation:
 		board.place( x = 0, y = 0)
 		
 
-
-
-
-
-
-
-#------------------------------自定义模式-------------------------------#
-		Label(board, text = self.lang['titles']['num'],bg = "white").place(x = 115, y = 425)
-		Label(board, text = self.lang['titles']['num'],bg = "white").place(x = 315, y = 215)
-		Label(board, text = self.lang['titles']['num'],bg = "white").place(x = 515, y = 5)
+		Label(board, text = self.lang['titles']['schema'],bg = "white",\
+			font='黑体 13 bold',width = 10 ).place(x = 5, y = 5)
+		Label(board, text = self.lang['titles']['troops'] + "1:",bg = "white",\
+			font='黑体 13 bold',width = 10).place(x = 5, y = 35)
+		Label(board, text = self.lang['titles']['troops'] + "2:",bg = "white",\
+			font='黑体 13 bold',width = 10).place(x = 5, y = 65)
+		Label(board, text = self.lang['titles']['spell']  + ":",bg = "white",\
+			font='黑体 13 bold',width = 10).place(x = 5, y = 95)
+		Label(board, text = self.lang['titles']['siege']  + ":",bg = "white",\
+			font='黑体 13 bold',width = 10).place(x = 5, y = 125)
 		
+		place_selection(self,board,100,5,values = self.lang["schema"], array = self._selections[0],width = 30)
+		place_selection(self,board,100,35,values = list(self.lang['troops'].values()), array = self._selections[1])
+		place_selection(self,board,100,65,values = list(self.lang['troops'].values()), array = self._selections[2])
+		place_selection(self,board,100,95,values = list(self.lang['spell'].values()), array = self._selections[3])
+		place_selection(self,board,100,125,values = list(self.lang['siege'].values()), array = self._selections[4])
+
+		for i in range(len(self.config['selections'])):
+			self._selections[i].set(self.config['selections'][i])
+
+		count = 0
+		for amount in self.config['amounts'].keys():
+				self._amount_troops[amount] = IntVar(value = self.config['amounts'][amount])
+				Label(board, text = self.lang['titles']['num'] + ":",bg = "white",\
+					font='黑体 13 bold',width = 10).place(x = 195, y = 35 + count * 30)
+				Entry(board, textvariable = self._amount_troops[amount],width = 5).place(x = 280, y = 35 + count * 30)
+				count += 1
+		
+		#	amount = Entry(board, textvariable = self._amount_troops[troop_name],width = 5)
+		#	amount.place(x = 515, y = 20 + self.config['donation']['troops'][troop_name][0]*30-20)
+#------------------------------自定义模式-------------------------------#
+		Label(board, text = self.lang['titles']['siege'],bg = "white").place(x = 300, y = 425)
+		Label(board, text = self.lang['titles']['spell'],bg = "white").place(x = 420, y = 215)
+		Label(board, text = self.lang['titles']['troops'],bg = "white").place(x = 520, y = 5)
 		for troop_name in self.config['donation']['troops'].keys():
 			self._select_troops[troop_name] = BooleanVar(value = self.config['donation']['troops'][troop_name][2])
 			donate = Checkbutton(board, text = self.lang['troops'][troop_name],
 				variable = self._select_troops[troop_name],bg="white", height = 1, width = 10)
-			donate.place(x = 400, y = 20 + self.config['donation']['troops'][troop_name][0]*30-20)
-			self._amount_troops[troop_name] = IntVar(value = self.config['donation']['troops'][troop_name][3])
-			amount = Entry(board, textvariable = self._amount_troops[troop_name],width = 5)
-			amount.place(x = 515, y = 20 + self.config['donation']['troops'][troop_name][0]*30-20)
-
+			donate.place(x = 480, y = 20 + self.config['donation']['troops'][troop_name][0]*30-20)
+			
 		for spell_name in self.config['donation']['spell'].keys():
 			self._select_spell[spell_name] = BooleanVar(value = self.config['donation']['spell'][spell_name][2])
 			donate = Checkbutton(board, text = self.lang['spell'][spell_name],
 				variable = self._select_spell[spell_name],bg="white", height = 1, width = 10)
-			donate.place(x = 200, y = 230 + self.config['donation']['spell'][spell_name][0]*30-20)
-			self._amount_spell[spell_name] = IntVar(value = self.config['donation']['spell'][spell_name][3])
-			amount = Entry(board, textvariable = self._amount_spell[spell_name],width = 5)
-			amount.place(x = 315, y = 230 + self.config['donation']['spell'][spell_name][0]*30-20)
+			donate.place(x = 380, y = 230 + self.config['donation']['spell'][spell_name][0]*30-20)
 
 		for siege_name in self.config['donation']['siege'].keys():
 			self._select_siege[siege_name] = BooleanVar(value = self.config['donation']['siege'][siege_name][2])
 			donate = Checkbutton(board, text = self.lang['siege'][siege_name],
 				variable = self._select_siege[siege_name],bg="white", height = 1, width = 10)
-			donate.place(x = 0, y = 440 + self.config['donation']['siege'][siege_name][0]*30-20)
-			self._amount_siege[siege_name] = IntVar(value = self.config['donation']['siege'][siege_name][3])
-			amount = Entry(board, textvariable = self._amount_siege[siege_name],width = 5
-				 )
-			amount.place(x = 115, y = 440 + self.config['donation']['siege'][siege_name][0]*30-20)
-
+			donate.place(x = 280, y = 440 + self.config['donation']['siege'][siege_name][0]*30-20)
 		set_close(set_window, func = self.SAVE)
 
 
 #------------------------------Initial configure-------------------------------#
 	def init_config(self):
 		self.config = {
+				"amounts":{
+						"troop1" : 0,
+						"troop2" : 0,
+						"spell"  : 0,
+						"siege"	 : 0
+				},
+				"selections": ["","","","",""],
 				"donation": {
 					"siege": {
-						"barracks": [4,"undefined",0,1],
-						"blimp": 	[2,"undefined",0,1],
-						"slammer": 	[3,"undefined",0,1],
-						"wall_wrecker": [1,"undefined",0,1]
+						"barracks": [4,"undefined",False],
+						"blimp": 	[2,"undefined",False],
+						"slammer": 	[3,"undefined",False],
+						"wall_wrecker": [1,"undefined",False]
 					},
 					"spell": {
-						"bat": [11,"undefined",0,1],
-						"clone": [6,"undefined",0,1],
-						"earthquake": [8,"undefined",0,1],
-						"freeze": [5,"undefined",0,1],
-						"haste": [9,"undefined",0,1],
-						"healing": [2,"undefined",0,1],
-						"jump": [4,"undefined",0,1],
-						"lightning": [1,"undefined",0,1],
-						"poison": [7,"undefined",0,1],
-						"rage": [3,"undefined",0,1],
-						"skeleton": [10,"undefined",0,1]
+						"bat": [11,"undefined",False],
+						"clone": [6,"undefined",False],
+						"earthquake": [8,"undefined",False],
+						"freeze": [5,"undefined",False],
+						"haste": [9,"undefined",False],
+						"healing": [2,"undefined",False],
+						"jump": [4,"undefined",False],
+						"lightning": [1,"undefined",False],
+						"poison": [7,"undefined",False],
+						"rage": [3,"undefined",False],
+						"skeleton": [10,"undefined",False]
 					},
 					"troops": {
-						"baby_dragon": [7,"undefined",0,1],
-						"balloon": [2,"undefined",0,1],
-						"bowler": [17,"undefined",0,1],
-						"dragon": [5,"undefined",0,1],
-						"electro": [9,"undefined",0,1],
-						"giant": [1,"undefined",0,1],
-						"golem": [14,"undefined",0,1],
-						"healer": [4,"undefined",0,1],
-						"hog_rider": [12,"undefined",0,1],
-						"ice_golem": [18,"undefined",0,1],
-						"lava": [16,"undefined",0,1],
-						"miner": [8,"undefined",0,1],
-						"minion": [11,"undefined",0,1],
-						"pekka": [6,"undefined",0,1],
-						"valkyrie": [13,"undefined",0,1],
-						"witch": [15,"undefined",0,1],
-						"wizard": [3,"undefined",0,1],
-						"yeti": [10,"undefined",0,1]
+						"baby_dragon": [7,"undefined",False],
+						"balloon": [2,"undefined",False],
+						"bowler": [17,"undefined",False],
+						"dragon": [5,"undefined",False],
+						"electro": [9,"undefined",False],
+						"giant": [1,"undefined",False],
+						"golem": [14,"undefined",False],
+						"healer": [4,"undefined",False],
+						"hog_rider": [12,"undefined",False],
+						"ice_golem": [18,"undefined",False],
+						"lava": [16,"undefined",False],
+						"miner": [8,"undefined",False],
+						"minion": [11,"undefined",False],
+						"pekka": [6,"undefined",False],
+						"valkyrie": [13,"undefined",False],
+						"witch": [15,"undefined",False],
+						"wizard": [3,"undefined",False],
+						"yeti": [10,"undefined",False]
 					}
 				}
 			}

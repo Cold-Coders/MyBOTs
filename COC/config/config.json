@@ -5,212 +5,192 @@
         "COC/res/gem.png"
     ],
     "Donation": {
+        "amounts": {
+            "siege": 2,
+            "spell": 2,
+            "troop1": 1,
+            "troop2": 1
+        },
         "donation": {
             "siege": {
                 "barracks": [
                     4,
                     "undefined",
-                    false,
-                    1
+                    false
                 ],
                 "blimp": [
                     2,
                     "undefined",
-                    true,
-                    1
+                    false
                 ],
                 "slammer": [
                     3,
                     "undefined",
-                    true,
-                    1
+                    false
                 ],
                 "wall_wrecker": [
                     1,
                     "undefined",
-                    false,
-                    1
+                    false
                 ]
             },
             "spell": {
                 "bat": [
                     11,
                     "undefined",
-                    false,
-                    1
+                    false
                 ],
                 "clone": [
                     6,
                     "undefined",
-                    false,
-                    1
+                    false
                 ],
                 "earthquake": [
                     8,
                     "undefined",
-                    false,
-                    1
+                    false
                 ],
                 "freeze": [
                     5,
                     "undefined",
-                    false,
-                    1
+                    false
                 ],
                 "haste": [
                     9,
                     "undefined",
-                    false,
-                    1
+                    false
                 ],
                 "healing": [
                     2,
                     "undefined",
-                    false,
-                    1
+                    false
                 ],
                 "jump": [
                     4,
                     "undefined",
-                    false,
-                    1
+                    false
                 ],
                 "lightning": [
                     1,
                     "undefined",
-                    false,
-                    1
+                    false
                 ],
                 "poison": [
                     7,
                     "undefined",
-                    false,
-                    1
+                    false
                 ],
                 "rage": [
                     3,
                     "undefined",
-                    false,
-                    1
+                    false
                 ],
                 "skeleton": [
                     10,
                     "undefined",
-                    false,
-                    1
+                    false
                 ]
             },
             "troops": {
                 "baby_dragon": [
                     7,
                     "undefined",
-                    false,
-                    1
+                    false
                 ],
                 "balloon": [
                     2,
                     "undefined",
-                    false,
-                    1
+                    false
                 ],
                 "bowler": [
                     17,
                     "undefined",
-                    false,
-                    1
+                    false
                 ],
                 "dragon": [
                     5,
                     "undefined",
-                    false,
-                    1
+                    false
                 ],
                 "electro": [
                     9,
                     "undefined",
-                    false,
-                    1
+                    false
                 ],
                 "giant": [
                     1,
                     "undefined",
-                    false,
-                    1
+                    false
                 ],
                 "golem": [
                     14,
                     "undefined",
-                    false,
-                    1
+                    false
                 ],
                 "healer": [
                     4,
                     "undefined",
-                    false,
-                    1
+                    false
                 ],
                 "hog_rider": [
                     12,
                     "undefined",
-                    false,
-                    1
+                    false
                 ],
                 "ice_golem": [
                     18,
                     "undefined",
-                    false,
-                    1
+                    false
                 ],
                 "lava": [
                     16,
                     "undefined",
-                    false,
-                    1
+                    false
                 ],
                 "miner": [
                     8,
                     "undefined",
-                    false,
-                    1
+                    false
                 ],
                 "minion": [
                     11,
                     "undefined",
-                    false,
-                    1
+                    false
                 ],
                 "pekka": [
                     6,
                     "undefined",
-                    false,
-                    1
+                    false
                 ],
                 "valkyrie": [
                     13,
                     "undefined",
-                    false,
-                    1
+                    false
                 ],
                 "witch": [
                     15,
                     "undefined",
-                    false,
-                    1
+                    false
                 ],
                 "wizard": [
                     3,
                     "undefined",
-                    false,
-                    1
+                    false
                 ],
                 "yeti": [
                     10,
                     "undefined",
-                    false,
-                    1
+                    false
                 ]
             }
-        }
+        },
+        "selections": [
+            "雷龙/气球/冰冻/狂暴/战车",
+            "电龙",
+            "气球",
+            "冰冻",
+            "攻城车"
+        ]
     },
     "Functionality": [
         true,

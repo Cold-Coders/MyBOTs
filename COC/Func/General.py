@@ -167,11 +167,13 @@ class General:
 		else:
 			self._infoboard[0]['text'] = self.lang['recog_error']
 
+		
 		if where == 1:
 			self.Image_to_homebase()
-			self._count['gold'] = gold
-			self._count['elixir'] = elixir
-			self._count['dart_elixir'] = dart_elixir
+			if gold.isdigit() and elixir.isdigit() and dart_elixir.isdigit():
+				self._count['gold'] = gold
+				self._count['elixir'] = elixir
+				self._count['dart_elixir'] = dart_elixir
 		else:
 			self.Image_to_builder()
 

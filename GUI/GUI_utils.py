@@ -2,6 +2,7 @@
 import tkinter as tk
 import PIL.Image
 from PIL import ImageTk
+from tkinter import ttk
 
 def set_close(root,func = 'self'):
 	if func == 'self':
@@ -45,3 +46,21 @@ def place_label(CLASS, frame: tk.Canvas,x,y,anchor = "nw",bg = "white",\
 		CLASS.extra_place_label.append(tk.Label(frame, text = text, relief = relief ,\
 		 background = bg, fg = fg , anchor = anchor, font = font ))
 	CLASS.extra_place_label[-1].place(x = x , y = y)
+
+def place_selection(CLASS,frame, x, y, values = [], state="readonly" ,justify = 'center' , array = "extra",width = 10):
+	if not hasattr(CLASS,"extra_place_selection"):
+		CLASS.extra_place_selection = []
+	
+	assert type(CLASS.extra_place_selection) is list, "CLASS.extra_place_selection is not list"
+
+	if array != "extra":
+		CLASS.extra_place_selection.append( ttk.Combobox(frame,values=values,\
+			width = width, justify = justify,state = state, textvariable = array))
+	else:
+		CLASS.extra_place_selection.append( ttk.Combobox(frame,values=values,\
+			width = width, justify = justify,state = state))
+	
+	CLASS.extra_place_selection[-1].place(x = x , y = y)
+
+def create_window(frame, window, x, y, anchor = 'nw'):
+	frame.create_window(x,y, anchor= anchor , window=window)
