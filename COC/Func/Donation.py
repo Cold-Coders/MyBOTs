@@ -298,3 +298,73 @@ def train(self):
 
 
 '''
+#----------------------------捐兵伪代码-------------------------------
+'''
+Donation_once(self):                       
+	tap("open_chatbox")
+	x,y = find_pos("捐赠按钮")
+	上滑次数 = 0
+	while x = -1:
+		if 上滑次数 > 5：
+			exit
+		上滑（）
+		上滑次数 + = 1
+		x,y = find_pos("捐赠按钮")
+	tap(x,y)
+	for i in range(troop1_amount):             #之前用while的时候可以无限捐 比如有人要9个气球 我们这边设定3个的话就只能捐3个 但是用while的的话可以一直捐 但是那样会破坏造兵平衡
+		x,y = find_pos(troop2,donate_area)		#不论实际上捐的数量，就按配置默认的数量来进行点击，不论需不需要，多点击了没事
+					for i in (0,troop1_amount):
+		if x != -1
+			tap(x,y)	
+
+	for j in range(troop2_amount):
+		x,y = find_pos(troop2,donate_area)
+		if x != -1
+			tap(x,y)
+
+	for j in range(spell_amount):
+		x,y = find_pos(spell,donate_area)
+		if x != -1
+			tap(x,y)		
+		
+
+	for z in range(0.siege_amount)
+		x,y = find_pos(siege,donate_area)
+			if x != -1:
+				tap(x,y)
+				
+	c_x,c_y = find_pos(close_button,donate_area)
+	tap(c_x,c_y)
+	tap('close_chat')
+	#-------------------------------造兵伪代码-----------------------------
+	produce_troops(self)： 
+	collect_resource()
+	check_resource():
+		if resource < 3*10^5:
+			exit() #下线等待
+		else:
+			tap("训练按钮")
+			tap("训练部队") 
+			t1_x,t1_y = find_pos(train_area, troop1)
+				if t1_x != -1:  #可以训练，说明捐兵了，不论实际上捐的数量，就按配置默认的数量来进行点击
+					for i in (0,troop1_amount):
+						tap(t1_x,t1_y)  #可以直接设立坐标来代替寻找图,比如雷龙的按钮在哪个位置，直接点击可以增加效率和稳定性
+
+
+			t2_x,t2_y = find_pos(train_area, troop2)
+				if t2_x != -1:
+					for i in (0,troop2_amount):
+						tap(t2_x,t2_y)  #可以直接设立坐标来代替寻找图
+
+			tap('制造法术')
+			s_x,s_y = find_pos(train_area, spell):
+				if s_x != -1:
+					for i in (0,spell_amount):
+						tap(s_x,s_y)  #可以直接设立坐标来代替寻找图
+
+			tap('制造工程车')：
+			siege_x,siege_y = find_pos(train_area,siege)
+			if siege_x != -1
+					for i in (0,siege_amount):
+						tap(siege_x,siege_y)  #整一个捐 训练周期结束
+			tap("关闭按钮")
