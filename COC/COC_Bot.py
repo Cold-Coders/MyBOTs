@@ -63,6 +63,12 @@ class COC_BOT():
 			if self.enable_func[3].get(): # 自动部落捐兵
 				if self.Donation.donateOnce():
 					self.sleep(now = False, min = 15)
+				else:
+					self._count["donation"] += 1
+
+				if self._count["donation"]%10 == 0:
+					self.sleep(now = False, min = 15)
+
 
 			self.sleep( min = 1)
 			#ss(10,1, precent = 2)

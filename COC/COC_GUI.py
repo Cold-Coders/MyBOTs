@@ -417,7 +417,8 @@ class COC_BOT_GUI(tk.Frame):
 				"c_elixir": 0,
 				"c_dart_elixir": 0,
 				"labor": 0,
-				"builder": 0
+				"builder": 0,
+				"donation": 0
 		}
 
 	def init_config(self):
