@@ -16,9 +16,12 @@ class Scenario:
 	def time(self,time):
 		return time.strftime('%H:%M:%S')
 
-	def duration(self, now = datetime.datetime.now() , days = 0, minutes = 0, seconds = 0):
-		return (now + timedelta(days = days, minutes = minutes, seconds = seconds))
-
+	def duration(self, now = True , days = 0, minutes = 0, seconds = 0):
+		if now == True:
+			return (datetime.datetime.now() + timedelta(days = days, minutes = minutes, seconds = seconds))
+		elif type(now) is datetime.datetime:
+			return (now + timedelta(days = days, minutes = minutes, seconds = seconds))
+	
 	def Scense(self, screen, spec = 0, Debug = False):
 		
 		pos = { 

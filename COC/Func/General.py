@@ -68,7 +68,7 @@ class General:
 	def collect_resourse(self):
 
 		def tap(img,msg):
-			x,y = U.find_position(screen, self.path + img, confidence = 0.90)
+			x,y = U.find_position(screen, self.path + img, confidence = 0.80)
 			if x != -1:
 				U.tap(self.d,x,y)
 				U.prt(msg,mode = 1)
