@@ -6,7 +6,9 @@
 			"observe_townhall.png":[20,620,110,720],
 			"search_townhall.png":[580,350,780,470],
 			"search_builder.png":[490,280,690,370],
-			"clan_chat.png": [245,680,312,730]
+			"clan_chat.png": [245,680,312,730],
+			"okay1.png":[340,490,500,560],
+			"goldenpass_x.png": [800,50,850,100]
 		}
 	},
 	"General":{

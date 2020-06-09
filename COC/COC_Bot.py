@@ -61,24 +61,23 @@ class COC_BOT():
 				self.General.collect_resourse()
 
 			if self.enable_func[3].get(): # 自动部落捐兵
-				self._count["donation"] += 1
-				
+
 				if self.Donation.donateOnce():
-					self.sleep(now = False, min = 15)
+					self.sleep(now = False, mins = 15)
 
+				if self._count["donation"]%5 == 0:
+					self.sleep(now = False, mins = 20)
+					continue
 
-				if self._count["donation"]%10 == 0:
-					self.sleep(now = False, min = 15)
-
-
-			self.sleep( min = 1)
+			self.sleep(mins = 1)
 			#ss(10,1, precent = 2)
 
-	def sleep(self, now = True, min = 0, sec = 0):
+	def sleep(self, now = True, mins = 0, sec = 0):
 		if not now and type(self.wait) is datetime.datetime:
-			self.wait = self.Common.duration(now = self.wait, minutes = min, seconds = sec)
+			print("这里出问题吗")
+			self.wait = self.Common.duration(now = self.wait, minutes = mins, seconds = sec)
 		else:
-			self.wait = self.Common.duration(minutes = min, seconds = sec)
+			self.wait = self.Common.duration(minutes = mins, seconds = sec)
 
 
 	def Launch_app(self):

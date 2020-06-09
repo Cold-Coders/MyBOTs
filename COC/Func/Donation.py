@@ -196,7 +196,7 @@ class Donation:
 					},
 					"troops": {
 						"baby_dragon": [7,"undefined",False],
-						"balloon": [2,"undefined",False],
+						"balloon": [2,"troops/balloon.png",False],
 						"bowler": [17,"undefined",False],
 						"dragon": [5,"undefined",False],
 						"electro": [9,"troops/electro.png",False],
@@ -281,6 +281,9 @@ class Donation:
 
 #------------------------------ Donate -------------------------------#
 	def donateOnce(self):
+		
+		self.count["donation"] += 1
+
 		# 1. 打开兵营造兵
 		self.produce_troops()
 		# 2. 确定地图
@@ -298,21 +301,24 @@ class Donation:
 			# 1. 处理捐赠信息
 			result = self.process_request(x,y)
 			if not type(result) is dict:
-				prt(result)
 				self.tap(self.buttons['close_chat'])
+				msg = result + self.lang['msgs']['counts'] + str(self.count['donation'])
+				U.msg(self.d, msg, mode = 2,times = 3)
 				return False
 
 			# 2. 进行捐赠操作
 			return self.process_donation(result)
 
-		#应该检测关掉捐兵窗口
-		self.tap(self.buttons['close_chat'])
+		#聊天窗则关掉捐兵窗口
+		where = self._Common.Scense(self.d.screenshot(format="opencv"))
+		if where == 6:
+			self.tap(self.buttons['close_chat'])
 		return False
 #------------------------------ Donation Process -------------------------------#
 	def process_request(self,x,y): #return False for error
 		#没有找到捐兵按钮
 		if x == -1:
-			return "没有找到捐兵按钮"
+			return self.lang['msgs']['no_find']
 		
 		info = dict()
 		info['x'] = x

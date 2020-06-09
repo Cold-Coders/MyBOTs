@@ -69,7 +69,7 @@ class COC_BOT_GUI(tk.Frame):
 		resolution = str(w) + "x" + str(h)
 		coord = load_configure("COC/config/" + resolution + ".json")
 		self.init_count()
-		self._config["Common"] = Scenario(coord,resolution)
+		self._config["Common"] = Scenario(self,coord,resolution)
 		self._config["General"] = General(self,resolution,coord)
 		self._config["Donation"] = Donation(self,resolution,coord)
 		#self._config["Upgrade"] = Upgrade(self,resolution)
@@ -456,5 +456,8 @@ class COC_BOT_GUI(tk.Frame):
 	def save_config(self):
 		for i in range(len(self.func)):
 			self.config['Functionality'][i] = self.func[i].get()
+
 		with open('COC/config/config.json', 'w',encoding='utf-8') as outfile:
 				json.dump(self.config, outfile, ensure_ascii=False, indent=4, sort_keys=True)
+
+		print("配置保存完成")

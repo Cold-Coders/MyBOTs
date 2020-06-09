@@ -75,6 +75,10 @@
 				]
 	},
 	"Donation":{
+			"msgs":{
+				"counts" : "执行捐赠数: ",
+				"no_find": "没有找到捐兵 "
+			},
 			"titles":{
 				"window":"捐兵设置",
 				"num": "数量",
@@ -131,5 +135,10 @@
 				"slammer": "攻城气球",
 				"barracks": "攻城训练营"
 			}
-		}
+		},
+	"Common":{
+			"msgs": [
+				"关闭窗口"
+			]
+	}
 }

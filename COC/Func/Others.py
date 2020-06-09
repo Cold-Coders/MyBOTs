@@ -112,8 +112,10 @@ class Utils:
 			prt(xml)
 	
 	@staticmethod
-	def msg(d,msg):
-		d.toast.show(msg)
+	def msg(d,msg,prt = True, mode = 1, times = 1):
+		d.toast.show(msg, times)
+		if prt:
+			Utils.prt(msg,mode = mode)
 
 	@staticmethod
 	def current_app(d):

@@ -104,10 +104,18 @@ class General:
 
 #----统计增加资源---------------------------------------------------------------------------------
 	def update_cum_resourse(self, before):
-		if self._count['gold'] == -1 or self._count['elixir'] == -1 or self._count['dart_elixir'] == -1:
+		self.Update_info()
+
+		if self._count['gold'] == -1 \
+			or self._count['elixir'] == -1 \
+				or self._count['dart_elixir'] == -1:
 			return
 		
-		self.Update_info()
+		for i in range(3):
+			if type(before[i]) is not int:
+				return
+
+		
 		
 		ss(1)
 
