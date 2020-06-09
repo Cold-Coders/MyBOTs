@@ -271,8 +271,10 @@ class Donation:
 
 							else:
 								break
-		close_x,close_y = U.find_PosbyArea(self.d, self.Area["donation_box"] , self.close_donation,confidence = 0.87)
-		U.tap(self.d,close_x,close_y)
+			close_x,close_y = U.find_PosbyArea(self.d, self.Area["donation_box"] , self.close_donation,confidence = 0.87)
+			U.tap(self.d,close_x,close_y)
+		else:
+			U.prt("没有可以捐赠的")
 		close_chat_x, close_chat_y = self.buttons['close_chat']
 		U.tap(self.d,close_chat_x,close_chat_y)
 
