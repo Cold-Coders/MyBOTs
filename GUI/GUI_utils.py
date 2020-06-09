@@ -47,15 +47,27 @@ def place_label(CLASS, frame: tk.Canvas,x,y,anchor = "nw",bg = "white",\
 		 background = bg, fg = fg , anchor = anchor, font = font ))
 	CLASS.extra_place_label[-1].place(x = x , y = y)
 
-def place_selection(CLASS,frame, x, y, values = [], state="readonly" ,justify = 'center' , array = "extra",width = 10):
+def place_selection(CLASS,frame, x, y, values = [], state="readonly" ,justify = 'center' ,\
+		 width = 10, **kwargs):
 	if not hasattr(CLASS,"extra_place_selection"):
 		CLASS.extra_place_selection = []
 	
 	assert type(CLASS.extra_place_selection) is list, "CLASS.extra_place_selection is not list"
 
-	if array != "extra":
+	if "array" in kwargs.keys() and "callback" in kwargs.keys():
 		CLASS.extra_place_selection.append( ttk.Combobox(frame,values=values,\
-			width = width, justify = justify,state = state, textvariable = array))
+			width = width, justify = justify,state = state, textvariable = kwargs['array'],\
+			))
+		CLASS.extra_place_selection[-1].bind("<<ComboboxSelected>>", kwargs['callback'])
+
+	elif "array" in kwargs.keys():
+		CLASS.extra_place_selection.append( ttk.Combobox(frame,values=values,\
+			width = width, justify = justify,state = state, textvariable = kwargs['array']))
+	elif "callback" in kwargs.keys():
+		CLASS.extra_place_selection.append( ttk.Combobox(frame,values=values,\
+			width = width, justify = justify,state = state))
+		CLASS.extra_place_selection[-1].bind("<<ComboboxSelected>>", kwargs['callback'])
+
 	else:
 		CLASS.extra_place_selection.append( ttk.Combobox(frame,values=values,\
 			width = width, justify = justify,state = state))

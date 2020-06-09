@@ -16,9 +16,8 @@ class Scenario:
 	def time(self,time):
 		return time.strftime('%H:%M:%S')
 
-	def duration(self, days = 0, minutes = 0, seconds = 0):
-		return (datetime.datetime.now() + \
-			timedelta(days = days, minutes = minutes, seconds = seconds))
+	def duration(self, now = datetime.datetime.now() , days = 0, minutes = 0, seconds = 0):
+		return (now + timedelta(days = days, minutes = minutes, seconds = seconds))
 
 	def Scense(self, screen, spec = 0, Debug = False):
 		

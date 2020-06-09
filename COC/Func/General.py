@@ -77,7 +77,7 @@ class General:
 
 		screen = self.d.screenshot(format="opencv")
 
-		U.zoom_out(self.d)
+		
 
 		before = [  self._count['gold'],
 					self._count['elixir'],
@@ -86,12 +86,14 @@ class General:
 
 		where = self._Common.Scense(screen)
 		if where == 1:
+			U.zoom_out(self.d)
 			tap(self.config['elixir'],self.lang['msgs'][0]) #0.99205
 			tap(self.config['gold'], self.lang['msgs'][1])
 			tap(self.config['dart_elixir'],self.lang['msgs'][2])
 			self.update_cum_resourse(before)
 
 		elif where == 2:
+			U.zoom_out(self.d)
 			tap(self.config['b_elixir'],self.lang['msgs'][0])
 			tap(self.config['b_gold'],self.lang['msgs'][1])
 			tap(self.config['gem'],self.lang['msgs'][3])
@@ -170,10 +172,9 @@ class General:
 		
 		if where == 1:
 			self.Image_to_homebase()
-			if gold.isdigit() and elixir.isdigit() and dart_elixir.isdigit():
-				self._count['gold'] = gold
-				self._count['elixir'] = elixir
-				self._count['dart_elixir'] = dart_elixir
+			self._count['gold'] = gold
+			self._count['elixir'] = elixir
+			self._count['dart_elixir'] = dart_elixir
 		else:
 			self.Image_to_builder()
 

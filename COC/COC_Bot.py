@@ -1,4 +1,5 @@
 import threading,os
+import datetime
 
 from tkinter import messagebox
 from util import *
@@ -23,6 +24,7 @@ class COC_BOT():
 		#-------------功能性类-----------------------
 		self.General = self._config["General"]
 		self.Common = self._config["Common"]
+		self.Donation = self._config["Donation"]
 		self.wait = self.Common.now()
 		#-------------GUI 快捷类---------------------
 		self.time_elapse = self._gui.info_text[8]
@@ -39,12 +41,8 @@ class COC_BOT():
 			#如果是果盘COC 点进入游戏
 			#self.GPstart()
 			
-			#不在游戏中无限睡眠
-			while u.current_app(self.d) != self._app:
-				ss()
-
-			if self.enable_func[0].get(): # 自动识别资源
-				self.General.Update_info()
+			if int(self.Common.time_left(self.wait)) > 600:
+				self.d.press("home")
 
 			if self.Common.now() < self.wait:#更新剩余等待时间
 				self.time_elapse['text'] = str(int(self.Common.time_left(self.wait))) + ' s'
@@ -53,15 +51,28 @@ class COC_BOT():
 			else:
 				self.time_elapse['text'] = '0'
 
+			if u.current_app(self.d) != self._app:
+				self.Launch_app()
+
+			if self.enable_func[0].get(): # 自动识别资源
+				self.General.Update_info()
+
 			if self.enable_func[1].get(): # 自动收集资源
 				self.General.collect_resourse()
 
+			if self.enable_func[3].get(): # 自动部落捐兵
+				if self.Donation.donateOnce():
+					self.sleep(now = False, min = 15)
 
-			self.sleep(min = 1)
+			self.sleep( min = 1)
 			#ss(10,1, precent = 2)
 
-	def sleep(self, min = 0, sec = 0):
-		self.wait = self.Common.duration( minutes = min, seconds = sec)
+	def sleep(self, now = True, min = 0, sec = 0):
+		if not now and type(self.wait) is datetime.datetime:
+			self.wait = self.Common.duration(now = self.wait, minutes = min, seconds = sec)
+		else:
+			self.wait = self.Common.duration(minutes = min, seconds = sec)
+
 
 	def Launch_app(self):
 		self.d.app_start(self._app)

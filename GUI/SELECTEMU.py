@@ -91,7 +91,8 @@ class EMULATOR(tk.Frame):
 						print("Process name is: %s, pid is: %s" %(process_name, pid))
 						devices.append([Emulator[process_name],pid])
 		except Exception as e:
-			raise e
+			pass
+			#raise e
 			#exit()
 
 		return devices

@@ -1,7 +1,7 @@
 {
 	"Common":{
 		"Map": {
-			"townhall.png": [20,620,110,720],
+			"townhall.png": [0,60,70,120],
 			"builder.png": [20,620,110,720],
 			"observe_townhall.png":[20,620,110,720],
 			"search_townhall.png":[580,350,780,470],
@@ -34,7 +34,51 @@
 		"buttons":{
 			"open_chat": [20,380],
 			"close_chat":[331,384],
-			"close_train":[827,121]
+			"close_train":[827,121],
+			"train": [38,585],
+			"close_train":[825,120],
+			"sieges": {
+					"btn" : [558,131],
+					"barracks": [],
+					"blimp": 	[],
+					"slammer": 	[],
+					"wall_wrecker": [110,460]
+			},
+			"spells": {
+					"btn" : [408,131],
+					"bat": [],
+					"clone": [],
+					"earthquake": [],
+					"freeze": [270,425],
+					"haste": [],
+					"healing": [],
+					"jump": [],
+					"lightning": [],
+					"poison": [],
+					"rage": [170,425],
+					"skeleton": []
+			},
+			"troops": {
+					"btn" : [244,131],
+					"baby_dragon": [570,425,0],
+					"balloon": [270,530,0],
+					"bowler": [],
+					"dragon": [470,425,0],
+					"electro": [670,425,0],
+					"giant": [170,425,0],
+					"golem": [],
+					"healer": [],
+					"hog_rider": [],
+					"ice_golem": [],
+					"lava": [],
+					"miner": [],
+					"minion": [],
+					"pekka": [],
+					"valkyrie": [],
+					"witch": [],
+					"wizard": [],
+					"yeti": []
+			}
 		}
 	}
 }
