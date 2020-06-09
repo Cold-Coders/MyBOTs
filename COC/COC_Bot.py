@@ -19,6 +19,7 @@ class COC_BOT():
 		self._lang = lang
 		self._gui = frame
 		self.d = self._config['d']
+		self._count = self._gui._count
 		#-------------功能选项-----------------------
 		self.enable_func = self._gui.func
 		#-------------功能性类-----------------------
@@ -31,7 +32,6 @@ class COC_BOT():
 		#-------------------------------------------
 		prt(self._config,title = "配置信息")
 		u.prt("机器信息",self.d.info)
-
 		self._app = config['game']
 
 
@@ -61,10 +61,11 @@ class COC_BOT():
 				self.General.collect_resourse()
 
 			if self.enable_func[3].get(): # 自动部落捐兵
+				self._count["donation"] += 1
+				
 				if self.Donation.donateOnce():
 					self.sleep(now = False, min = 15)
-				else:
-					self._count["donation"] += 1
+
 
 				if self._count["donation"]%10 == 0:
 					self.sleep(now = False, min = 15)
