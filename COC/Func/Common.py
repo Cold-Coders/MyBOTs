@@ -37,11 +37,12 @@ class Scenario:
 				7: 'okay1.png',
 				8: 'goldenpass_x.png',
 				9: 'donation_x.png',
-				10: 'clan_x.png'
+				10: 'clan_x.png',
+				11: 'clan_chat_x.png'
 		}
 
 		
-		close_list = [7,8,9,10]
+		close_list = [7,8,9,10,11]
 		if spec == 0:
 			for i in range(1,len(pos) + 1):
 				x,y = ( U.find_PosbyArea(screen,self.map[ pos[i] ]\
@@ -49,7 +50,7 @@ class Scenario:
 				if x > -1:
 					if close and i in close_list:
 						U.tap(self.d,x,y)
-						U.prt(self.lang['msgs'][0],mode = 2)
+						U.msg(self.d,self.lang['msgs'][0] + pos[i],mode = 2)
 					return i
 			return 0 #未知场景
 
