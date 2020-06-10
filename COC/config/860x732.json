@@ -9,7 +9,8 @@
 			"clan_chat.png": [245,680,312,730],
 			"okay1.png":[340,490,500,560],
 			"goldenpass_x.png": [800,50,850,100],
-			"donation_x.png" : [790,240,825,270]
+			"donation_x.png" : [790,240,825,270],
+			"clan_x.png" : [800,55,860,120]
 		}
 	},
 	"General":{

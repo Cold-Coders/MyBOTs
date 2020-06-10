@@ -36,11 +36,12 @@ class Scenario:
 				6: 'clan_chat.png',
 				7: 'okay1.png',
 				8: 'goldenpass_x.png',
-				9: 'donation_x.png'
+				9: 'donation_x.png',
+				10: 'clan_x.png'
 		}
 
 		
-		close_list = [7,8]
+		close_list = [7,8,9,10]
 		if spec == 0:
 			for i in range(1,len(pos) + 1):
 				x,y = ( U.find_PosbyArea(screen,self.map[ pos[i] ]\
@@ -57,7 +58,7 @@ class Scenario:
 		img = self.path + pos[spec]
 		x,y = U.find_PosbyArea(screen,area, img,confidence = 0.95)
 		if x > -1:
-			if close:
+			if close and i in close_list:
 				U.tap(self.d,x,y)
 			return True
 		return False
