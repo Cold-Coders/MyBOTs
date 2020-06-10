@@ -356,7 +356,8 @@ class Donation:
 			self.find_tap(self.path + siege["wall_wrecker"][1])
 
 			#应该检测关掉捐兵窗口
-			U.tap(self.d,100,300,r = True)
+			#U.tap(self.d,100,300,r = True)
+			self._Common.Scense(self.d.screenshot(format="opencv"), spec = 9)
 
 			return True
 

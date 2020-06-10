@@ -35,7 +35,8 @@ class Scenario:
 				5: 'search_builder.png',
 				6: 'clan_chat.png',
 				7: 'okay1.png',
-				8: 'goldenpass_x.png'
+				8: 'goldenpass_x.png',
+				9: 'donation_x.png'
 		}
 
 		
@@ -54,7 +55,9 @@ class Scenario:
 		
 		area = self.map[ pos[spec] ]
 		img = self.path + pos[spec]
-		if ( U.find_PosbyArea(screen,area, img,\
-			confidence = 0.95))[0] > -1:
+		x,y = U.find_PosbyArea(screen,area, img,confidence = 0.95)
+		if x > -1:
+			if close:
+				U.tap(self.d,x,y)
 			return True
 		return False
