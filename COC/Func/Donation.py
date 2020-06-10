@@ -357,8 +357,11 @@ class Donation:
 
 			#应该检测关掉捐兵窗口
 			#U.tap(self.d,100,300,r = True)
-			self._Common.Scense(self.d.screenshot(format="opencv"), spec = 9)
-
+			ss()
+			self._Common.Scense(screen, spec = 9)
+			ss(2)
+			self._Common.Scense(self.d.screenshot(format="opencv"), spec = 11)
+			
 			return True
 
 		return False
