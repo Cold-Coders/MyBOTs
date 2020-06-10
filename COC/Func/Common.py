@@ -58,7 +58,7 @@ class Scenario:
 		img = self.path + pos[spec]
 		x,y = U.find_PosbyArea(screen,area, img,confidence = 0.95)
 		if x > -1:
-			if close and i in close_list:
+			if close and spec in close_list:
 				U.tap(self.d,x,y)
 			return True
 		return False
