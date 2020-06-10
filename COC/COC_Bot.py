@@ -39,7 +39,7 @@ class COC_BOT():
 		#配置
 		while True:
 			#如果是果盘COC 点进入游戏
-			#self.GPstart()
+			self.GPstart()
 			
 			if int(self.Common.time_left(self.wait)) > 600:
 				self.d.press("home")
