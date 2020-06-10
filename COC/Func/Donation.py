@@ -281,7 +281,7 @@ class Donation:
 
 #------------------------------ Donate -------------------------------#
 	def donateOnce(self):
-		
+
 		self.count["donation"] += 1
 
 		# 1. 打开兵营造兵
@@ -356,7 +356,7 @@ class Donation:
 			self.find_tap(self.path + siege["wall_wrecker"][1])
 
 			#应该检测关掉捐兵窗口
-			U.tap(self.d,100,100,r = True)
+			U.tap(self.d,100,300,r = True)
 
 			return True
 

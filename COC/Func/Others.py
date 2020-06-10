@@ -129,7 +129,7 @@ class Utils:
 	def tap(d,sx,sy,r = False):
 		try:
 			if r:
-				d.click(random.randint(1,sx), random.randint(1,sy))
+				d.click(random.randint(sx,sy), random.randint(sx,sy))
 			else:
 				d.click(sx +r_num(lbound = 3), sy + r_num(lbound = 3))
 			ss(random.randint(1,5) * 0.1)

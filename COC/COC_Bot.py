@@ -74,7 +74,6 @@ class COC_BOT():
 
 	def sleep(self, now = True, mins = 0, sec = 0):
 		if not now and type(self.wait) is datetime.datetime:
-			print("这里出问题吗")
 			self.wait = self.Common.duration(now = self.wait, minutes = mins, seconds = sec)
 		else:
 			self.wait = self.Common.duration(minutes = mins, seconds = sec)
