@@ -49,7 +49,9 @@ class Scenario:
 					, self.path + pos[i] ,confidence = 0.95))
 				if x > -1:
 					if close and i in close_list:
-						U.tap(self.d,x,y)
+						sx,sy = self.map[ pos[i]][:2]
+						print("Debug close tap:",x+sx,",",y +sy)
+						U.tap(self.d,x + sx ,y + sy)
 						U.msg(self.d,self.lang['msgs'][0] + pos[i],mode = 2)
 					return i
 			return 0 #未知场景
@@ -60,6 +62,9 @@ class Scenario:
 		x,y = U.find_PosbyArea(screen,area, img,confidence = 0.95)
 		if x > -1:
 			if close and spec in close_list:
+				sx,sy = area[:2]
+				print("Debug close tap:",x+sx,",",y +sy)
+				U.tap(self.d,x + area[0] ,y + area[1])
 				U.tap(self.d,x,y)
 			return True
 		return False
