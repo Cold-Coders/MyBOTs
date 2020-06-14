@@ -183,7 +183,7 @@ class Donation:
 					},
 					"spell": {
 						"bat": [11,"undefined",False],
-						"clone": [6,"undefined",False],
+						#"clone": [6,"undefined",False],
 						"earthquake": [8,"undefined",False],
 						"freeze": [5,"spell/freeze.png",False],
 						"haste": [9,"undefined",False],
