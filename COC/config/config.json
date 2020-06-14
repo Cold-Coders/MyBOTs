@@ -4,6 +4,199 @@
         "COC/res/elixir.png",
         "COC/res/gem.png"
     ],
+    "Donation": {
+        "amounts": {
+            "siege": 0,
+            "spell": 0,
+            "troop1": 0,
+            "troop2": 0
+        },
+        "donation": {
+            "siege": {
+                "barracks": [
+                    4,
+                    "undefined",
+                    false
+                ],
+                "blimp": [
+                    2,
+                    "undefined",
+                    false
+                ],
+                "slammer": [
+                    3,
+                    "undefined",
+                    false
+                ],
+                "wall_wrecker": [
+                    1,
+                    "siege/wall_wrecker.png",
+                    false
+                ]
+            },
+            "spell": {
+                "bat": [
+                    11,
+                    "undefined",
+                    false
+                ],
+                "clone": [
+                    6,
+                    "undefined",
+                    false
+                ],
+                "earthquake": [
+                    8,
+                    "undefined",
+                    false
+                ],
+                "freeze": [
+                    5,
+                    "spell/freeze.png",
+                    false
+                ],
+                "haste": [
+                    9,
+                    "undefined",
+                    false
+                ],
+                "healing": [
+                    2,
+                    "undefined",
+                    false
+                ],
+                "jump": [
+                    4,
+                    "undefined",
+                    false
+                ],
+                "lightning": [
+                    1,
+                    "undefined",
+                    false
+                ],
+                "poison": [
+                    7,
+                    "undefined",
+                    false
+                ],
+                "rage": [
+                    3,
+                    "spell/rage.png",
+                    false
+                ],
+                "skeleton": [
+                    10,
+                    "undefined",
+                    false
+                ]
+            },
+            "troops": {
+                "baby_dragon": [
+                    7,
+                    "undefined",
+                    false
+                ],
+                "balloon": [
+                    2,
+                    "troops/balloon.png",
+                    false
+                ],
+                "bowler": [
+                    17,
+                    "undefined",
+                    false
+                ],
+                "dragon": [
+                    5,
+                    "undefined",
+                    false
+                ],
+                "electro": [
+                    9,
+                    "troops/electro.png",
+                    false
+                ],
+                "giant": [
+                    1,
+                    "undefined",
+                    false
+                ],
+                "golem": [
+                    14,
+                    "undefined",
+                    false
+                ],
+                "healer": [
+                    4,
+                    "undefined",
+                    false
+                ],
+                "hog_rider": [
+                    12,
+                    "undefined",
+                    false
+                ],
+                "ice_golem": [
+                    18,
+                    "undefined",
+                    false
+                ],
+                "lava": [
+                    16,
+                    "undefined",
+                    false
+                ],
+                "miner": [
+                    8,
+                    "undefined",
+                    false
+                ],
+                "minion": [
+                    11,
+                    "undefined",
+                    false
+                ],
+                "pekka": [
+                    6,
+                    "undefined",
+                    false
+                ],
+                "valkyrie": [
+                    13,
+                    "undefined",
+                    false
+                ],
+                "witch": [
+                    15,
+                    "undefined",
+                    false
+                ],
+                "wizard": [
+                    3,
+                    "undefined",
+                    false
+                ],
+                "yeti": [
+                    10,
+                    "undefined",
+                    false
+                ]
+            }
+        },
+        "selections": [
+            "9雷龙/2气球/3冰冻/4狂暴/3战车",
+            "",
+            "",
+            "",
+            ""
+        ],
+        "train_limits": [
+            500000,
+            100000,
+            0
+        ]
+    },
     "Functionality": [
         true,
         true,
