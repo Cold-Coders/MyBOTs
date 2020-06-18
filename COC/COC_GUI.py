@@ -86,7 +86,7 @@ class COC_BOT_GUI(tk.Frame):
 			if reopen:
 				restarter.Emu(self._config,self.lang)
 			else:
-				u.prt(self.lang["tips"]["close_bot"],mode = 3)
+				U.prt(self.lang["tips"]["close_bot"],mode = 3)
 				ss(5)
 				self.window.destroy()
 				exit()
