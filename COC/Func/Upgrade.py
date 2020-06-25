@@ -39,3 +39,6 @@ class Upgrade:
 		#always has the last zero
 		#simple to check if the zero is red or white
 
+	def upgradde_hero(self):
+		pass
+
