@@ -21,6 +21,7 @@ class General:
 		self.orc = GUI.config['orc']
 		self.lang = GUI.lang['General']
 		self.path = 'COC/recognition/' + resolution + "/Resource/"
+		self.d_path = 'COC/recognition/' + resolution + "/Donation/"
 
 		self.coordinator = coord["General"]
 		self._Common = GUI._config["Common"]
@@ -300,3 +301,18 @@ class General:
 					"b_gold": "b_gold_16x16.png",
 					"gem" : "b_gem_18x17.png"
 			}
+
+	def elect_attack(self):
+		elec_drag = U.find_position(self.path + troops["electro"][1])
+		U.tap(elec_drag)
+		ss()
+		U.tap(261,192)
+		U.tap(166,255)
+		U.tap(172,416)
+		U.tap(313,522)
+		U.tap(547,548)
+		U.tap(685,431)
+		U.tap(706,264)
+		U.tap(575,169)
+		U.tap(454,71)
+
